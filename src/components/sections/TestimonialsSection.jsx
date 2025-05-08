@@ -539,11 +539,11 @@ export default function TestimonialsSection() {
         }
         
         .prev-arrow {
-          left: -70px;
+          left: -35px;
         }
         
         .next-arrow {
-          right: -70px;
+          right: -35px;
         }
         
         .nav-arrow:hover {
@@ -558,7 +558,7 @@ export default function TestimonialsSection() {
           display: flex;
           justify-content: center;
           gap: 0.5rem;
-          margin-top: -1rem;
+          margin-top: 2.5rem;
           position: relative;
           z-index: 20;
         }
@@ -642,11 +642,11 @@ export default function TestimonialsSection() {
           
           /* Унифицируем позиции стрелок */
           .prev-arrow {
-            left: -70px;
+            left: -30px;
           }
           
           .next-arrow {
-            right: -70px;
+            right: -30px;
           }
         }
         

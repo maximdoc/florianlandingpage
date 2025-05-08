@@ -82,6 +82,28 @@ export default function Navbar() {
     };
   }, [expanded]);
 
+  // Обработчик для плавной прокрутки при клике на якорные ссылки
+  const smoothScrollToAnchor = (e) => {
+    e.preventDefault();
+    const targetId = e.currentTarget.getAttribute('href');
+    if (targetId && targetId.startsWith('#')) {
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        // Учитываем высоту навбара при прокрутке
+        const offsetTop = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight - 20;
+        
+        // Используем requestAnimationFrame вместо прямого вызова scrollTo
+        requestAnimationFrame(() => {
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+          });
+        });
+      }
+    }
+    handleNavLinkClick();
+  };
+
   return (
     <BootstrapNavbar 
       expand="lg" 
@@ -114,41 +136,41 @@ export default function Navbar() {
         
         <BootstrapNavbar.Collapse id="basic-navbar-nav" className={`custom-navbar-collapse ${expanded ? 'show' : ''}`} style={{ top: navbarHeight + 'px' }}>
           <Nav className="ms-auto align-items-lg-center">
-            <Link 
-              href="/features" 
+            <a 
+              href="#features" 
               className="nav-link py-2 px-3" 
-              onClick={handleNavLinkClick}
+              onClick={smoothScrollToAnchor}
               ref={el => navLinksRef.current[0] = el}
             >
               Features
-            </Link>
+            </a>
             
-            <Link 
-              href="/benefits" 
+            <a 
+              href="#benefits" 
               className="nav-link py-2 px-3" 
-              onClick={handleNavLinkClick}
+              onClick={smoothScrollToAnchor}
               ref={el => navLinksRef.current[1] = el}
             >
               Benefits
-            </Link>
+            </a>
             
-            <Link 
-              href="/testimonials" 
+            <a 
+              href="#testimonials" 
               className="nav-link py-2 px-3" 
-              onClick={handleNavLinkClick}
+              onClick={smoothScrollToAnchor}
               ref={el => navLinksRef.current[2] = el}
             >
               Testimonials
-            </Link>
+            </a>
             
-            <Link 
-              href="/faq" 
+            <a 
+              href="#faq" 
               className="nav-link py-2 px-3" 
-              onClick={handleNavLinkClick}
+              onClick={smoothScrollToAnchor}
               ref={el => navLinksRef.current[3] = el}
             >
               FAQ
-            </Link>
+            </a>
             
             <div 
               className="d-flex align-items-center mt-3 mt-lg-0 px-3 px-lg-0"

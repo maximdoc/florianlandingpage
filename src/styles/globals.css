@@ -345,11 +345,11 @@ h4 span.text-gradient {
 
 @media (max-width: 991px) {
   .custom-navbar-collapse {
-    background-color: rgba(var(--background-rgb), 0.85);
-    backdrop-filter: blur(12px);
+    background-color: rgba(var(--background-rgb), 0.97);
+    backdrop-filter: blur(15px);
     padding: 1.25rem;
     border-radius: var(--border-radius);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     border: 1px solid rgba(var(--background-rgb), 0.1);
     position: fixed;
     top: 70px;
@@ -374,7 +374,7 @@ h4 span.text-gradient {
   
   .custom-navbar-collapse .nav-link {
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    padding: 0.75rem 1rem;
+    padding: 0.9rem 1.25rem;
     display: block;
     opacity: 0;
     transform: translateX(-20px);
@@ -382,6 +382,8 @@ h4 span.text-gradient {
     transition-delay: calc(var(--item-index, 0) * 0.05s);
     position: relative;
     overflow: hidden;
+    font-weight: 500;
+    font-size: 1.1rem;
   }
   
   .custom-navbar-collapse.show .nav-link {
@@ -431,17 +433,19 @@ h4 span.text-gradient {
 }
 
 [data-bs-theme="dark"] .custom-navbar-collapse {
-  background-color: rgba(14, 21, 37, 0.75);
-  border-color: rgba(45, 55, 72, 0.3);
-  box-shadow: none;
+  background-color: rgba(14, 21, 37, 0.98);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
 }
 
 [data-bs-theme="dark"] .custom-navbar-collapse .nav-link {
-  border-bottom-color: rgba(255, 255, 255, 0.05);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.95);
 }
 
 [data-bs-theme="dark"] .custom-navbar-collapse .nav-link:hover {
-  background-color: rgba(var(--primary-rgb), 0.1);
+  background-color: rgba(var(--primary-rgb), 0.15);
+  color: var(--primary);
 }
 
 /* Page content */
@@ -1769,4 +1773,17 @@ section {
   padding-top: 3rem !important;
   padding-bottom: 3rem !important;
   margin-top: 0 !important;
+}
+
+[data-bs-theme="dark"] .custom-navbar-collapse .dropdown-heading {
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+[data-bs-theme="light"] .custom-navbar-collapse .dropdown-heading {
+  color: var(--text-primary);
+  font-weight: 700;
+  letter-spacing: 0.01em;
 } 

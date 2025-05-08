@@ -268,7 +268,7 @@ export default function HeroSection() {
 
               <div className="d-grid gap-3 d-sm-flex mb-4 slide-up">
                 <Button
-                  href="/signup"
+                  href="#strategy-call"
                   variant="primary"
                   size="lg"
                   className="glow-effect"

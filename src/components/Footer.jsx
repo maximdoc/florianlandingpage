@@ -2,8 +2,40 @@
 
 import { Container, Row, Col } from 'react-bootstrap';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 export default function Footer() {
+  const [navbarHeight, setNavbarHeight] = useState(0);
+
+  // Получаем высоту навбара для корректной прокрутки
+  useEffect(() => {
+    const navbar = document.querySelector('.navbar-main');
+    if (navbar) {
+      setNavbarHeight(navbar.offsetHeight);
+    }
+  }, []);
+
+  // Обработчик для плавной прокрутки при клике на якорные ссылки
+  const smoothScrollToAnchor = (e) => {
+    e.preventDefault();
+    const targetId = e.currentTarget.getAttribute('href');
+    if (targetId && targetId.startsWith('#')) {
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        // Учитываем высоту навбара при прокрутке
+        const offsetTop = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight - 20;
+        
+        // Используем requestAnimationFrame для безопасного вызова
+        requestAnimationFrame(() => {
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+          });
+        });
+      }
+    }
+  };
+
   return (
     <footer className="py-5 mt-5">
       <Container>
@@ -43,54 +75,45 @@ export default function Footer() {
             <h5 className="mb-3">Product</h5>
             <ul className="list-unstyled footer-links">
               <li className="mb-2">
-                <Link href="/features" className="text-muted text-decoration-none">Features</Link>
+                <a href="#features" className="text-muted text-decoration-none" onClick={smoothScrollToAnchor}>Features</a>
               </li>
               <li className="mb-2">
-                <Link href="/pricing" className="text-muted text-decoration-none">Pricing</Link>
+                <a href="#pricing" className="text-muted text-decoration-none" onClick={smoothScrollToAnchor}>Pricing</a>
               </li>
               <li className="mb-2">
-                <Link href="/integrations" className="text-muted text-decoration-none">Integrations</Link>
+                <a href="#integrations" className="text-muted text-decoration-none" onClick={smoothScrollToAnchor}>Integrations</a>
               </li>
               <li className="mb-2">
-                <Link href="/updates" className="text-muted text-decoration-none">Updates</Link>
+                <a href="#updates" className="text-muted text-decoration-none" onClick={smoothScrollToAnchor}>Updates</a>
               </li>
             </ul>
           </Col>
           
           <Col lg={3} md={6} sm={6} className="mb-4 mb-lg-0">
-            <h5 className="mb-3">Resources</h5>
+            <h5 className="mb-3">Support</h5>
             <ul className="list-unstyled footer-links">
               <li className="mb-2">
-                <Link href="/documentation" className="text-muted text-decoration-none">Documentation</Link>
+                <a href="#help-center" className="text-muted text-decoration-none" onClick={smoothScrollToAnchor}>Help Center</a>
               </li>
               <li className="mb-2">
-                <Link href="/tutorials" className="text-muted text-decoration-none">Tutorials</Link>
+                <a href="#contact" className="text-muted text-decoration-none" onClick={smoothScrollToAnchor}>Contact Us</a>
               </li>
               <li className="mb-2">
-                <Link href="/faq" className="text-muted text-decoration-none">FAQ</Link>
+                <a href="#faq" className="text-muted text-decoration-none" onClick={smoothScrollToAnchor}>FAQ</a>
               </li>
               <li className="mb-2">
-                <Link href="/community" className="text-muted text-decoration-none">Community</Link>
+                <a href="#community" className="text-muted text-decoration-none" onClick={smoothScrollToAnchor}>Community</a>
               </li>
             </ul>
           </Col>
           
           <Col lg={3} md={6} sm={6}>
-            <h5 className="mb-3">Company</h5>
-            <ul className="list-unstyled footer-links">
-              <li className="mb-2">
-                <Link href="/about" className="text-muted text-decoration-none">About</Link>
-              </li>
-              <li className="mb-2">
-                <Link href="/blog" className="text-muted text-decoration-none">Blog</Link>
-              </li>
-              <li className="mb-2">
-                <Link href="/careers" className="text-muted text-decoration-none">Careers</Link>
-              </li>
-              <li className="mb-2">
-                <Link href="/contact" className="text-muted text-decoration-none">Contact</Link>
-              </li>
-            </ul>
+            <h5 className="mb-3">Stay Updated</h5>
+            <p className="text-muted mb-3">Get the latest updates by subscribing to our newsletter</p>
+            <div className="input-group mb-3">
+              <input type="email" className="form-control" placeholder="Your email" aria-label="Your email" />
+              <button className="btn btn-primary" type="button">Subscribe</button>
+            </div>
           </Col>
         </Row>
         
@@ -105,13 +128,13 @@ export default function Footer() {
           <Col md={6} className="text-center text-md-end">
             <ul className="list-inline small mb-0">
               <li className="list-inline-item mb-2 mb-sm-0">
-                <Link href="/privacy-policy" className="text-muted text-decoration-none">Privacy Policy</Link>
+                <a href="#privacy-policy" className="text-muted text-decoration-none">Privacy Policy</a>
               </li>
               <li className="list-inline-item ms-sm-3 mb-2 mb-sm-0">
-                <Link href="/terms-of-service" className="text-muted text-decoration-none">Terms of Service</Link>
+                <a href="#terms-of-service" className="text-muted text-decoration-none">Terms of Service</a>
               </li>
               <li className="list-inline-item ms-sm-3">
-                <Link href="/cookies" className="text-muted text-decoration-none">Cookies</Link>
+                <a href="#cookies" className="text-muted text-decoration-none">Cookies</a>
               </li>
             </ul>
           </Col>
