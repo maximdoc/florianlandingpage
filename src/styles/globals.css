@@ -432,12 +432,6 @@ h4 span.text-gradient {
   background-color: var(--text-primary);
 }
 
-[data-bs-theme="dark"] .custom-navbar-collapse {
-  background-color: rgba(14, 21, 37, 0.98);
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-}
-
 [data-bs-theme="dark"] .custom-navbar-collapse .nav-link {
   border-bottom-color: rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.95);

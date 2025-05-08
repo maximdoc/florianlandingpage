@@ -228,7 +228,7 @@ export default function FeaturesSection() {
                   Ready to <span className="text-gradient">Transform</span> Your
                   Government Contracting Journey?
                 </h3>
-                <Button href="/strategy-call" variant="white">
+                <Button href="#strategy-call" variant="white">
                   Book Your Free Strategy Call
                 </Button>
               </div>

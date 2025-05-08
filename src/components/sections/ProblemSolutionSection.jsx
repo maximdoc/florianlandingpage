@@ -164,7 +164,7 @@ export default function ProblemSolutionSection() {
                     You move from <em>no presence</em> to <em>repeat awards</em> without hiring a capture team.
                   </p>
                   <Button 
-                    href="/strategy-call" 
+                    href="#strategy-call" 
                     variant="white" 
                     size="lg" 
                     className="mt-2"

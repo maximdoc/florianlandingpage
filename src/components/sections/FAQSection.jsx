@@ -108,7 +108,7 @@ export default function FAQSection() {
               <h3>Still have questions? <span className="highlight-text">Let's talk</span></h3>
               <p>Our team is ready to answer all your questions about government contracting</p>
               <Button 
-                href="/contact" 
+                href="#contact" 
                 variant="white"
               >
                 Get in Touch

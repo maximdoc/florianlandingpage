@@ -95,8 +95,8 @@ export default function Footer() {
               <li className="mb-2">
                 <a href="#help-center" className="text-muted text-decoration-none" onClick={smoothScrollToAnchor}>Help Center</a>
               </li>
-              <li className="mb-2">
-                <a href="#contact" className="text-muted text-decoration-none" onClick={smoothScrollToAnchor}>Contact Us</a>
+              <li id="contact" className="mb-2">
+                Contact us: support@slingrfp.com
               </li>
               <li className="mb-2">
                 <a href="#faq" className="text-muted text-decoration-none" onClick={smoothScrollToAnchor}>FAQ</a>

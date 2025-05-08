@@ -5,7 +5,7 @@ import Button from '../ui/Button';
 
 export default function CTASection() {
   return (
-    <section className="cta-section-container py-6">
+    <section id="strategy-call" className="cta-section-container py-6">
       <Container>
         <div className="cta-card-enhanced">
           <Row className="g-0">

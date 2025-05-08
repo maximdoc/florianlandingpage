@@ -136,7 +136,7 @@ export default function BenefitsSection() {
           <Col className="text-center cta-animation">
             <div className="cta-wrapper mt-5 pt-3">
               <Button 
-                href="/strategy-call" 
+                href="#strategy-call" 
                 variant="primary" 
                 size="lg"
               >
