@@ -80,7 +80,7 @@ export default function FAQSection() {
           </Col>
         </Row>
         
-        <Row className="justify-content-center">
+        <Row className="justify-content-center mb-5">
           <Col lg={9} xl={8} className="mx-auto">
             <div className="position-relative faq-wrapper">
               <div className="faq-container">
@@ -101,11 +101,11 @@ export default function FAQSection() {
           </Col>
         </Row>
         
-        <Row className="mt-5">
-          <Col lg={10} xl={8} className="mx-auto text-center slide-up" style={{ animationDelay: "0.3s" }}>
+        <Row>
+          <Col lg={10} xl={7} className="mx-auto text-center slide-up" style={{ animationDelay: "0.3s" }}>
             <div className="compact-cta-card">
               <div className="compact-cta-bg"></div>
-              <h3>Still have questions? <span className="text-gradient">Let's talk</span></h3>
+              <h3>Still have questions? <span className="highlight-text">Let's talk</span></h3>
               <p>Our team is ready to answer all your questions about government contracting</p>
               <Button 
                 href="/contact" 
@@ -288,27 +288,45 @@ export default function FAQSection() {
         /* CTA Card */
         .compact-cta-card {
           position: relative;
-          padding: 2rem;
+          padding: 1.5rem;
           border-radius: 16px;
           background: var(--cta-bg);
           color: var(--cta-text);
           overflow: hidden;
           box-shadow: 0 15px 30px rgba(var(--primary-rgb), 0.2);
           z-index: 1;
+          margin-top: 1rem;
         }
         
         .compact-cta-card h3 {
           font-size: 1.25rem;
           font-weight: 700;
-          margin-bottom: 1.25rem;
+          margin-bottom: 0.75rem;
+          color: #ffffff !important;
         }
 
-        [data-bs-theme="light"] .compact-cta-card h3 .text-gradient {
+        .compact-cta-card p {
+          margin-bottom: 1rem;
+          font-size: 0.95rem;
+          color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        [data-bs-theme="light"] .compact-cta-card h3,
+        [data-bs-theme="light"] .compact-cta-card p {
+          color: #ffffff !important;
+        }
+
+        .highlight-text {
+          color: #ffffff;
+          font-weight: 700;
+          position: relative;
+          display: inline-block;
+          text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
           background: linear-gradient(90deg, #ffffff, #f0f4ff);
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
-          filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+          filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
         }
         
         .cta-glow {
@@ -385,6 +403,14 @@ export default function FAQSection() {
 
         [data-bs-theme="light"] .faq-decoration {
           opacity: 0.3;
+        }
+
+        [data-bs-theme="light"] .compact-cta-card h3 .text-gradient {
+          background: linear-gradient(90deg, #ffffff, #f0f4ff);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
         }
       `}</style>
     </section>

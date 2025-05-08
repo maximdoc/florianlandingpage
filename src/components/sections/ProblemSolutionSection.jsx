@@ -34,54 +34,27 @@ export default function ProblemSolutionSection() {
     {
       number: 1,
       title: "Profile Builder",
-      description: "We assemble every credential, past performance doc, and certificate you need.",
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.825a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3zm-8.322.12C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139z"/>
-        </svg>
-      )
+      description: "We assemble every credential, past performance doc, and certificate you need."
     },
     {
       number: 2,
       title: "Gap Tracker",
-      description: "Continuous scans reveal missing qualifications; our team closes them fast.",
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/>
-        </svg>
-      )
+      description: "Continuous scans reveal missing qualifications; our team closes them fast."
     },
     {
       number: 3,
       title: "Opportunity Match",
-      description: "AI surfaces solicitations you're truly eligible for.",
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
-          <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
-          <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
-        </svg>
-      )
+      description: "AI surfaces solicitations you're truly eligible for."
     },
     {
       number: 4,
       title: "Proposal Studio",
-      description: "LLM‑powered writers craft and submit compliant bids.",
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M13 0H6a2 2 0 0 0-2 2 2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 13V4a2 2 0 0 0-2-2H5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1zM3 4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4z"/>
-        </svg>
-      )
+      description: "LLM‑powered writers craft and submit compliant bids."
     },
     {
       number: 5,
       title: "Win‑Analytics Loop",
-      description: "Post‑award debriefs retrain the models, boosting future win odds.",
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
-        </svg>
-      )
+      description: "Post‑award debriefs retrain the models, boosting future win odds."
     }
   ];
 
@@ -115,18 +88,26 @@ export default function ProblemSolutionSection() {
           </Row>
           
           <Row className="stats-row justify-content-center mt-5">
-            {[
-              { value: "95%", description: "Disqualification rate for unprepared vendors" },
-              { value: "30+", description: "Average documents needed per bid" },
-              { value: "5%", description: "Average win rate without support" }
-            ].map((stat, index) => (
-              <Col md={4} key={index} className={`mb-4 stat-col ${isVisible ? 'visible' : ''}`} style={{ animationDelay: `${0.3 + index * 0.15}s` }}>
-                <div className="stat-card text-center">
-                  <h3 className="stat-value">{stat.value}</h3>
-                  <p className="stat-description">{stat.description}</p>
+            <Col md={5} lg={4} className={`mb-4 stat-col mx-2 ${isVisible ? 'visible' : ''}`} style={{ animationDelay: `${0.3}s` }}>
+              <div className="stat-card text-center">
+                <h3 className="stat-value">95%</h3>
+                <p className="stat-description">Disqualification rate for unprepared vendors</p>
               </div>
             </Col>
-            ))}
+            <Col md={5} lg={4} className={`mb-4 stat-col mx-2 ${isVisible ? 'visible' : ''}`} style={{ animationDelay: `${0.45}s` }}>
+              <div className="stat-card text-center">
+                <h3 className="stat-value">30+</h3>
+                <p className="stat-description">Average documents needed per bid</p>
+              </div>
+            </Col>
+          </Row>
+          <Row className="justify-content-center">
+            <Col md={5} lg={4} className={`mb-4 stat-col mx-2 ${isVisible ? 'visible' : ''}`} style={{ animationDelay: `${0.6}s` }}>
+              <div className="stat-card text-center">
+                <h3 className="stat-value">5%</h3>
+                <p className="stat-description">Average win rate without support</p>
+              </div>
+            </Col>
           </Row>
         </Container>
       </div>
@@ -163,7 +144,6 @@ export default function ProblemSolutionSection() {
                       <div className="number-circle">{step.number}</div>
                     </div>
                     <div className="step-content">
-                      <div className="step-icon">{step.icon}</div>
                       <h3 className="step-title">{step.title}</h3>
                       <p className="step-description">{step.description}</p>
                     </div>
@@ -187,7 +167,7 @@ export default function ProblemSolutionSection() {
                     href="/strategy-call" 
                     variant="white" 
                     size="lg" 
-                    className="mt-3"
+                    className="mt-2"
                   >
                     Book Your Free Strategy Call
                   </Button>
@@ -407,38 +387,73 @@ export default function ProblemSolutionSection() {
         
         .stat-card {
           background: var(--stat-card-bg);
-          border-radius: 14px;
-          padding: 26px;
-          box-shadow: var(--card-shadow);
+          border-radius: 16px;
+          padding: 24px;
+          box-shadow: var(--card-shadow), 0 0 15px rgba(var(--primary-rgb), 0.05);
           backdrop-filter: blur(10px);
           height: 100%;
-          transition: all 0.4s ease;
-          border-top: 3px solid #6366f1;
+          transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+          border: 1px solid rgba(var(--primary-rgb), 0.1);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .stat-card::before {
+          content: '';
+          position: absolute;
+          top: -2px;
+          left: 35%;
+          right: 35%;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, rgba(var(--primary-rgb), 0.6), transparent);
+          border-radius: 100%;
         }
         
         .stat-card:hover {
-          transform: translateY(-5px);
-          box-shadow: var(--card-hover-shadow);
+          transform: translateY(-8px);
+          box-shadow: var(--card-hover-shadow), 0 10px 30px rgba(var(--primary-rgb), 0.1);
         }
         
         .stat-value {
-          font-size: 3rem;
+          font-size: 3.5rem;
           font-weight: 800;
           color: var(--stat-value-color);
           margin-bottom: 0.5rem;
+          margin-top: 0.5rem;
+          position: relative;
+          display: inline-block;
+        }
+        
+        .stat-value::after {
+          content: '';
+          position: absolute;
+          bottom: -5px;
+          left: 25%;
+          width: 50%;
+          height: 3px;
+          background: linear-gradient(90deg, transparent, rgba(var(--primary-rgb), 0.4), transparent);
+          border-radius: 3px;
         }
         
         .stat-description {
-          font-size: 1rem;
+          font-size: 1.1rem;
           color: var(--stat-description-color);
           margin-bottom: 0;
+          text-align: center;
+          max-width: 90%;
+          line-height: 1.4;
         }
         
         /* Solution steps styling */
         .solution-steps-container {
           display: flex;
-          flex-direction: column;
+          flex-wrap: wrap;
           gap: 1rem;
+          justify-content: center;
         }
         
         .solution-step-card {
@@ -446,12 +461,15 @@ export default function ProblemSolutionSection() {
           align-items: flex-start;
           background: var(--step-card-bg);
           border: 1px solid var(--step-card-border);
-          border-radius: 14px;
-          padding: 1.5rem;
-          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+          border-radius: 16px;
+          padding: 1.25rem;
+          transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
           position: relative;
-          box-shadow: var(--card-shadow);
+          box-shadow: var(--card-shadow), 0 0 15px rgba(0, 0, 0, 0.03);
           backdrop-filter: blur(10px);
+          overflow: hidden;
+          width: calc(50% - 0.5rem);
+          margin-bottom: 1rem;
         }
         
         .solution-step-card::before {
@@ -461,15 +479,28 @@ export default function ProblemSolutionSection() {
           left: 0;
           right: 0;
           height: 3px;
-          background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
+          background: linear-gradient(90deg, rgba(var(--primary-rgb), 0.8) 0%, rgba(139, 92, 246, 0.8) 100%);
           opacity: 0;
-          transition: opacity 0.3s ease;
+          transition: opacity 0.4s ease;
+        }
+        
+        .solution-step-card::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          width: 40%;
+          height: 30%;
+          background: radial-gradient(circle at bottom right, rgba(var(--primary-rgb), 0.05), transparent 70%);
+          opacity: 0;
+          transition: opacity 0.5s ease;
+          z-index: 0;
         }
         
         .solution-step-card:hover,
         .solution-step-card.active {
-          transform: translateY(-5px);
-          box-shadow: var(--card-hover-shadow);
+          transform: translateY(-6px) scale(1.01);
+          box-shadow: var(--card-hover-shadow), 0 15px 35px rgba(var(--primary-rgb), 0.08);
         }
         
         .solution-step-card:hover::before,
@@ -477,13 +508,18 @@ export default function ProblemSolutionSection() {
           opacity: 1;
         }
         
+        .solution-step-card:hover::after,
+        .solution-step-card.active::after {
+          opacity: 1;
+        }
+        
         .step-number {
-          margin-right: 1.25rem;
+          margin-right: 1rem;
         }
         
         .number-circle {
-          width: 50px;
-          height: 50px;
+          width: 40px;
+          height: 40px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -491,64 +527,56 @@ export default function ProblemSolutionSection() {
           color: white;
           border-radius: 50%;
           font-weight: 700;
-          font-size: 1.25rem;
+          font-size: 1rem;
           transition: all 0.3s ease;
-          box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+          box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3), inset 0 -2px 5px rgba(0, 0, 0, 0.2), inset 0 2px 5px rgba(255, 255, 255, 0.3);
+          position: relative;
+          overflow: hidden;
         }
         
-        .solution-step-card:hover .number-circle,
-        .solution-step-card.active .number-circle {
-          transform: scale(1.1);
-          box-shadow: 0 6px 15px rgba(99, 102, 241, 0.4);
+        .number-circle::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 50%;
+          background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
+          border-radius: 50% 50% 0 0;
         }
         
         .step-content {
           flex: 1;
         }
         
-        .step-icon {
-          position: absolute;
-          right: 1.5rem;
-          top: 1.5rem;
-          color: var(--step-icon-color);
-          opacity: 0.2;
-          transition: all 0.3s ease;
-        }
-        
-        .solution-step-card:hover .step-icon,
-        .solution-step-card.active .step-icon {
-          opacity: 0.5;
-          transform: scale(1.1) rotate(5deg);
-        }
-        
         .step-title {
-          font-size: 1.25rem;
+          font-size: 1.15rem;
           font-weight: 700;
-          margin-bottom: 0.5rem;
+          margin-bottom: 0.4rem;
           color: var(--text-primary);
         }
         
         .step-description {
           color: var(--text-secondary);
           margin-bottom: 0;
-          line-height: 1.5;
+          line-height: 1.4;
+          font-size: 0.95rem;
         }
         
         /* Result card styling */
         .result-card {
           background: var(--result-card-bg);
           border-radius: 14px;
-          padding: 2.5rem;
+          padding: 1.5rem;
           color: var(--result-text-color);
           position: relative;
           overflow: hidden;
           box-shadow: 0 15px 30px rgba(99, 102, 241, 0.25);
           transition: all 0.4s ease;
-        }
-        
-        .result-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+          margin-top: 0.5rem;
+          max-width: 750px;
+          margin-left: auto;
+          margin-right: auto;
         }
         
         .glow-effect-1, .glow-effect-2 {
@@ -581,108 +609,77 @@ export default function ProblemSolutionSection() {
         
         .result-title {
           font-weight: 700;
-          margin-bottom: 1rem;
-          font-size: 1.5rem;
+          margin-bottom: 0.5rem;
+          font-size: 1.3rem;
           color: #fff;
         }
         
         .result-description {
-          font-size: 1.25rem;
-          margin-bottom: 1.5rem;
+          font-size: 1.1rem;
+          margin-bottom: 1rem;
           color: rgba(255, 255, 255, 0.9);
-        }
-        
-        .cta-button {
-          display: inline-block;
-          background: white;
-          color: #6366f1;
-          font-weight: 600;
-          padding: 0.875rem 2rem;
-          border-radius: 50px;
-          text-decoration: none;
-          transition: all 0.3s ease;
-          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .cta-button:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-          background: #f8f9ff;
-          color: #5457ea;
         }
         
         /* Responsive adjustments */
         @media (max-width: 991.98px) {
-          .challenge-card, .stat-card, .solution-step-card {
+          .solution-step-card {
+            width: 100%;
+            padding: 1rem;
+          }
+          
+          .number-circle {
+            width: 36px;
+            height: 36px;
+            font-size: 0.9rem;
+          }
+                    
+          .step-title {
+            font-size: 1.1rem;
+          }
+          
+          .result-card {
             padding: 1.25rem;
           }
           
-          .stat-value {
-            font-size: 2.5rem;
-          }
-          
-          .number-circle {
-            width: 40px;
-            height: 40px;
-            font-size: 1.1rem;
-        }
-        
-          .step-title {
-            font-size: 1.15rem;
-          }
-          
-          .result-card {
-            padding: 2rem;
-          }
-          
           .result-description {
-            font-size: 1.15rem;
-        }
-        
-          .cta-button {
-            padding: 0.75rem 1.75rem;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
           }
         }
         
+        /* Восстанавливаем медиа-запрос для экранов до 767.98px */
         @media (max-width: 767.98px) {
           .challenge-section, .solution-section {
-            padding: 4rem 0;
+            padding: 3.5rem 0;
           }
-          
-          .challenge-card, .stat-card, .solution-step-card {
-            padding: 1.1rem;
-        }
-        
-          .stat-value {
-            font-size: 2.25rem;
-          }
-          
+                    
           .number-circle {
-            width: 35px;
-            height: 35px;
-            font-size: 1rem;
+            width: 32px;
+            height: 32px;
+            font-size: 0.85rem;
             margin-right: 0.75rem;
           }
           
-          .step-icon {
-            top: 1rem;
-            right: 1rem;
+          .step-title {
+            font-size: 1rem;
           }
           
           .result-card {
-            padding: 1.75rem;
+            padding: 1.25rem;
           }
           
           .result-title {
-            font-size: 1.35rem;
+            font-size: 1.15rem;
+            margin-bottom: 0.4rem;
+          }
         }
         
-          .result-description {
-            font-size: 1.1rem;
-          }
-          
-          .cta-button {
-            padding: 0.7rem 1.5rem;
+        /* Дополнительные стили для маленьких экранов */
+        @media (max-width: 576px) {
+          .solution-step-card {
+            width: 100%;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
           }
         }
       `}</style>

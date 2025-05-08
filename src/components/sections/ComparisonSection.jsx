@@ -97,7 +97,7 @@ export default function ComparisonSection() {
           </div>
         </div>
         
-        <Row className="mt-5 pt-4">
+        <Row>
           <Col lg={10} className="mx-auto text-center">
             <div className="bottom-line-box">
               <div className="glow-effect"></div>
@@ -146,6 +146,7 @@ export default function ComparisonSection() {
         .comparison-section {
           position: relative;
           background: var(--dark-bg, #111827);
+          padding: 7rem 0;
         }
         
         [data-bs-theme="light"] .comparison-section {
@@ -193,41 +194,109 @@ export default function ComparisonSection() {
         .comparison-container {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-          gap: 2rem;
-          margin-bottom: 2rem;
+          gap: 2.5rem;
+          margin-bottom: 3rem;
+          perspective: 1000px;
         }
         
         /* Card styling */
         .comparison-card {
           background: var(--card-bg);
-          border-radius: 16px;
+          border-radius: 18px;
           border: 1px solid var(--card-border);
           overflow: hidden;
-          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-          transition: all 0.3s ease;
+          box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+          transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
           display: flex;
           flex-direction: column;
           height: 100%;
           position: relative;
+          transform-style: preserve-3d;
         }
         
         .comparison-card.active, 
         .comparison-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 15px 30px var(--card-hover-shadow);
+          transform: translateY(-8px) scale(1.01);
+          box-shadow: 0 20px 40px var(--card-hover-shadow);
+        }
+        
+        .comparison-card::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: 18px;
+          padding: 1px;
+          background: linear-gradient(
+            to bottom, 
+            transparent, 
+            transparent,
+            rgba(255, 255, 255, 0.1)
+          );
+          -webkit-mask: 
+            linear-gradient(#fff 0 0) content-box, 
+            linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
+          pointer-events: none;
+        }
+        
+        .before-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 3px;
+          background: linear-gradient(90deg, var(--before-color), transparent);
+          opacity: 0.5;
+        }
+        
+        .after-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 3px;
+          background: linear-gradient(90deg, var(--after-color), transparent);
+          opacity: 0.5;
+        }
+        
+        .before-card.active::before, 
+        .before-card:hover::before {
+          opacity: 1;
+        }
+        
+        .after-card.active::before, 
+        .after-card:hover::before {
+          opacity: 1;
         }
         
         /* Card headers */
         .card-header {
-          padding: 1.5rem;
+          padding: 1.75rem;
           text-align: center;
           border-bottom: 1px solid var(--card-border);
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .card-header::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 1px;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
         }
         
         .card-title {
-          font-size: 1.5rem;
+          font-size: 1.75rem;
           font-weight: 700;
           margin: 0;
+          position: relative;
+          display: inline-block;
         }
         
         .card-title.before {
@@ -238,10 +307,30 @@ export default function ComparisonSection() {
           color: var(--after-color);
         }
         
+        .card-title.before::after,
+        .card-title.after::after {
+          content: '';
+          position: absolute;
+          bottom: -6px;
+          left: 25%;
+          width: 50%;
+          height: 2px;
+          border-radius: 2px;
+          opacity: 0.7;
+        }
+        
+        .card-title.before::after {
+          background: var(--before-color);
+        }
+        
+        .card-title.after::after {
+          background: var(--after-color);
+        }
+        
         /* List styling */
         .comparison-list {
           list-style: none;
-          padding: 1.5rem;
+          padding: 1.75rem;
           margin: 0;
           flex: 1;
         }
@@ -249,13 +338,18 @@ export default function ComparisonSection() {
         .comparison-item {
           display: flex;
           align-items: center;
-          margin-bottom: 1.25rem;
+          margin-bottom: 1.5rem;
           position: relative;
-          padding-left: 2.5rem;
+          padding-left: 2.75rem;
+          transition: transform 0.3s ease;
         }
         
         .comparison-item:last-child {
           margin-bottom: 0;
+        }
+        
+        .comparison-item:hover {
+          transform: translateX(5px);
         }
         
         .icon-wrapper {
@@ -264,10 +358,17 @@ export default function ComparisonSection() {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 32px;
-          height: 32px;
+          width: 36px;
+          height: 36px;
           border-radius: 50%;
           background: var(--icon-bg);
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .comparison-item:hover .icon-wrapper {
+          transform: scale(1.1);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         
         .comparison-item.negative .icon-wrapper {
@@ -279,8 +380,8 @@ export default function ComparisonSection() {
         }
         
         .icon-wrapper svg {
-          width: 18px;
-          height: 18px;
+          width: 20px;
+          height: 20px;
           display: block;
           /* Ensure SVG is perfectly centered */
           position: absolute;
@@ -290,24 +391,42 @@ export default function ComparisonSection() {
         }
         
         .comparison-item span {
-          line-height: 1.4;
+          line-height: 1.5;
+          font-size: 1.05rem;
         }
         
         .comparison-item .highlight {
           font-weight: 700;
+          position: relative;
+          display: inline-block;
+        }
+        
+        .comparison-item .highlight::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 4px;
+          background: rgba(var(--primary-rgb), 0.2);
+          border-radius: 2px;
+          z-index: -1;
         }
         
         /* Result box styling */
         .result-box {
-          padding: 1rem 1.5rem;
+          padding: 1.25rem 1.75rem;
           text-align: center;
           font-weight: 600;
           margin-top: auto;
+          position: relative;
+          overflow: hidden;
         }
         
         .result-box p {
           margin: 0;
           color: var(--result-text);
+          font-size: 1.1rem;
         }
         
         .result-box.negative {
@@ -322,39 +441,74 @@ export default function ComparisonSection() {
           color: var(--after-color);
         }
         
+        .result-box::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 1px;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        }
+        
         /* Bottom line styling */
         .bottom-line-box {
           background: var(--bottom-line-bg);
           backdrop-filter: blur(10px);
-          border-radius: 16px;
-          padding: 2rem;
+          border-radius: 18px;
+          padding: 2.5rem;
           position: relative;
           overflow: hidden;
           border-left: 5px solid var(--primary);
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 0 15px rgba(var(--primary-rgb), 0.05);
+          transform: translateY(0);
+          transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        
+        .bottom-line-box:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 0 20px rgba(var(--primary-rgb), 0.1);
         }
         
         .glow-effect {
           position: absolute;
-          width: 150px;
-          height: 150px;
+          width: 200px;
+          height: 200px;
           background: var(--primary-light);
-          filter: blur(50px);
+          filter: blur(60px);
           opacity: 0.1;
           border-radius: 50%;
-          top: -75px;
-          right: -75px;
+          top: -100px;
+          right: -100px;
+          transition: opacity 0.5s ease;
+        }
+        
+        .bottom-line-box:hover .glow-effect {
+          opacity: 0.15;
         }
         
         .bottom-line-title {
-          font-size: 1.5rem;
+          font-size: 1.75rem;
           font-weight: 700;
-          margin-bottom: 1rem;
+          margin-bottom: 1.25rem;
+          position: relative;
+          display: inline-block;
+        }
+        
+        .bottom-line-title::after {
+          content: '';
+          position: absolute;
+          bottom: -8px;
+          left: 0;
+          width: 50%;
+          height: 2px;
+          background: linear-gradient(90deg, rgba(var(--primary-rgb), 0.5), transparent);
+          border-radius: 2px;
         }
         
         .bottom-line-text {
-          font-size: 1.125rem;
-          line-height: 1.6;
+          font-size: 1.2rem;
+          line-height: 1.7;
           margin-bottom: 0;
           font-weight: 500;
         }

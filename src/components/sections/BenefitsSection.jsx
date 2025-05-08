@@ -32,52 +32,52 @@ export default function BenefitsSection() {
       title: "Turn-key Readiness",
       description: "Bid on Day 1—no months-long prep.",
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16" strokeWidth="0.5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
           <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM3.5 5h2V3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5V5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-.89l.24 1.17A5.5 5.5 0 0 1 9.98 12h-.96a5.53 5.53 0 0 0 1.83-3H8.5v3h-1V9H5.35a5.53 5.53 0 0 0 1.83 3h-.96a5.5 5.5 0 0 1-2.37-3.84L4.09 7h-.89a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5z"/>
         </svg>
       ),
       magicTitle: "UNDER-THE-HOOD MAGIC",
       magicDescription: "Automated profile & credential builder",
-      gradient: "linear-gradient(135deg, #4e73df, #6f42c1)"
+      iconBg: "var(--primary-light)"
     },
     {
       id: 2,
       title: "Higher Qualification Rate",
       description: "Fewer instant disqualifications.",
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16" strokeWidth="0.5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
           <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
         </svg>
       ),
       magicTitle: "UNDER-THE-HOOD MAGIC",
       magicDescription: "Real-time gap detection + certificate concierge",
-      gradient: "linear-gradient(135deg, #36b9cc, #1cc88a)"
+      iconBg: "var(--primary-light)"
     },
     {
       id: 3,
       title: "Compounding Win Rates",
       description: "Models learn from every loss and win.",
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16" strokeWidth="0.5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
           <path d="M0 0h1v15h15v1H0V0Zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07Z"/>
         </svg>
       ),
       magicTitle: "UNDER-THE-HOOD MAGIC",
       magicDescription: "Reinforcement learning + agency feedback ingestion",
-      gradient: "linear-gradient(135deg, #4caf50, #8bc34a)"
+      iconBg: "var(--primary-light)"
     },
     {
       id: 4,
       title: "Single Point of Contact",
       description: "One invoice, one dashboard, zero hand-offs.",
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16" strokeWidth="0.5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
           <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
         </svg>
       ),
       magicTitle: "UNDER-THE-HOOD MAGIC",
       magicDescription: "Integrated full-service workflow",
-      gradient: "linear-gradient(135deg, #9c27b0, #673ab7)"
+      iconBg: "var(--primary-light)"
     }
   ];
 
@@ -113,11 +113,9 @@ export default function BenefitsSection() {
                 <div className="benefit-header">
                   <div 
                     className="benefit-icon-wrapper"
-                    style={{ background: benefit.gradient }}
+                    style={{ background: benefit.iconBg }}
                   >
-                    <div className="benefit-icon">
-                      {benefit.icon}
-                    </div>
+                    {benefit.icon}
                   </div>
                   <div className="benefit-content">
                     <h3 className="benefit-title">{benefit.title}</h3>
@@ -134,9 +132,9 @@ export default function BenefitsSection() {
           ))}
         </Row>
         
-        <Row className={`mt-5 pt-4 ${isVisible ? 'visible' : ''}`}>
+        <Row className={`${isVisible ? 'visible' : ''}`}>
           <Col className="text-center cta-animation">
-            <div className="cta-wrapper">
+            <div className="cta-wrapper mt-5 pt-3">
               <Button 
                 href="/strategy-call" 
                 variant="primary" 
@@ -168,7 +166,7 @@ export default function BenefitsSection() {
           --section-bg: #121829;
           --title-color: #ffffff;
           --subtitle-color: rgba(255, 255, 255, 0.8);
-          --icon-color: #ffffff;
+          --icon-color: var(--primary);
           --btn-hover-bg: #5457ea;
           --btn-active-bg: #4547e0;
         }
@@ -188,7 +186,7 @@ export default function BenefitsSection() {
           --section-bg: #f8fafc;
           --title-color: #0f172a;
           --subtitle-color: #4b5563;
-          --icon-color: #ffffff;
+          --icon-color: var(--primary);
           --btn-hover-bg: #5457ea;
           --btn-active-bg: #4547e0;
         }
@@ -324,13 +322,13 @@ export default function BenefitsSection() {
           flex-direction: column;
           background: var(--card-bg);
           border: 1px solid var(--card-border);
-          border-radius: 14px;
-          padding: 26px;
+          border-radius: 18px;
+          padding: 28px;
           height: 100%;
-          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+          transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
           position: relative;
           overflow: hidden;
-          box-shadow: var(--card-shadow);
+          box-shadow: var(--card-shadow), 0 0 20px rgba(var(--primary-rgb), 0.03);
           backdrop-filter: blur(10px);
         }
         
@@ -341,15 +339,28 @@ export default function BenefitsSection() {
           left: 0;
           right: 0;
           height: 3px;
-          background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+          background: linear-gradient(90deg, rgba(var(--primary-rgb), 0.8) 0%, rgba(139, 92, 246, 0.8) 100%);
           opacity: 0;
-          transition: opacity 0.3s ease;
+          transition: opacity 0.4s ease;
+        }
+        
+        .benefit-card::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          width: 40%;
+          height: 30%;
+          background: radial-gradient(circle at bottom right, rgba(var(--primary-rgb), 0.03), transparent 70%);
+          opacity: 0;
+          transition: opacity 0.5s ease;
+          z-index: 0;
         }
         
         .benefit-card.active, 
         .benefit-card:hover {
-          transform: translateY(-5px);
-          box-shadow: var(--card-hover-shadow);
+          transform: translateY(-8px) scale(1.01);
+          box-shadow: var(--card-hover-shadow), 0 15px 35px rgba(var(--primary-rgb), 0.08);
         }
         
         .benefit-card.active::before,
@@ -357,25 +368,32 @@ export default function BenefitsSection() {
           opacity: 1;
         }
         
+        .benefit-card.active::after,
+        .benefit-card:hover::after {
+          opacity: 1;
+        }
+        
         .benefit-header {
           display: flex;
           align-items: flex-start;
-          margin-bottom: 24px;
+          margin-bottom: 28px;
         }
         
         .benefit-icon-wrapper {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 60px;
-          height: 60px;
-          border-radius: 50%;
-          margin-right: 16px;
-          transition: all 0.3s ease;
-          box-shadow: var(--icon-wrapper-shadow), 0 0 0 2px rgba(255, 255, 255, 0.1) inset;
+          width: 64px;
+          height: 64px;
+          border-radius: 16px;
+          margin-right: 18px;
+          transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+          box-shadow: var(--icon-wrapper-shadow), 0 5px 15px rgba(var(--primary-rgb), 0.1);
           flex-shrink: 0;
           position: relative;
           overflow: hidden;
+          background: var(--primary-light);
+          opacity: 0.9;
         }
         
         .benefit-icon-wrapper::after {
@@ -384,25 +402,25 @@ export default function BenefitsSection() {
           top: 0;
           left: 0;
           width: 100%;
-          height: 100%;
-          background: rgba(255, 255, 255, 0.15);
-          opacity: 0;
-          transition: opacity 0.3s ease;
+          height: 50%;
+          background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), transparent);
+          opacity: 0.6;
+          transition: opacity 0.3s ease, transform 0.3s ease;
         }
         
         .benefit-card:hover .benefit-icon-wrapper::after {
           opacity: 1;
+          transform: translateY(3px);
         }
         
-        .benefit-icon {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 100%;
-          height: 100%;
+        .benefit-icon-wrapper svg {
+          width: 30px;
+          height: 30px;
           color: var(--icon-color);
           position: relative;
           z-index: 1;
+          filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.1));
+          transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
         
         .benefit-content {
@@ -411,20 +429,24 @@ export default function BenefitsSection() {
         
         .benefit-card.active .benefit-icon-wrapper,
         .benefit-card:hover .benefit-icon-wrapper {
-          transform: scale(1.08);
-          box-shadow: 0 6px 20px rgba(var(--primary-rgb), 0.2);
+          transform: scale(1.08) translateY(-3px);
+          box-shadow: 0 8px 25px rgba(var(--primary-rgb), 0.2);
+        }
+        
+        .benefit-card:hover .benefit-icon-wrapper svg {
+          transform: scale(1.1);
         }
         
         .benefit-title {
-          font-size: 1.4rem;
+          font-size: 1.5rem;
           font-weight: 700;
-          margin-bottom: 6px;
+          margin-bottom: 8px;
           color: var(--text-primary);
           line-height: 1.3;
         }
         
         .benefit-description {
-          font-size: 0.95rem;
+          font-size: 1rem;
           margin-bottom: 0;
           color: var(--text-secondary);
           line-height: 1.5;
@@ -433,19 +455,49 @@ export default function BenefitsSection() {
         .magic-box {
           margin-top: auto;
           background: var(--magic-bg);
-          border-radius: 10px;
-          padding: 16px;
-          transition: all 0.3s ease;
+          border-radius: 14px;
+          padding: 18px;
+          transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
           border: 1px solid var(--magic-border);
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .magic-box::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.03), transparent 60%);
+          opacity: 0;
+          transition: opacity 0.5s ease;
+        }
+        
+        .benefit-card:hover .magic-box::before {
+          opacity: 1;
         }
         
         .magic-label {
-          font-size: 0.75rem;
+          font-size: 0.8rem;
           font-weight: 700;
           color: var(--magic-label-color);
           text-transform: uppercase;
           letter-spacing: 0.5px;
-          margin-bottom: 8px;
+          margin-bottom: 10px;
+          position: relative;
+          display: inline-block;
+        }
+        
+        .magic-label::after {
+          content: '';
+          position: absolute;
+          bottom: -4px;
+          left: 0;
+          width: 100%;
+          height: 1px;
+          background: linear-gradient(90deg, rgba(var(--primary-rgb), 0.3), transparent);
         }
         
         .magic-description {

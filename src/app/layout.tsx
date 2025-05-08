@@ -27,8 +27,30 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Create an inline script to detect and apply theme before page render
+  const themeDetectionScript = `
+    (function() {
+      try {
+        let theme = localStorage.getItem('theme');
+        if (!theme) {
+          // If theme is not in localStorage, check system preference
+          const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          theme = systemPrefersDark ? 'dark' : 'light';
+        }
+        // Apply theme immediately to prevent flash
+        document.documentElement.setAttribute('data-bs-theme', theme === 'system' 
+          ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+          : theme
+        );
+      } catch (e) {}
+    })();
+  `;
+
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeDetectionScript }} />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
         <ThemeProvider>
           <BootstrapClient />

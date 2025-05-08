@@ -1,42 +1,73 @@
 "use client";
 
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { useState, useRef, useEffect } from 'react';
+import { Container, Row, Col } from "react-bootstrap";
 import Image from "next/image";
 import Link from "next/link";
+import Button from "../ui/Button";
 
 export default function HeroSection() {
+  const [theme, setTheme] = useState('dark');
+  
+  // Listen for theme changes
+  useEffect(() => {
+    // Get initial theme
+    const htmlElement = document.documentElement;
+    setTheme(htmlElement.getAttribute('data-bs-theme') || 'dark');
+
+    // Create observer to watch for theme attribute changes
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (
+          mutation.type === 'attributes' &&
+          mutation.attributeName === 'data-bs-theme'
+        ) {
+          setTheme(htmlElement.getAttribute('data-bs-theme') || 'dark');
+        }
+      });
+    });
+
+    // Start observing
+    observer.observe(htmlElement, { attributes: true });
+
+    // Cleanup
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="pt-5 pb-0 position-relative overflow-hidden">
+    <section className="hero-section position-relative overflow-hidden">
       {/* Background elements */}
       <div
-        className="position-absolute"
+        className="position-absolute background-blob"
         style={{
           top: "5%",
           right: "10%",
-          width: "300px",
-          height: "300px",
+          width: "150px",
+          height: "150px",
           background: "var(--primary-light)",
           borderRadius: "40% 60% 70% 30% / 40% 50% 60% 50%",
-          zIndex: -1,
-          filter: "blur(60px)",
-          opacity: 0.6,
+          zIndex: -5,
+          filter: "blur(40px)",
+          opacity: 0.2,
           animation: "float 8s ease-in-out infinite",
+          overflow: "hidden",
         }}
       ></div>
 
       <div
-        className="position-absolute"
+        className="position-absolute background-blob"
         style={{
           bottom: "15%",
           left: "5%",
-          width: "200px",
-          height: "200px",
+          width: "120px",
+          height: "120px",
           background: "var(--primary-light)",
           borderRadius: "60% 40% 30% 70% / 60% 30% 70% 40%",
-          zIndex: -1,
-          filter: "blur(50px)",
-          opacity: 0.5,
+          zIndex: -5,
+          filter: "blur(35px)",
+          opacity: 0.2,
           animation: "float 6s ease-in-out infinite reverse",
+          overflow: "hidden",
         }}
       ></div>
 
@@ -52,126 +83,274 @@ export default function HeroSection() {
             transform: translateY(0) rotate(0deg);
           }
         }
+        
+        /* Responsive adjustments for hero section */
+        @media (max-width: 992px) {
+          .dashboard-container {
+            transform: none !important;
+            margin-top: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+          }
+          
+          .mobile-stats-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+          }
+          
+          .mobile-stats-container p {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+        
+        @media (max-width: 768px) {
+          .hero-title {
+            font-size: calc(1.5rem + 1.5vw) !important;
+            margin-top: 0.5rem;
+          }
+          
+          .hero-lead {
+            font-size: 1rem !important;
+          }
+          
+          .feature-item p {
+            font-size: 0.9rem;
+          }
+          
+          .user-avatars-container {
+            display: flex;
+            align-items: center;
+          }
+          
+          .user-avatar {
+            width: 40px !important;
+            height: 40px !important;
+          }
+          
+          .user-counter {
+            width: 40px !important;
+            height: 40px !important;
+            font-size: 0.75rem;
+          }
+          
+          .user-count {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+          }
+          
+          .section-companies {
+            margin-top: 2rem !important;
+            padding-top: 2rem !important;
+          }
+        }
+        
+        /* Dark theme improvements */
+        [data-bs-theme="dark"] .feature-item p {
+          color: rgba(255, 255, 255, 0.9);
+        }
+        
+        [data-bs-theme="dark"] .hero-lead {
+          color: rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        [data-bs-theme="dark"] .text-secondary {
+          color: rgba(255, 255, 255, 0.7) !important;
+        }
+        
+        [data-bs-theme="dark"] .text-dark {
+          color: #ffffff !important;
+        }
+        
+        [data-bs-theme="dark"] .user-counter {
+          background-color: var(--primary);
+          border-color: #111827;
+        }
+        
+        [data-bs-theme="dark"] .dashboard-container {
+          background-color: #1a1f2c !important;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .feature-item .me-3 {
+          flex-shrink: 0;
+          width: 24px;
+          height: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: var(--primary-light);
+          border-radius: 50%;
+          margin-top: 2px !important;
+        }
+        
+        .feature-item svg {
+          width: 16px;
+          height: 16px;
+        }
+        
+        /* Improved mobile stats styles */
+        .mobile-stats-container .card {
+          padding: 0.75rem;
+        }
+        
+        .mobile-stats-container .rounded-circle {
+          width: 32px !important;
+          height: 32px !important;
+        }
+        
+        .mobile-stats-container svg {
+          width: 16px;
+          height: 16px;
+        }
+        
+        [data-bs-theme="dark"] .mobile-stats-container .card {
+          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        [data-bs-theme="dark"] .mobile-stats-container p {
+          color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Fix for background blob */
+        .background-blob {
+          max-width: 150px;
+          max-height: 150px;
+          opacity: 0.4;
+        }
       `}</style>
 
       <Container>
-        <Row className="align-items-center">
-          <Col lg={6} className="mb-5 mb-lg-0">
+        <Row className="align-items-center gy-4 gy-lg-5">
+          <Col lg={6} className="mb-3 mb-lg-5">
             <div className="mb-4 fade-in">
               {/* <span className="badge-primary px-3 py-2 rounded-pill mb-3 d-inline-block">
                 The Ultimate Productivity Solution
               </span> */}
 
-              <h1 className="display-4 fw-bold mb-3">
-                Land <span className="text-gradient">Government</span> <br />
-                <span className="text-gradient">Contracts</span> on <br />
+              <h1 className="display-4 fw-bold mb-3 hero-title">
+                Land <span className="text-gradient">Government</span>{" "}
+                <br className="d-none d-sm-block" />
+                <span className="text-gradient">Contracts</span> on{" "}
+                <br className="d-none d-sm-block" />
                 <span className="fw-bold">Autopilot</span>
               </h1>
 
-              <p className="lead mb-5 text-secondary">
-                SlingRFP's full‑service AI platform <strong>builds your gov‑ready profile, plugs every compliance gap, and writes winning proposals</strong>—so you capture predictable B2G revenue with almost zero lift.
+              <p className="lead mb-4 text-secondary hero-lead">
+                SlingRFP's full‑service AI platform{" "}
+                <strong>
+                  builds your gov‑ready profile, plugs every compliance gap, and
+                  writes winning proposals
+                </strong>
+                —so you capture predictable B2G revenue with almost zero lift.
               </p>
 
-              <div className="d-flex flex-column gap-3 mb-5 slide-up">
-                <div className="d-flex align-items-center">
-                  <div className="me-3 text-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                    </svg>
-                  </div>
-                  <p className="mb-0">We create (and maintain) your complete vendor dossier</p>
+              <div className="d-flex flex-column gap-3 mb-4 slide-up feature-items">
+                <div className="d-flex align-items-start feature-item">
+                  <p className="mb-0">
+                    We create (and maintain) your complete vendor dossier
+                  </p>
                 </div>
-                <div className="d-flex align-items-center">
-                  <div className="me-3 text-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                    </svg>
-                  </div>
-                  <p className="mb-0">Automated gap analysis flags missing certs & docs—then we secure them for you</p>
+                <div className="d-flex align-items-start feature-item">
+                  <p className="mb-0">
+                    Automated gap analysis flags missing certs & docs—then we
+                    secure them for you
+                  </p>
                 </div>
-                <div className="d-flex align-items-center">
-                  <div className="me-3 text-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                    </svg>
-                  </div>
-                  <p className="mb-0">Proposals drafted, submitted, and iterated until the win rate climbs</p>
+                <div className="d-flex align-items-start feature-item">
+                  <p className="mb-0">
+                    Proposals drafted, submitted, and iterated until the win rate
+                    climbs
+                  </p>
                 </div>
               </div>
 
-              <div className="d-grid gap-3 d-sm-flex mb-5 slide-up">
-                <Link
+              <div className="d-grid gap-3 d-sm-flex mb-4 slide-up">
+                <Button
                   href="/signup"
-                  className="btn btn-primary btn-lg px-5 py-3 glow-effect"
+                  variant="primary"
+                  size="lg"
+                  className="glow-effect"
                 >
                   Book a 15-min Strategy Call
-                </Link>
+                </Button>
               </div>
 
               <div
-                className="d-flex align-items-center slide-up"
+                className="d-flex align-items-center slide-up flex-wrap"
                 style={{ animationDelay: "0.2s" }}
               >
-                <div className="d-flex me-3">
+                <div className="d-flex me-3 mb-2 mb-sm-0 user-avatars-container">
                   <div style={{ marginRight: "-8px" }}>
                     <div
-                      className="position-relative rounded-circle border border-2 border-white"
+                      className="position-relative rounded-circle border border-2 border-white user-avatar"
                       style={{
-                        width: "36px",
-                        height: "36px",
+                        width: "44px",
+                        height: "44px",
                         overflow: "hidden",
+                        boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
                       }}
                     >
                       <Image
-                        src="/images/user-1.jpg"
+                        src={theme === 'light' ? "/images/people-one-light.png" : "/images/people-one.png"}
                         alt="User 1"
                         fill
+                        sizes="44px"
                         style={{ objectFit: "cover" }}
                       />
                     </div>
                   </div>
                   <div style={{ marginRight: "-8px" }}>
                     <div
-                      className="position-relative rounded-circle border border-2 border-white"
+                      className="position-relative rounded-circle border border-2 border-white user-avatar"
                       style={{
-                        width: "36px",
-                        height: "36px",
+                        width: "44px",
+                        height: "44px",
                         overflow: "hidden",
+                        boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
                       }}
                     >
                       <Image
-                        src="/images/user-2.jpg"
+                        src={theme === 'light' ? "/images/people-two-light.png" : "/images/people-two.png"}
                         alt="User 2"
                         fill
+                        sizes="44px"
                         style={{ objectFit: "cover" }}
                       />
                     </div>
                   </div>
                   <div style={{ marginRight: "-8px" }}>
                     <div
-                      className="position-relative rounded-circle border border-2 border-white"
+                      className="position-relative rounded-circle border border-2 border-white user-avatar"
                       style={{
-                        width: "36px",
-                        height: "36px",
+                        width: "44px",
+                        height: "44px",
                         overflow: "hidden",
+                        boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
                       }}
                     >
                       <Image
-                        src="/images/user-3.jpg"
+                        src={theme === 'light' ? "/images/people-three-light.png" : "/images/people-three.png"}
                         alt="User 3"
                         fill
+                        sizes="44px"
                         style={{ objectFit: "cover" }}
                       />
                     </div>
                   </div>
                   <div
-                    className="position-relative d-flex align-items-center justify-content-center rounded-circle bg-primary text-white border border-2 border-white fs-xs fw-bold"
-                    style={{ width: "36px", height: "36px" }}
+                    className="position-relative d-flex align-items-center justify-content-center rounded-circle bg-primary text-white border border-2 border-white fs-xs fw-bold user-counter"
+                    style={{ 
+                      width: "44px", 
+                      height: "44px",
+                      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                    }}
                   >
-                    +5k
+                    <span>+5k</span>
                   </div>
                 </div>
-                <div className="text-secondary">
+                <div className="text-secondary user-count">
                   <strong className="text-dark">5,000+</strong> professionals
                   trust our platform daily
                 </div>
@@ -185,10 +364,10 @@ export default function HeroSection() {
               style={{ animationDelay: "0.3s", zIndex: 1 }}
             >
               <div
-                className="p-2 rounded-4 bg-white shadow-lg"
+                className="p-2 rounded-4 bg-white shadow-lg dashboard-container"
                 style={{
-                  transform:
-                    "perspective(1000px) rotateY(-8deg) rotateX(5deg) rotate(1deg)",
+                  transform: "perspective(1000px) rotateY(-8deg) rotateX(5deg) rotate(1deg)",
+                  maxWidth: "100%",
                 }}
               >
                 <div
@@ -196,117 +375,16 @@ export default function HeroSection() {
                   style={{ aspectRatio: "16/10" }}
                 >
                   <Image
-                    src="/images/dashboard.jpg"
+                    src="/images/dashboard.png"
                     alt="Platform dashboard showing productivity tools"
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     style={{ objectFit: "cover" }}
                     className="rounded-3"
                     priority
                   />
                 </div>
               </div>
-
-              {/* Floating elements */}
-              <div
-                className="position-absolute top-0 start-0 translate-middle slide-up"
-                style={{ animationDelay: "0.5s" }}
-              >
-                <div
-                  className="card shadow-lg border-0 rounded-4 p-3"
-                  style={{ width: "200px" }}
-                >
-                  <div className="d-flex align-items-center">
-                    <div
-                      className="rounded-circle d-flex align-items-center justify-content-center"
-                      style={{
-                        width: "40px",
-                        height: "40px",
-                        background: "var(--primary-light)",
-                      }}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
-                        fill="var(--primary)"
-                        className="bi bi-lightning-charge-fill"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z" />
-                      </svg>
-                    </div>
-                    <div className="ms-3">
-                      <p className="mb-0 fw-semibold">Productivity Boost</p>
-                      <p className="mb-0 fs-5 fw-bold text-primary">+43%</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div
-                className="position-absolute bottom-0 end-0 translate-middle-y slide-up"
-                style={{ animationDelay: "0.6s" }}
-              >
-                <div
-                  className="card shadow-lg border-0 rounded-4 p-3"
-                  style={{ width: "200px" }}
-                >
-                  <div className="d-flex align-items-center">
-                    <div
-                      className="rounded-circle d-flex align-items-center justify-content-center"
-                      style={{
-                        width: "40px",
-                        height: "40px",
-                        background: "rgba(46, 204, 113, 0.1)",
-                      }}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
-                        fill="#2ecc71"
-                        className="bi bi-bar-chart-fill"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M1 11a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1zm5-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1z" />
-                      </svg>
-                    </div>
-                    <div className="ms-3">
-                      <p className="mb-0 fw-semibold">Time Saved</p>
-                      <p
-                        className="mb-0 fs-5 fw-bold"
-                        style={{ color: "#2ecc71" }}
-                      >
-                        12hrs/week
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Col>
-        </Row>
-
-        <Row className="py-5 mt-5">
-          <Col
-            className="text-center slide-up"
-            style={{ animationDelay: "0.7s" }}
-          >
-            <p className="text-secondary mb-4">
-              Trusted by innovative teams from companies like
-            </p>
-            <div className="d-flex justify-content-center align-items-center flex-wrap gap-5 opacity-75">
-              {[
-                "COMPANY A",
-                "COMPANY B",
-                "COMPANY C",
-                "COMPANY D",
-                "COMPANY E",
-              ].map((company, index) => (
-                <div key={index} className="fw-bold fs-5">
-                  {company}
-                </div>
-              ))}
             </div>
           </Col>
         </Row>

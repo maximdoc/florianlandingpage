@@ -1,95 +1,205 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import Image from 'next/image';
 
 export default function TestimonialsSection() {
-  const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+  const [theme, setTheme] = useState('dark');
+  const sliderRef = useRef(null);
   
-  // Данные отзывов
+  // Listen for theme changes
+  useEffect(() => {
+    // Get initial theme
+    const htmlElement = document.documentElement;
+    setTheme(htmlElement.getAttribute('data-bs-theme') || 'dark');
+
+    // Create observer to watch for theme attribute changes
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (
+          mutation.type === 'attributes' &&
+          mutation.attributeName === 'data-bs-theme'
+        ) {
+          setTheme(htmlElement.getAttribute('data-bs-theme') || 'dark');
+        }
+      });
+    });
+
+    // Start observing
+    observer.observe(htmlElement, { attributes: true });
+  
+    // Cleanup
+    return () => observer.disconnect();
+  }, []);
+  
+  // Testimonial data
   const testimonials = [
     {
       id: 1,
-      quote: "SlingRFP stood up our entire vendor profile—including a <strong>Women‑Owned Small Business cert</strong>—then won us a $1.8M facilities contract.",
+      quote: "SlingRFP stood up our entire vendor profile—including a Women‑Owned Small Business cert—then won us a $1.8M facilities contract.",
       author: "Tracy Mills",
       position: "COO, CleanEdge Services",
-      avatar: "/images/user-1.jpg", // Путь к фото или null для плейсхолдера
-      highlight: "Women‑Owned Small Business cert"
+      avatarDark: "/images/people-one.png",
+      avatarLight: "/images/people-one-light.png",
+      rating: 5
     },
     {
       id: 2,
       quote: "They handle everything: sourcing, gaps, writing, negotiations. We just deliver the work.",
       author: "Raj Patel",
       position: "CTO, OptiCloud IT",
-      avatar: "/images/user-2.jpg", // Путь к фото или null для плейсхолдера
+      avatarDark: "/images/people-two.png",
+      avatarLight: "/images/people-two-light.png",
+      rating: 5
+    },
+    {
+      id: 3,
+      quote: "Their AI-powered approach found opportunities we would have missed entirely. Revenue up 40% in our first year.",
+      author: "Sarah Johnson",
+      position: "Founder, TechSolutions Inc.",
+      avatarDark: "/images/people-three.png",
+      avatarLight: "/images/people-three-light.png",
+      rating: 5
+    },
+    {
+      id: 4,
+      quote: "The proposal generation saved us hundreds of hours. Our win rate jumped from 4% to 15% in six months.",
+      author: "Michael Chen",
+      position: "VP Operations, Nexus Systems",
+      avatarDark: "/images/people-fourth.png",
+      avatarLight: "/images/people-fourth-light.png",
+      rating: 5
     }
   ];
 
+  const handlePrev = () => {
+    setActiveIndex(prevIndex => 
+      prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleNext = () => {
+    setActiveIndex(prevIndex => 
+      prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+  
+  // Handle swipe functionality
+  useEffect(() => {
+    const handleTouchStart = (e) => {
+      setTouchStart(e.targetTouches[0].clientX);
+    };
+    
+    const handleTouchMove = (e) => {
+      setTouchEnd(e.targetTouches[0].clientX);
+    };
+    
+    const handleTouchEnd = () => {
+      if (touchStart - touchEnd > 50) {
+        // Swipe left - go to next slide
+        handleNext();
+      }
+      
+      if (touchEnd - touchStart > 50) {
+        // Swipe right - go to previous slide
+        handlePrev();
+      }
+    };
+    
+    const slider = sliderRef.current;
+    if (slider) {
+      slider.addEventListener('touchstart', handleTouchStart, { passive: true });
+      slider.addEventListener('touchmove', handleTouchMove, { passive: true });
+      slider.addEventListener('touchend', handleTouchEnd, { passive: true });
+      
+      return () => {
+        slider.removeEventListener('touchstart', handleTouchStart);
+        slider.removeEventListener('touchmove', handleTouchMove);
+        slider.removeEventListener('touchend', handleTouchEnd);
+      };
+    }
+  }, [touchStart, touchEnd, handlePrev, handleNext]);
+
+  const renderStars = (rating) => {
+    return Array(5).fill(0).map((_, i) => (
+      <span key={i} className="star">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+        </svg>
+      </span>
+    ));
+  };
+
   return (
     <section className="testimonials-section py-6 position-relative overflow-hidden">
-      {/* Декоративные элементы */}
-      <div className="position-absolute decorative-shape shape-top"></div>
-      <div className="position-absolute decorative-shape shape-bottom"></div>
+      <div className="position-absolute bg-shape shape-1"></div>
+      <div className="position-absolute bg-shape shape-2"></div>
+      <div className="position-absolute bg-shape shape-3"></div>
       
-      <Container className="position-relative" style={{ zIndex: 2 }}>
-        <Row className="text-center mb-5">
+      <Container className="position-relative">
+        <Row className="mb-5 text-center">
           <Col lg={8} className="mx-auto">
-            <h2 className="display-5 mb-3 fade-in">
-              <span className="text-gradient">Client</span> Proof
+            <div className="section-label text-uppercase mb-2">TESTIMONIALS</div>
+            <h2 className="section-title mb-3">
+              Trusted By <span className="text-gradient">Thousands</span> Globally
             </h2>
-            <p className="lead text-body-secondary mb-4">
-              Real results from businesses that partnered with SlingRFP
+            <p className="section-subtitle">
+              Hear from satisfied SlingRFP users who have achieved financial 
+              success with our innovative tools and personalized insights.
             </p>
-            
-            <div className="rating-container mt-4 mb-5">
-              <div className="stars">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <span key={star} className="star">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-                      <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                    </svg>
-                  </span>
-                ))}
-              </div>
-              <span className="rating-text">Helping businesses win government contracts</span>
-            </div>
           </Col>
         </Row>
         
-        <Row className="testimonials-container">
-          <Col lg={10} className="mx-auto">
-            <div className="testimonials-slider position-relative">
-              {testimonials.map((testimonial, index) => (
+        <div className="testimonial-carousel position-relative">
+          <div className="testimonial-slider" ref={sliderRef}>
+            {testimonials.map((testimonial, index) => {
+              // Calculate position classes
+              let positionClass = '';
+              if (index === activeIndex) {
+                positionClass = 'active';
+              } else if (index === (activeIndex - 1 + testimonials.length) % testimonials.length) {
+                positionClass = 'prev';
+              } else if (index === (activeIndex - 2 + testimonials.length) % testimonials.length) {
+                positionClass = 'prev-2';
+              } else if (index === (activeIndex + 1) % testimonials.length) {
+                positionClass = 'next';
+              } else if (index === (activeIndex + 2) % testimonials.length) {
+                positionClass = 'next-2';
+              } else {
+                positionClass = 'hidden';
+              }
+              
+              // Выбор аватара в зависимости от текущей темы
+              const avatarSrc = theme === 'light' ? testimonial.avatarLight : testimonial.avatarDark;
+              
+              return (
                 <div 
                   key={testimonial.id}
-                  className={`testimonial-card ${activeTestimonial === index ? 'active' : ''}`}
-                  onClick={() => setActiveTestimonial(index)}
+                  className={`testimonial-card ${positionClass}`}
                 >
+                  <div className="stars-container">
+                    {renderStars(testimonial.rating)}
+                  </div>
+                  
                   <div className="testimonial-content">
-                    <div className="quote-icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M12 12a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1h-1.388c0-.351.021-.703.062-1.054.062-.372.166-.703.31-.992.145-.29.331-.517.559-.683.227-.186.516-.279.868-.279V3c-.579 0-1.085.124-1.52.372a3.322 3.322 0 0 0-1.085.992 4.92 4.92 0 0 0-.62 1.458A7.712 7.712 0 0 0 9 7.558V11a1 1 0 0 0 1 1h2Zm-6 0a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1H4.612c0-.351.021-.703.062-1.054.062-.372.166-.703.31-.992.145-.29.331-.517.559-.683.227-.186.516-.279.868-.279V3c-.579 0-1.085.124-1.52.372a3.322 3.322 0 0 0-1.085.992 4.92 4.92 0 0 0-.62 1.458A7.712 7.712 0 0 0 3 7.558V11a1 1 0 0 0 1 1h2Z"/>
-                      </svg>
+                    <p className="testimonial-text">
+                      "{testimonial.quote}"
+                    </p>
                     </div>
                     
-                    <p className="testimonial-quote" dangerouslySetInnerHTML={{ __html: testimonial.quote }}></p>
-                    
                     <div className="testimonial-author">
-                      <div className="author-avatar">
-                        {testimonial.avatar ? (
+                    <div className="avatar-wrapper">
                           <Image 
-                            src={testimonial.avatar} 
+                        src={avatarSrc} 
                             alt={testimonial.author} 
-                            width={50} 
-                            height={50} 
+                        width={56} 
+                        height={56}
                             className="avatar-image"
                           />
-                        ) : (
-                          <div className="avatar-placeholder">
-                            {testimonial.author.charAt(0)}
-                          </div>
-                        )}
                       </div>
                       <div className="author-info">
                         <h5 className="author-name">{testimonial.author}</h5>
@@ -97,236 +207,296 @@ export default function TestimonialsSection() {
                       </div>
                     </div>
                   </div>
+              );
+            })}
                 </div>
-              ))}
               
-              {testimonials.length > 1 && (
-                <div className="testimonial-navigation">
+          <div className="dots-container">
                   {testimonials.map((_, index) => (
                     <button 
                       key={index} 
-                      className={`nav-dot ${activeTestimonial === index ? 'active' : ''}`}
-                      onClick={() => setActiveTestimonial(index)}
-                      aria-label={`View testimonial ${index + 1}`}
+                className={`dot ${activeIndex === index ? 'active' : ''}`}
+                onClick={() => setActiveIndex(index)}
+                aria-label={`Go to testimonial ${index + 1}`}
                     />
                   ))}
                 </div>
-              )}
+          
+          <button 
+            className="nav-arrow prev-arrow d-none d-md-flex" 
+            onClick={handlePrev}
+            aria-label="Previous testimonial"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+              <path fillRule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+            </svg>
+          </button>
+          
+          <button 
+            className="nav-arrow next-arrow d-none d-md-flex" 
+            onClick={handleNext}
+            aria-label="Next testimonial"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+              <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+            </svg>
+          </button>
             </div>
-          </Col>
-        </Row>
-        
-        <Row className="mt-5 pt-3">
-          <Col className="text-center coming-soon">
-            <p>More client success stories coming soon...</p>
-          </Col>
-        </Row>
       </Container>
       
       <style jsx global>{`
         /* Variables for theme compatibility */
         :root {
-          --testimonial-bg: rgba(255, 255, 255, 0.02);
+          --testimonial-bg: rgba(255, 255, 255, 0.04);
           --testimonial-border: rgba(255, 255, 255, 0.08);
-          --testimonial-shadow: rgba(0, 0, 0, 0.2);
+          --testimonial-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+          --testimonial-active-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
           --testimonial-text: rgba(255, 255, 255, 0.9);
-          --quote-icon-color: rgba(var(--primary-rgb), 0.3);
-          --author-name-color: rgba(255, 255, 255, 0.95);
+          --star-color: #FFD700;
+          --author-name-color: #ffffff;
           --author-position-color: rgba(255, 255, 255, 0.7);
-          --star-color: var(--primary);
-          --rating-text-color: rgba(255, 255, 255, 0.7);
-          --dot-inactive: rgba(255, 255, 255, 0.2);
-          --dot-active: var(--primary);
-          --coming-soon-color: rgba(255, 255, 255, 0.5);
-          --avatar-bg: rgba(var(--primary-rgb), 0.2);
+          --nav-arrow-bg: rgba(255, 255, 255, 0.08);
+          --nav-arrow-color: #ffffff;
+          --nav-arrow-hover-bg: rgba(255, 255, 255, 0.15);
+          --nav-arrow-hover-color: #ffffff;
+          --dot-inactive: rgba(255, 255, 255, 0.3);
+          --dot-active: #ffffff;
+          --section-label-color: rgba(255, 255, 255, 0.6);
         }
         
         [data-bs-theme="light"] {
-          --testimonial-bg: rgba(255, 255, 255, 1);
-          --testimonial-border: rgba(0, 0, 0, 0.08);
-          --testimonial-shadow: rgba(0, 0, 0, 0.08);
+          --testimonial-bg: #ffffff;
+          --testimonial-border: rgba(0, 0, 0, 0.06);
+          --testimonial-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+          --testimonial-active-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
           --testimonial-text: rgba(0, 0, 0, 0.8);
-          --quote-icon-color: rgba(var(--primary-rgb), 0.2);
-          --author-name-color: rgba(0, 0, 0, 0.9);
+          --star-color: #FFD700;
+          --author-name-color: #0f172a;
           --author-position-color: rgba(0, 0, 0, 0.6);
-          --star-color: var(--primary);
-          --rating-text-color: rgba(0, 0, 0, 0.6);
-          --dot-inactive: rgba(0, 0, 0, 0.15);
-          --dot-active: var(--primary);
-          --coming-soon-color: rgba(0, 0, 0, 0.5);
-          --avatar-bg: rgba(var(--primary-rgb), 0.1);
+          --nav-arrow-bg: rgba(0, 0, 0, 0.05);
+          --nav-arrow-color: #0f172a;
+          --nav-arrow-hover-bg: rgba(0, 0, 0, 0.1);
+          --nav-arrow-hover-color: #0f172a;
+          --dot-inactive: rgba(0, 0, 0, 0.2);
+          --dot-active: #0f172a;
+          --section-label-color: rgba(0, 0, 0, 0.5);
         }
         
         /* Section styling */
         .testimonials-section {
           position: relative;
-          background: var(--dark-bg, #111827);
+          background: var(--dark-bg, #121829);
+          padding: 6rem 0;
         }
         
         [data-bs-theme="light"] .testimonials-section {
           background: #f8fafc;
         }
         
-        .decorative-shape {
+        /* Background shapes */
+        .bg-shape {
           position: absolute;
-          z-index: 0;
-          background: var(--primary-light);
-          filter: blur(100px);
-          opacity: 0.03;
+          background: rgba(99, 102, 241, 0.3);
+          filter: blur(80px);
+          opacity: 0.06;
           border-radius: 50%;
         }
         
-        .shape-top {
-          top: 10%;
-          right: -5%;
+        .shape-1 {
           width: 600px;
           height: 600px;
+          top: -100px;
+          right: -200px;
         }
         
-        .shape-bottom {
-          bottom: -5%;
-          left: -5%;
-          width: 400px;
-          height: 400px;
+        .shape-2 {
+          width: 500px;
+          height: 500px;
+          bottom: -100px;
+          left: -200px;
         }
         
-        /* Stars rating */
-        .rating-container {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 0.5rem;
+        .shape-3 {
+          width: 300px;
+          height: 300px;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background: rgba(99, 102, 241, 0.4);
+          opacity: 0.03;
         }
         
-        .stars {
-          display: flex;
-          gap: 0.25rem;
+        /* Section headers */
+        .section-label {
+          font-size: 0.8rem;
+          font-weight: 600;
+          letter-spacing: 2px;
+          color: var(--section-label-color);
         }
         
-        .star {
-          color: var(--star-color);
-          transition: transform 0.3s ease;
-        }
-        
-        .star:hover {
-          transform: scale(1.2);
-        }
-        
-        .rating-text {
-          color: var(--rating-text-color);
-          font-size: 0.95rem;
-        }
-        
-        /* Testimonials container */
-        .testimonials-container {
-          position: relative;
-        }
-        
-        .testimonials-slider {
-          position: relative;
-          padding: 1rem 0 3rem;
-        }
-        
-        /* Testimonial card */
-        .testimonial-card {
-          background: var(--testimonial-bg);
-          border: 1px solid var(--testimonial-border);
-          border-radius: 16px;
-          padding: 2.5rem;
+        .section-title {
+          font-size: 2.6rem;
+          font-weight: 700;
           margin-bottom: 1rem;
-          box-shadow: 0 10px 30px var(--testimonial-shadow);
-          transition: all 0.4s ease;
+          color: var(--text-primary);
+        }
+        
+        .section-subtitle {
+          font-size: 1.1rem;
+          color: var(--text-secondary);
+          max-width: 700px;
+          margin: 0 auto;
+        }
+        
+        /* Testimonial carousel */
+        .testimonial-carousel {
           position: relative;
-          cursor: pointer;
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 3rem 0;
         }
         
-        .testimonial-card:hover,
-        .testimonial-card.active {
-          transform: translateY(-5px);
-          box-shadow: 0 15px 40px var(--testimonial-shadow);
-          border-color: rgba(var(--primary-rgb), 0.2);
+        .testimonial-slider {
+          position: relative;
+          height: 420px;
+          margin-bottom: 2rem;
         }
         
-        .testimonial-card::before {
-          content: '';
+        /* Testimonial cards */
+        .testimonial-card {
           position: absolute;
           top: 0;
           left: 0;
           right: 0;
-          height: 3px;
-          background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+          background: var(--testimonial-bg);
+          border: 1px solid var(--testimonial-border);
+          border-radius: 16px;
+          padding: 2.5rem;
+          width: 100%;
+          max-width: 650px;
+          margin: 0 auto;
+          box-shadow: var(--testimonial-shadow);
+          transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
           opacity: 0;
-          transition: opacity 0.3s ease;
-          border-radius: 16px 16px 0 0;
+          transform: scale(0.8) translateX(100px);
+          pointer-events: none;
+          backdrop-filter: blur(10px);
+          z-index: 1;
         }
         
-        .testimonial-card:hover::before,
-        .testimonial-card.active::before {
+        .testimonial-card.active {
           opacity: 1;
+          transform: scale(1) translateX(0);
+          box-shadow: var(--testimonial-active-shadow);
+          z-index: 5;
+          pointer-events: auto;
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+          background: rgba(18, 24, 41, 0.9);
         }
         
-        .testimonial-content {
-          position: relative;
+        .testimonial-card.prev,
+        .testimonial-card.next {
+          opacity: 0.15;
+          transform: scale(0.85) translateX(-30%);
+          z-index: 4;
+          background: rgba(5, 10, 25, 0.95);
+          backdrop-filter: blur(15px) brightness(0.3);
+          pointer-events: none;
+          border: 1px solid rgba(255, 255, 255, 0.05);
         }
         
-        .quote-icon {
-          position: absolute;
-          top: -10px;
-          left: -10px;
-          color: var(--quote-icon-color);
-          opacity: 0.5;
+        .testimonial-card.next {
+          transform: scale(0.85) translateX(30%);
         }
         
-        .testimonial-quote {
-          font-size: 1.125rem;
+        .testimonial-card.prev-2,
+        .testimonial-card.next-2 {
+          opacity: 0.05;
+          transform: scale(0.7) translateX(-55%);
+          z-index: 3;
+          background: rgba(5, 10, 25, 0.98);
+          backdrop-filter: blur(20px) brightness(0.1);
+          pointer-events: none;
+          border: 1px solid rgba(255, 255, 255, 0.02);
+        }
+        
+        .testimonial-card.next-2 {
+          transform: scale(0.7) translateX(55%);
+        }
+        
+        .testimonial-card.hidden {
+          opacity: 0;
+          transform: scale(0.7) translateX(0);
+          z-index: 1;
+        }
+        
+        /* For light theme */
+        [data-bs-theme="light"] .testimonial-card.active {
+          border: 1px solid rgba(0, 0, 0, 0.1);
+          box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
+          background: rgba(255, 255, 255, 0.98);
+        }
+        
+        [data-bs-theme="light"] .testimonial-card.prev,
+        [data-bs-theme="light"] .testimonial-card.next {
+          background: rgba(220, 225, 230, 0.4);
+          backdrop-filter: blur(15px) brightness(0.5);
+          border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+        
+        [data-bs-theme="light"] .testimonial-card.prev-2,
+        [data-bs-theme="light"] .testimonial-card.next-2 {
+          background: rgba(200, 205, 210, 0.3);
+          backdrop-filter: blur(20px) brightness(0.3);
+          border: 1px solid rgba(0, 0, 0, 0.01);
+        }
+        
+        /* Stars styling */
+        .stars-container {
+          display: flex;
+          margin-bottom: 1.25rem;
+        }
+        
+        .star {
+          color: var(--star-color);
+          margin-right: 4px;
+        }
+        
+        /* Testimonial content */
+        .testimonial-text {
+          font-size: 1.25rem;
           line-height: 1.7;
-          font-style: italic;
           color: var(--testimonial-text);
-          margin-bottom: 1.5rem;
-          padding-left: 1.5rem;
+          margin-bottom: 2rem;
+          font-weight: 400;
         }
         
-        .testimonial-quote strong {
-          color: var(--primary);
-          font-weight: 600;
-        }
-        
-        /* Author styling */
+        /* Author info */
         .testimonial-author {
           display: flex;
           align-items: center;
-          margin-top: 1.25rem;
         }
         
-        .author-avatar {
-          width: 50px;
-          height: 50px;
-          margin-right: 1rem;
+        .avatar-wrapper {
+          width: 56px;
+          height: 56px;
           border-radius: 50%;
-          background: var(--avatar-bg);
           overflow: hidden;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+          margin-right: 1rem;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+          border: 2px solid rgba(255, 255, 255, 0.2);
+          flex-shrink: 0;
+        }
+        
+        [data-bs-theme="light"] .avatar-wrapper {
+          border-color: rgba(0, 0, 0, 0.1);
         }
         
         .avatar-image {
           width: 100%;
           height: 100%;
           object-fit: cover;
-          border-radius: 50%;
-        }
-        
-        .avatar-placeholder {
-          width: 100%;
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1.25rem;
-          font-weight: 600;
-          color: var(--primary);
         }
         
         .author-info {
@@ -335,69 +505,392 @@ export default function TestimonialsSection() {
         }
         
         .author-name {
-          font-size: 1rem;
+          font-size: 1.1rem;
           font-weight: 600;
           margin: 0;
           color: var(--author-name-color);
         }
         
         .author-position {
-          font-size: 0.875rem;
+          font-size: 0.9rem;
           color: var(--author-position-color);
           margin: 0;
         }
         
-        /* Navigation dots */
-        .testimonial-navigation {
+        /* Navigation arrows */
+        .nav-arrow {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: var(--nav-arrow-bg);
+          color: var(--nav-arrow-color);
+          border: none;
+          cursor: pointer;
+          z-index: 10;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+          opacity: 0.8;
+        }
+        
+        .prev-arrow {
+          left: -70px;
+        }
+        
+        .next-arrow {
+          right: -70px;
+        }
+        
+        .nav-arrow:hover {
+          background: var(--nav-arrow-hover-bg);
+          color: var(--nav-arrow-hover-color);
+          opacity: 1;
+          transform: translateY(-50%) scale(1.05);
+        }
+        
+        /* Dots navigation */
+        .dots-container {
           display: flex;
           justify-content: center;
-          gap: 0.75rem;
-          margin-top: 2rem;
+          gap: 0.5rem;
+          margin-top: -1rem;
+          position: relative;
+          z-index: 20;
         }
         
-        .nav-dot {
-          width: 10px;
-          height: 10px;
+        .dot {
+          width: 12px;
+          height: 12px;
           border-radius: 50%;
-          background-color: var(--dot-inactive);
           border: none;
           padding: 0;
+          background-color: var(--dot-inactive);
           cursor: pointer;
           transition: all 0.3s ease;
+          margin: 0 4px;
         }
         
-        .nav-dot.active,
-        .nav-dot:hover {
+        .dot.active {
           background-color: var(--dot-active);
-          transform: scale(1.2);
-        }
-        
-        /* Coming soon text */
-        .coming-soon {
-          font-style: italic;
-          color: var(--coming-soon-color);
-          font-size: 0.95rem;
+          transform: scale(1.3);
         }
         
         /* Responsive adjustments */
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
+          .testimonial-slider {
+            height: 420px;
+          }
+          
+          .section-title {
+            font-size: 2.2rem;
+          }
+          
+          .testimonial-text {
+            font-size: 1.15rem;
+          }
+          
+          .testimonial-card.prev,
+          .testimonial-card.next {
+            display: none;
+          }
+          
+          .testimonial-card.prev-2,
+          .testimonial-card.next-2 {
+            display: none;
+          }
+        }
+        
+        /* Специальные настройки для средних и больших экранов */
+        @media (min-width: 992px) and (max-width: 1200px) {
+          .testimonial-slider {
+            height: 460px;
+          }
+          
           .testimonial-card {
-            padding: 1.75rem;
+            max-width: 620px;
           }
           
-          .testimonial-quote {
+          .testimonial-card.active {
+            transform: scale(1) translateX(0);
+            z-index: 5;
+          }
+          
+          .testimonial-card.prev,
+          .testimonial-card.next {
+            opacity: 0.25;
+            transform: scale(0.88) translateX(-25%);
+          }
+          
+          .testimonial-card.next {
+            transform: scale(0.88) translateX(25%);
+          }
+          
+          .testimonial-card.prev-2,
+          .testimonial-card.next-2 {
+            opacity: 0.08;
+            transform: scale(0.75) translateX(-45%);
+          }
+          
+          .testimonial-card.next-2 {
+            transform: scale(0.75) translateX(45%);
+          }
+          
+          /* Унифицируем позиции стрелок */
+          .prev-arrow {
+            left: -70px;
+          }
+          
+          .next-arrow {
+            right: -70px;
+          }
+        }
+        
+        /* Специальные настройки для планшетов */
+        @media (min-width: 768px) and (max-width: 992px) {
+          .testimonial-slider {
+            height: 480px;
+          }
+          
+          .testimonial-card {
+            max-width: 580px;
+          }
+          
+          .testimonial-card.active {
+            transform: scale(1) translateX(0);
+            z-index: 5;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            background: rgba(18, 24, 41, 0.95);
+          }
+          
+          [data-bs-theme="light"] .testimonial-card.active {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.18);
+          }
+          
+          .testimonial-card.prev,
+          .testimonial-card.next {
+            display: block;
+            opacity: 0.3;
+            transform: scale(0.85) translateX(-20%);
+            z-index: 4;
+        }
+        
+          .testimonial-card.next {
+            transform: scale(0.85) translateX(20%);
+          }
+          
+          .testimonial-card.prev-2,
+          .testimonial-card.next-2 {
+            display: none;
+          }
+          
+          .nav-arrow {
+            width: 44px;
+            height: 44px;
+            opacity: 0.9;
+          }
+          
+          .prev-arrow {
+            left: -50px;
+          }
+          
+          .next-arrow {
+            right: -50px;
+          }
+          
+          .testimonial-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+          }
+          
+          .dots-container {
+            margin-top: -0.5rem;
+          }
+        }
+        
+        @media (max-width: 768px) {
+          .testimonials-section {
+            padding: 3rem 0 4rem;
+          }
+          
+          .testimonial-slider {
+            height: auto;
+            min-height: 350px;
+            margin-bottom: 1rem;
+            /* Enable touch events */
+            touch-action: pan-y;
+            user-select: none;
+            -webkit-user-drag: none;
+            cursor: grab;
+            position: relative;
+          }
+          
+          .testimonial-slider:active {
+            cursor: grabbing;
+          }
+          
+          .testimonial-slider::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15.4 16.6L10.8 12L15.4 7.4L14 6L8 12L14 18L15.4 16.6Z' fill='rgba(255,255,255,0.1)'/%3E%3C/svg%3E") left center no-repeat, 
+                      url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.6 16.6L13.2 12L8.6 7.4L10 6L16 12L10 18L8.6 16.6Z' fill='rgba(255,255,255,0.1)'/%3E%3C/svg%3E") right center no-repeat;
+            background-size: 36px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+          }
+          
+          .testimonial-slider:hover::after {
+            opacity: 1;
+          }
+          
+          .testimonial-card {
+            position: relative;
+            max-width: 100%;
+            padding: 1.5rem;
+            margin: 0 auto;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transform: none;
+          }
+          
+          .testimonial-card.active {
+            transform: none;
+            position: relative;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(18, 24, 41, 0.98);
+          }
+          
+          [data-bs-theme="light"] .testimonial-card.active {
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+          }
+          
+          .testimonial-text {
             font-size: 1rem;
-            padding-left: 1rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
           }
           
-          .quote-icon {
-            top: -5px;
-            left: -5px;
+          .testimonial-card.prev,
+          .testimonial-card.next,
+          .testimonial-card.prev-2,
+          .testimonial-card.next-2 {
+            display: none;
           }
           
-          .quote-icon svg {
-            width: 24px;
-            height: 24px;
+          .section-title {
+            font-size: 1.8rem;
+          }
+          
+          /* Полностью скрываем стрелки на мобильных */
+          .nav-arrow {
+            display: none !important;
+          }
+          
+          .stars-container {
+            margin-bottom: 1rem;
+          }
+          
+          .avatar-wrapper {
+            width: 40px;
+            height: 40px;
+            margin-right: 0.75rem;
+          }
+          
+          .author-name {
+            font-size: 0.95rem;
+          }
+          
+          .author-position {
+            font-size: 0.8rem;
+          }
+          
+          .section-subtitle {
+            font-size: 1rem;
+            padding: 0 1rem;
+          }
+          
+          .dots-container {
+            margin-top: 0.5rem;
+          }
+
+          .testimonial-carousel {
+            padding: 0;
+          }
+        }
+        
+        @media (max-width: 576px) {
+          .testimonials-section {
+            padding: 2.5rem 0 3.5rem;
+          }
+          
+          .testimonial-slider {
+            min-height: 320px;
+          }
+          
+          .testimonial-card {
+            padding: 1.25rem;
+            border-radius: 12px;
+          }
+          
+          .testimonial-text {
+            font-size: 0.95rem;
+            margin-bottom: 1.25rem;
+          }
+          
+          .avatar-wrapper {
+            width: 36px;
+            height: 36px;
+          }
+          
+          .author-name {
+            font-size: 0.9rem;
+          }
+          
+          .author-position {
+            font-size: 0.75rem;
+          }
+          
+          .stars-container svg {
+            width: 14px;
+            height: 14px;
+          }
+
+          .dot {
+            width: 8px;
+            height: 8px;
+          }
+
+          .dots-container {
+            margin-top: 0;
+          }
+
+          .section-title {
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+          }
+
+          .section-subtitle {
+            font-size: 0.9rem;
+          }
+
+          .mb-5 {
+            margin-bottom: 2rem !important;
           }
         }
       `}</style>

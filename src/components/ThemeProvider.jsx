@@ -12,6 +12,9 @@ export default function ThemeProvider({ children }) {
     setMounted(true);
   }, []);
 
+  // Remove duplicate script injection that was causing hydration errors
+  // The script in layout.tsx already handles the initial theme setting
+
   // Avoid rendering with server-side theme to prevent hydration mismatch
   if (!mounted) {
     return <>{children}</>;
@@ -24,6 +27,7 @@ export default function ThemeProvider({ children }) {
       enableSystem={true} // Enable system preference
       storageKey="theme" // Key to use for localStorage
       themes={['light', 'dark']} // Available themes
+      disableTransitionOnChange={false} // Enable transitions when theme changes
     >
       {children}
     </NextThemesProvider>

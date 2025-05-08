@@ -95,15 +95,18 @@ export default function CTASection() {
                     />
                   </Form.Group>
                   
-                  <Button 
-                    type="submit" 
-                    variant="primary"
-                    endIcon={<span>→</span>}
-                  >
-                    Schedule My Call
-                  </Button>
+                  <div className="d-grid">
+                    <Button 
+                      type="submit" 
+                      variant="primary"
+                      endIcon={<span>→</span>}
+                      className="w-100"
+                    >
+                      Schedule My Call
+                    </Button>
+                  </div>
                   
-                  <div className="form-disclaimer mt-3">
+                  <div className="form-disclaimer mt-3 text-center">
                     No obligation, 15-minute consultation
                   </div>
                 </Form>
@@ -170,6 +173,55 @@ export default function CTASection() {
           z-index: 1;
         }
         
+        /* Responsive adjustments for CTA section */
+        @media (max-width: 991px) {
+          .cta-content-col {
+            padding: 3rem 2rem;
+          }
+          
+          .cta-card-enhanced {
+            border-radius: 1rem;
+          }
+          
+          .benefits-grid {
+            gap: 1rem;
+          }
+          
+          .display-5 {
+            font-size: calc(1.425rem + 2.1vw);
+          }
+        }
+        
+        @media (max-width: 768px) {
+          .cta-section-container {
+            padding: 3rem 0;
+          }
+          
+          .cta-content-col, 
+          .cta-form-col {
+            padding: 2.5rem 1.5rem;
+          }
+          
+          .content-wrapper {
+            max-width: 100% !important;
+          }
+          
+          .benefits-grid {
+            grid-template-columns: 1fr !important;
+            gap: 0.75rem !important;
+          }
+          
+          .display-5 {
+            font-size: calc(1.35rem + 1.2vw);
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+          }
+          
+          .form-wrapper {
+            padding: 0 !important;
+          }
+        }
+        
         .content-wrapper {
           position: relative;
           z-index: 2;
@@ -211,6 +263,15 @@ export default function CTASection() {
         .benefit-item span {
           font-weight: 500;
           font-size: 0.95rem;
+          color: var(--cta-text);
+        }
+        
+        [data-bs-theme="light"] .benefit-item span {
+          color: #1e293b !important;
+        }
+        
+        [data-bs-theme="dark"] .benefit-item span {
+          color: rgba(255, 255, 255, 0.9) !important;
         }
         
         .decorative-shape {
@@ -249,133 +310,53 @@ export default function CTASection() {
           background: var(--cta-form-bg);
           backdrop-filter: blur(10px);
           padding: 4rem 3rem;
+          position: relative;
+          z-index: 1;
           display: flex;
           align-items: center;
           justify-content: center;
-          position: relative;
-          border-left: 1px solid var(--cta-card-border);
         }
         
         .form-wrapper {
-          position: relative;
-          z-index: 1;
           width: 100%;
-          max-width: 450px;
+          max-width: 400px;
         }
         
         .form-title {
-          font-size: 1.75rem;
           font-weight: 700;
-          color: var(--form-text);
-          text-align: center;
+          color: var(--cta-text);
+          font-size: 1.75rem;
         }
         
         .form-control-enhanced {
-          height: 56px;
-          border-radius: 12px;
-          border: 1px solid var(--border-color);
-          background-color: var(--form-bg);
+          background: var(--form-bg);
+          border: 1px solid rgba(var(--primary-rgb), 0.1);
           color: var(--form-text);
           padding: 0.75rem 1rem;
-          font-size: 1rem;
-          transition: all 0.3s ease;
+          height: auto;
+          border-radius: 0.75rem;
           box-shadow: 0 2px 4px var(--form-shadow);
+          transition: all 0.3s ease;
         }
         
         .form-control-enhanced:focus {
           border-color: var(--form-accent);
-          box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.15);
-          transform: translateY(-2px);
+          box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
         }
         
         .form-control-enhanced::placeholder {
-          color: var(--text-muted);
-          opacity: 0.7;
+          color: rgba(var(--text-secondary-rgb), 0.5);
         }
         
         .form-label {
           font-weight: 500;
-          font-size: 0.9rem;
-          margin-bottom: 0.5rem;
           color: var(--form-label);
+          margin-bottom: 0.5rem;
         }
         
         .form-disclaimer {
-          text-align: center;
-          font-size: 0.85rem;
-          color: var(--text-muted);
-        }
-        
-        /* Make the content match the screenshot styling */
-        .cta-content-col h2 {
-          font-size: 2.75rem;
-          line-height: 1.2;
-        }
-        
-        .cta-content-col h2 span.text-gradient {
-          color: #6366f1;
-          background: linear-gradient(135deg, #6366f1, #8b5cf6);
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
-        
-        .cta-content-col .lead {
-          font-size: 1.1rem;
-          opacity: 0.9;
-        }
-        
-        /* Add visual checkmarks that look like the screenshot */
-        .benefit-icon {
-          background-color: rgba(99, 102, 241, 0.1);
-          color: #6366f1;
-          font-weight: bold;
-        }
-        
-        [data-bs-theme="dark"] .benefit-icon {
-          background-color: rgba(99, 102, 241, 0.2);
-          color: #818cf8;
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 991.98px) {
-          .cta-card-enhanced {
-            border-radius: 1.25rem;
-          }
-          
-          .cta-content-col, 
-          .cta-form-col {
-            padding: 3rem 2rem;
-          }
-          
-          .cta-form-col {
-            border-left: none;
-            border-top: 1px solid var(--cta-card-border);
-          }
-          
-          .benefits-grid {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-          }
-          
-          .form-title {
-            font-size: 1.5rem;
-          }
-          
-          .cta-content-col h2 {
-            font-size: 2.25rem;
-          }
-        }
-        
-        @media (max-width: 767.98px) {
-          .cta-content-col, 
-          .cta-form-col {
-            padding: 2.5rem 1.5rem;
-          }
-          
-          .cta-content-col h2 {
-            font-size: 1.75rem;
-          }
+          color: var(--text-secondary);
+          font-size: 0.875rem;
         }
       `}</style>
     </section>
