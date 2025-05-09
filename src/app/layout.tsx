@@ -3,9 +3,11 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/globals.css";
+import "../styles/section-backgrounds.css";
 import ThemeProvider from "../components/ThemeProvider";
 import BootstrapClient from "../components/BootstrapClient";
 import BodyAttributeHandler from "../components/BodyAttributeHandler";
+import content from "../data/content.json";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,9 +19,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const homePage = content.pages.find(page => page.id === "home");
+const globalSettings = content.global;
+
 export const metadata: Metadata = {
-  title: "Workflow App - Transform Your Workflow",
-  description: "Transform your workflow and double your productivity with our all-in-one platform.",
+  title: homePage?.meta?.title || globalSettings.title,
+  description: homePage?.meta?.description || globalSettings.description,
 };
 
 export default function RootLayout({

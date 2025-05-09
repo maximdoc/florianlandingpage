@@ -5,35 +5,8 @@ import { Container, Row, Col } from 'react-bootstrap';
 import Link from 'next/link';
 import { FiChevronDown, FiPlus } from 'react-icons/fi';
 import Button from '../ui/Button';
-
-// FAQ data structure for maintainability
-const faqData = [
-  {
-    id: '0',
-    question: 'Do we need any certifications beforehand?',
-    answer: `No. We'll identify what's missing (e.g., ISO, WOSB) and guide you through obtaining each one.`
-  },
-  {
-    id: '1',
-    question: "What if we've never sold to government?",
-    answer: `Perfect. 80% of our clients were brand-new to B2G. We handle education, paperwork, and positioning.`
-  },
-  {
-    id: '2',
-    question: 'How is pricing structured?',
-    answer: `$10K onboarding covers profile creation & first bid cycle, then success-based fees tied to contract value.`
-  },
-  {
-    id: '3',
-    question: 'How soon can we bid?',
-    answer: `Most clients have a qualifying profile ready in 30 days and submit their first proposal within 45.`
-  },
-  {
-    id: '4',
-    question: 'Do we keep all data and templates?',
-    answer: `Yes. You own every document, certificate, and proposal we create.`
-  }
-];
+import SectionContainer from '../SectionContainer';
+import { getSectionById } from '@/utils/contentUtils';
 
 // Custom FAQ Accordion Item component
 const FAQAccordionItem = ({ item, isActive, onClick }) => {
@@ -60,22 +33,34 @@ const FAQAccordionItem = ({ item, isActive, onClick }) => {
 };
 
 export default function FAQSection() {
-  const [activeIndex, setActiveIndex] = useState('0');
+  const [activeIndex, setActiveIndex] = useState('1');
+  
+  // Получаем данные секции из JSON-файла
+  const faqSection = getSectionById('home', 'faq');
+  
+  // Если данные секции не найдены, не отображаем компонент
+  if (!faqSection) {
+    return null;
+  }
+  
+  const faqItems = faqSection.items || [];
   
   const handleAccordionClick = (id) => {
     setActiveIndex(activeIndex === id ? null : id);
   };
   
   return (
-    <section className="faq-section" id="faq">
+    <SectionContainer 
+      className="faq-section" 
+      id="faq" 
+      backgroundVariant={faqSection.backgroundVariant || "light"}
+    >
       <Container>
         <Row className="justify-content-center text-center mb-5">
           <Col lg={8} className="mx-auto">
-            <h2 className="display-5 mb-3 fade-in">
-              <span className="text-gradient">FAQs</span>
-            </h2>
+            <h2 className="display-5 mb-3 fade-in" dangerouslySetInnerHTML={{ __html: faqSection.title }} />
             <p className="lead text-secondary mb-5">
-              Common questions about getting started with SlingRFP
+              {faqSection.subtitle}
             </p>
           </Col>
         </Row>
@@ -84,7 +69,7 @@ export default function FAQSection() {
           <Col lg={9} xl={8} className="mx-auto">
             <div className="position-relative faq-wrapper">
               <div className="faq-container">
-                {faqData.map((faq) => (
+                {faqItems.map((faq) => (
                   <FAQAccordionItem 
                     key={faq.id}
                     item={faq}
@@ -105,13 +90,13 @@ export default function FAQSection() {
           <Col lg={10} xl={7} className="mx-auto text-center slide-up" style={{ animationDelay: "0.3s" }}>
             <div className="compact-cta-card">
               <div className="compact-cta-bg"></div>
-              <h3>Still have questions? <span className="highlight-text">Let's talk</span></h3>
-              <p>Our team is ready to answer all your questions about government contracting</p>
+              <h3 dangerouslySetInnerHTML={{ __html: faqSection.ctaSection.title }} />
+              <p>{faqSection.ctaSection.subtitle}</p>
               <Button 
-                href="#contact" 
+                href={faqSection.ctaSection.button.href} 
                 variant="white"
               >
-                Get in Touch
+                {faqSection.ctaSection.button.text}
               </Button>
             </div>
           </Col>
@@ -413,6 +398,6 @@ export default function FAQSection() {
           filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
         }
       `}</style>
-    </section>
+    </SectionContainer>
   );
 } 

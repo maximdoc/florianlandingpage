@@ -1,0 +1,105 @@
+/* Section Background Alternation 
+   This file implements alternating light/dark backgrounds for all sections
+   while respecting the current theme (light or dark mode) */
+
+/* Light theme variables */
+[data-bs-theme="light"] {
+  --section-bg-light: #ffffff;
+  --section-bg-dark: #f1f5f9;  /* Slightly darker for better contrast */
+  --section-border: rgba(0, 0, 0, 0.03);
+}
+
+/* Dark theme variables */
+[data-bs-theme="dark"] {
+  --section-bg-light: #121829;
+  --section-bg-dark: #0a101e;
+  --section-border: rgba(255, 255, 255, 0.05);
+}
+
+/* Apply alternating backgrounds to all section components */
+.section-container:nth-of-type(odd) {
+  background-color: var(--section-bg-light);
+  border-bottom: 1px solid var(--section-border);
+}
+
+.section-container:nth-of-type(even) {
+  background-color: var(--section-bg-dark);
+  border-bottom: 1px solid var(--section-border);
+}
+
+/* Visual separator between sections */
+.section-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: block;
+  box-sizing: border-box;
+}
+
+/* Add subtle shadow to create depth between sections */
+.section-container:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--section-border);
+  z-index: 0;
+}
+
+/* Special styles for HeroSection */
+.hero-section.section-container {
+  background-color: var(--section-bg-light);
+  width: 100%;
+  display: block;
+  box-sizing: border-box;
+}
+
+/* Preserve any section-specific background customizations for special sections */
+.problem-solution-section .challenge-section {
+  background-color: var(--problem-section-bg, var(--section-bg-dark));
+  width: 100%;
+}
+
+.problem-solution-section .solution-section {
+  background-color: var(--solution-section-bg, var(--section-bg-dark));
+  width: 100%;
+}
+
+/* Ensure any specific section styling prioritizes its custom background if defined */
+.cta-section-container {
+  background-color: var(--section-bg-light);
+}
+
+/* For sections with decorative elements, ensure they have proper contrast with backgrounds */
+[data-bs-theme="light"] .decorative-blob,
+[data-bs-theme="light"] .bg-shape {
+  opacity: 0.5;
+}
+
+[data-bs-theme="dark"] .decorative-blob,
+[data-bs-theme="dark"] .bg-shape {
+  opacity: 0.2;
+}
+
+/* Explicitly set full width for all sections */
+section, .section-container, .hero-section, .problem-solution-section {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* Adjust padding for better spacing between sections */
+.section-container {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+@media (max-width: 768px) {
+  .section-container {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+} 

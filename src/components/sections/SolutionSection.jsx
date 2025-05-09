@@ -2,12 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import Link from 'next/link';
 import Button from '../ui/Button';
 import SectionContainer from '../SectionContainer';
 import { getSectionById } from '@/utils/contentUtils';
 
-export default function ProblemSolutionSection() {
+export default function SolutionSection() {
   const [activeStep, setActiveStep] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
   
@@ -34,17 +33,13 @@ export default function ProblemSolutionSection() {
     setActiveStep(index);
   };
 
-  // Если данные секции не найдены, не отображаем компонент
+  
   if (!solutionSection) {
     return null;
   }
 
   return (
-    <SectionContainer 
-      id="solution" 
-      className="solution-section-container" 
-      backgroundVariant={solutionSection.backgroundVariant || "light"}
-    >
+    <SectionContainer className="solution-section-container" backgroundVariant={solutionSection.backgroundVariant || "dark"}>
       {/* Decorative elements */}
       <div className="position-absolute shape-3"></div>
       <div className="position-absolute shape-4"></div>
@@ -91,7 +86,7 @@ export default function ProblemSolutionSection() {
                 <h3 className="result-title">{solutionSection.result.title}</h3>
                 <p className="result-description" dangerouslySetInnerHTML={{ __html: solutionSection.result.description }} />
                 <Button 
-                  href={solutionSection.result.ctaButton.href} 
+                  href={solutionSection.result.ctaButton.href}
                   variant="white" 
                   size="lg" 
                   className="mt-2"
@@ -293,25 +288,45 @@ export default function ProblemSolutionSection() {
         
         .step-number {
           margin-right: 1rem;
+          position: relative;
         }
         
         .number-circle {
-          width: 40px;
-          height: 40px;
+          width: 48px;
+          height: 48px;
           display: flex;
           align-items: center;
           justify-content: center;
           background: linear-gradient(135deg, #6366f1, #8b5cf6);
           color: white;
-          border-radius: 50%;
+          border-radius: 16px;
           font-weight: 700;
-          font-size: 1rem;
+          font-size: 1.1rem;
           transition: all 0.3s ease;
-          box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3), inset 0 -2px 5px rgba(0, 0, 0, 0.2), inset 0 2px 5px rgba(255, 255, 255, 0.3);
           position: relative;
           overflow: hidden;
+          /* 3D effect with enhanced shadows */
+          box-shadow: 
+            0 5px 15px rgba(99, 102, 241, 0.4),
+            0 0 0 1px rgba(255, 255, 255, 0.1),
+            inset 0 -2px 5px rgba(0, 0, 0, 0.2),
+            inset 0 2px 5px rgba(255, 255, 255, 0.3);
         }
         
+        /* Glowing effect */
+        .number-circle::before {
+          content: '';
+          position: absolute;
+          inset: -3px;
+          background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.1));
+          border-radius: 18px;
+          z-index: -1;
+          filter: blur(8px);
+          opacity: 0.8;
+          transition: opacity 0.3s ease;
+        }
+        
+        /* Upper highlight for 3D effect */
         .number-circle::after {
           content: '';
           position: absolute;
@@ -319,8 +334,26 @@ export default function ProblemSolutionSection() {
           left: 0;
           width: 100%;
           height: 50%;
-          background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
-          border-radius: 50% 50% 0 0;
+          background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), transparent);
+          border-radius: 16px 16px 0 0;
+          opacity: 0.7;
+        }
+        
+        /* Enhance hover state */
+        .solution-step-card:hover .number-circle,
+        .solution-step-card.active .number-circle {
+          transform: translateY(-2px);
+          box-shadow: 
+            0 8px 20px rgba(99, 102, 241, 0.5),
+            0 0 0 1px rgba(255, 255, 255, 0.15),
+            inset 0 -2px 5px rgba(0, 0, 0, 0.2),
+            inset 0 2px 5px rgba(255, 255, 255, 0.4);
+        }
+        
+        .solution-step-card:hover .number-circle::before,
+        .solution-step-card.active .number-circle::before {
+          opacity: 1;
+          filter: blur(10px);
         }
         
         .step-content {
@@ -409,6 +442,15 @@ export default function ProblemSolutionSection() {
             width: 36px;
             height: 36px;
             font-size: 0.9rem;
+            border-radius: 12px;
+          }
+          
+          .number-circle::before {
+            border-radius: 14px;
+          }
+          
+          .number-circle::after {
+            border-radius: 12px 12px 0 0;
           }
                     
           .step-title {
@@ -435,6 +477,15 @@ export default function ProblemSolutionSection() {
             height: 32px;
             font-size: 0.85rem;
             margin-right: 0.75rem;
+            border-radius: 10px;
+          }
+          
+          .number-circle::before {
+            border-radius: 12px;
+          }
+          
+          .number-circle::after {
+            border-radius: 10px 10px 0 0;
           }
           
           .step-title {

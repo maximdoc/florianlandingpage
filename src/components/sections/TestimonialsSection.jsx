@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import Image from 'next/image';
+import SectionContainer from '../SectionContainer';
+import { getSectionById } from '@/utils/contentUtils';
 
 export default function TestimonialsSection() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -10,6 +12,9 @@ export default function TestimonialsSection() {
   const [touchEnd, setTouchEnd] = useState(0);
   const [theme, setTheme] = useState('dark');
   const sliderRef = useRef(null);
+  
+  // Получаем данные секции из JSON
+  const testimonialsSection = getSectionById('home', 'testimonials');
   
   // Listen for theme changes
   useEffect(() => {
@@ -36,45 +41,12 @@ export default function TestimonialsSection() {
     return () => observer.disconnect();
   }, []);
   
-  // Testimonial data
-  const testimonials = [
-    {
-      id: 1,
-      quote: "SlingRFP stood up our entire vendor profile—including a Women‑Owned Small Business cert—then won us a $1.8M facilities contract.",
-      author: "Tracy Mills",
-      position: "COO, CleanEdge Services",
-      avatarDark: "/images/people-one.png",
-      avatarLight: "/images/people-one-light.png",
-      rating: 5
-    },
-    {
-      id: 2,
-      quote: "They handle everything: sourcing, gaps, writing, negotiations. We just deliver the work.",
-      author: "Raj Patel",
-      position: "CTO, OptiCloud IT",
-      avatarDark: "/images/people-two.png",
-      avatarLight: "/images/people-two-light.png",
-      rating: 5
-    },
-    {
-      id: 3,
-      quote: "Their AI-powered approach found opportunities we would have missed entirely. Revenue up 40% in our first year.",
-      author: "Sarah Johnson",
-      position: "Founder, TechSolutions Inc.",
-      avatarDark: "/images/people-three.png",
-      avatarLight: "/images/people-three-light.png",
-      rating: 5
-    },
-    {
-      id: 4,
-      quote: "The proposal generation saved us hundreds of hours. Our win rate jumped from 4% to 15% in six months.",
-      author: "Michael Chen",
-      position: "VP Operations, Nexus Systems",
-      avatarDark: "/images/people-fourth.png",
-      avatarLight: "/images/people-fourth-light.png",
-      rating: 5
-    }
-  ];
+  // Если данные секции не найдены, не отображаем компонент
+  if (!testimonialsSection) {
+    return null;
+  }
+  
+  const testimonials = testimonialsSection.testimonials || [];
 
   const handlePrev = () => {
     setActiveIndex(prevIndex => 
@@ -135,7 +107,11 @@ export default function TestimonialsSection() {
   };
 
   return (
-    <section className="testimonials-section py-6 position-relative overflow-hidden">
+    <SectionContainer 
+      id="testimonials" 
+      className="testimonials-section py-6 position-relative overflow-hidden" 
+      backgroundVariant={testimonialsSection.backgroundVariant || "dark"}
+    >
       <div className="position-absolute bg-shape shape-1"></div>
       <div className="position-absolute bg-shape shape-2"></div>
       <div className="position-absolute bg-shape shape-3"></div>
@@ -143,13 +119,10 @@ export default function TestimonialsSection() {
       <Container className="position-relative">
         <Row className="mb-5 text-center">
           <Col lg={8} className="mx-auto">
-            <div className="section-label text-uppercase mb-2">TESTIMONIALS</div>
-            <h2 className="section-title mb-3">
-              Trusted By <span className="text-gradient">Thousands</span> Globally
-            </h2>
+            <div className="section-label text-uppercase mb-2">{testimonialsSection.sectionLabel}</div>
+            <h2 className="section-title mb-3" dangerouslySetInnerHTML={{ __html: testimonialsSection.title }} />
             <p className="section-subtitle">
-              Hear from satisfied SlingRFP users who have achieved financial 
-              success with our innovative tools and personalized insights.
+              {testimonialsSection.subtitle}
             </p>
           </Col>
         </Row>
@@ -894,6 +867,6 @@ export default function TestimonialsSection() {
           }
         }
       `}</style>
-    </section>
+    </SectionContainer>
   );
 } 

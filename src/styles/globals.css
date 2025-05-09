@@ -43,6 +43,7 @@
   --transition-speed: 0.3s;
   --theme-transition-speed: 0.5s;
   --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --theme-transition-easing: cubic-bezier(0.16, 1, 0.3, 1);
   
   /* Border radius */
   --border-radius-sm: 0.25rem;
@@ -104,6 +105,12 @@
   --btn-hover-box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   --btn-active-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   --btn-transition: all 0.3s ease;
+
+  /* Ключевые элементы для плавного перехода темы */
+  --theme-transition-properties: background-color, color, border-color, box-shadow, fill, stroke;
+  
+  /* Переменная для контроля начальной загрузки */
+  --initial-load: 1;
 }
 
 /* Dark theme */
@@ -184,19 +191,24 @@
   }
 }
 
+/* При загрузке страницы блокируем анимации для предотвращения мерцания */
+.no-transitions * {
+  transition: none !important;
+}
+
 /* Apply basic styles to the body and html */
 html,
 body {
   background-color: var(--background);
   color: var(--text-body);
-  transition: background-color var(--theme-transition-speed) ease,
-              color var(--theme-transition-speed) ease;
   margin: 0;
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   line-height: 1.6;
   scroll-behavior: auto;
+  transition: background-color var(--theme-transition-speed) var(--theme-transition-easing),
+              color var(--theme-transition-speed) var(--theme-transition-easing);
 }
 
 /* Apply theme transitions to various elements */
@@ -204,6 +216,9 @@ body {
 *::before,
 *::after {
   box-sizing: border-box;
+  transition-duration: var(--theme-transition-speed);
+  transition-property: background-color, color, border-color, box-shadow, fill, stroke;
+  transition-timing-function: ease;
 }
 
 /* Theme transition for common elements */
@@ -1230,6 +1245,20 @@ p {
   transform: rotate(10deg);
 }
 
+/* Стили для кнопки во время изменения темы */
+.theme-toggle.changing {
+  animation: pulse 0.5s ease-in-out;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Анимация пульсации для индикации смены темы */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
 /* Section styling */
 .section-title {
   font-weight: 700;
@@ -1780,4 +1809,123 @@ section {
   color: var(--text-primary);
   font-weight: 700;
   letter-spacing: 0.01em;
+}
+
+/* Специальные стили для анимации перехода между темами */
+.theme-transition {
+  transition: none !important;
+}
+
+/* Применяем переходы только к CSS-свойствам, отвечающим за тему */
+.theme-transition * {
+  transition-property: var(--theme-transition-properties);
+  transition-timing-function: var(--theme-transition-easing);
+  transition-duration: var(--theme-transition-speed) !important;
+  /* Оптимизация для GPU */
+  will-change: background-color, color;
+}
+
+/* Приоритезируем наиболее важные элементы для плавного перехода */
+.theme-transition body,
+.theme-transition .navbar-main,
+.theme-transition .main-content,
+.theme-transition section {
+  transition-property: background-color;
+  transition-duration: var(--theme-transition-speed) !important;
+  transition-timing-function: var(--theme-transition-easing) !important;
+  /* Первыми меняем основные контейнеры */
+  transition-delay: 0s !important;
+}
+
+/* Высокоприоритетные карточки и контейнеры */
+.theme-transition .card,
+.theme-transition .benefit-card,
+.theme-transition .feature-card,
+.theme-transition .comparison-card,
+.theme-transition .solution-step-card,
+.theme-transition .testimonial-card,
+.theme-transition .cta-section,
+.theme-transition .bottom-line-box {
+  transition: 
+    background-color var(--theme-transition-speed) var(--theme-transition-easing),
+    color var(--theme-transition-speed) var(--theme-transition-easing),
+    border-color var(--theme-transition-speed) var(--theme-transition-easing),
+    box-shadow var(--theme-transition-speed) var(--theme-transition-easing) !important;
+  /* Применяем небольшую задержку для синхронизации с основными контейнерами */
+  transition-delay: 50ms !important;
+}
+
+/* Отключаем трансформации при смене темы для повышения производительности */
+.theme-transition *:hover {
+  transform: none !important;
+}
+
+/* Исключение для dashboard-container чтобы предотвратить движение при смене темы */
+.theme-transition .dashboard-container,
+.theme-transition .preserve-transform {
+  transform: perspective(1000px) rotateY(-8deg) rotateX(5deg) rotate(1deg) !important;
+  transition: background-color var(--theme-transition-speed) var(--theme-transition-easing),
+              box-shadow var(--theme-transition-speed) var(--theme-transition-easing),
+              border-color var(--theme-transition-speed) var(--theme-transition-easing) !important;
+}
+
+/* Обеспечиваем правильный цвет фона dashboard в обеих темах */
+[data-bs-theme="light"] .dashboard-container {
+  background-color: #ffffff !important;
+}
+
+[data-bs-theme="dark"] .dashboard-container {
+  background-color: #1a1f2c !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.theme-transition .slide-up {
+  transform: translateY(0) !important;
+  transition: none !important;
+}
+
+/* Настройки для адаптивной версии - сохраняем отсутствие трансформации при смене темы */
+@media (max-width: 992px) {
+  .theme-transition .dashboard-container,
+  .theme-transition .preserve-transform {
+    transform: none !important;
+  }
+}
+
+/* Стили для управления загрузкой и предотвращения CLS */
+.loading-state {
+  visibility: hidden;
+}
+
+/* Предотвращаем мигание при первоначальной загрузке */
+.dashboard-container {
+  backface-visibility: hidden;
+  opacity: var(--initial-load, 0);
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out, transform 0.5s ease-in-out;
+}
+
+html.no-transitions .dashboard-container {
+  transition: none !important;
+}
+
+/* Анимация появления элементов только после полной загрузки страницы */
+html.no-transitions .slide-up,
+html.no-transitions .fade-in {
+  opacity: 0 !important;
+}
+
+/* Скрываем трансформацию до полной загрузки страницы */
+@media (min-width: 993px) {
+  html.no-transitions .dashboard-container {
+    transform: perspective(1000px) rotateY(-8deg) rotateX(5deg) rotate(1deg) !important;
+    will-change: transform;
+  }
+}
+
+@media (max-width: 992px) {
+  html.no-transitions .dashboard-container {
+    transform: none !important;
+    will-change: transform;
+  }
 } 

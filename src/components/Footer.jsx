@@ -3,9 +3,40 @@
 import { Container, Row, Col } from 'react-bootstrap';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { getGlobalSettings } from '@/utils/contentUtils';
 
 export default function Footer() {
   const [navbarHeight, setNavbarHeight] = useState(0);
+  const [theme, setTheme] = useState('dark');
+
+  // Получаем данные футера из JSON
+  const globalSettings = getGlobalSettings();
+  const footerData = globalSettings?.footer || {};
+  const socialLinks = footerData?.socialLinks || [];
+  const navigationLinks = footerData?.navigationLinks || [];
+  const supportLinks = footerData?.supportLinks || [];
+  const legalLinks = footerData?.legalLinks || [];
+  const contactEmail = footerData?.contactEmail || "support@slingrfp.com";
+
+  // Отслеживаем текущую тему
+  useEffect(() => {
+    const htmlElement = document.documentElement;
+    setTheme(htmlElement.getAttribute('data-bs-theme') || 'dark');
+
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (
+          mutation.type === 'attributes' &&
+          mutation.attributeName === 'data-bs-theme'
+        ) {
+          setTheme(htmlElement.getAttribute('data-bs-theme') || 'dark');
+        }
+      });
+    });
+
+    observer.observe(htmlElement, { attributes: true });
+    return () => observer.disconnect();
+  }, []);
 
   // Получаем высоту навбара для корректной прокрутки
   useEffect(() => {
@@ -36,142 +67,482 @@ export default function Footer() {
     }
   };
 
+  // Функция для рендеринга социальных иконок в зависимости от имени
+  const renderSocialIcon = (iconName) => {
+    switch (iconName) {
+      case 'twitter':
   return (
-    <footer className="py-5 mt-5">
-      <Container>
-        <Row className="mb-4 gy-4">
-          <Col lg={3} md={6} className="mb-4 mb-lg-0">
-            <h5 className="text-primary-color mb-4">PRODUCT</h5>
-            <p className="text-muted mb-3">
-              Transform your workflow and boost productivity with our all-in-one platform.
-            </p>
-            <div className="d-flex gap-3 mb-3">
-              <a href="#" aria-label="Facebook" className="text-muted social-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-facebook" viewBox="0 0 16 16">
-                  <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951" />
-                </svg>
-              </a>
-              <a href="#" aria-label="Twitter" className="text-muted social-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-twitter-x" viewBox="0 0 16 16">
                   <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z" />
                 </svg>
-              </a>
-              <a href="#" aria-label="Instagram" className="text-muted social-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-instagram" viewBox="0 0 16 16">
-                  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm.003 1.065h.001c2.172 0 2.428.01 3.29.048.791.038 1.22.17 1.505.28.375.148.663.327.966.626.302.303.484.592.627.966.11.285.241.714.279 1.503.038.872.046 1.127.046 3.293 0 2.176-.008 2.422-.046 3.295-.038.79-.17 1.218-.28 1.504a2.6 2.6 0 0 1-.627.965 2.6 2.6 0 0 1-.965.627c-.285.11-.714.241-1.505.279-.872.037-1.128.046-3.298.046-2.17 0-2.425-.009-3.298-.046-.792-.038-1.22-.17-1.505-.279a2.6 2.6 0 0 1-.965-.627 2.6 2.6 0 0 1-.627-.965c-.11-.286-.242-.716-.28-1.504-.037-.872-.046-1.128-.046-3.295 0-2.167.009-2.413.046-3.285.038-.79.17-1.218.28-1.504.148-.375.323-.663.627-.965.303-.304.59-.482.965-.627.286-.11.714-.242 1.506-.28.87-.037 1.125-.046 3.292-.046" />
-                  <path d="M8 3.953a4.03 4.03 0 0 0-.898 7.983A4.03 4.03 0 0 0 8 3.94zm0 1.064a2.97 2.97 0 1 1 0 5.94 2.97 2.97 0 0 1 0-5.94z" />
-                  <circle cx="12.25" cy="3.75" r=".875" />
-                </svg>
-              </a>
-              <a href="#" aria-label="LinkedIn" className="text-muted social-icon">
+        );
+      case 'linkedin':
+        return (
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-linkedin" viewBox="0 0 16 16">
                   <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2 3.226 2 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z" />
                 </svg>
-              </a>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <footer className={`site-footer ${theme === 'light' ? 'footer-light' : 'footer-dark'}`}>
+      <div className="footer-top">
+        <Container>
+          <Row className="gy-4 gy-lg-0">
+            <Col lg={4} md={6}>
+              <div className="footer-brand">
+                <Link href="/" className="footer-logo">
+                  {globalSettings?.title?.split(' ')[0] || "SlingRFP"}
+                </Link>
+                <p className="footer-description">
+                  {globalSettings?.description || "Transform your business with efficient government contracting solutions"}
+                </p>
+                <div className="social-links">
+                  {socialLinks.map((link, index) => (
+                    <a 
+                      key={index} 
+                      href={link.url} 
+                      aria-label={link.platform} 
+                      className="social-link"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {renderSocialIcon(link.icon)}
+                    </a>
+                  ))}
+                </div>
             </div>
           </Col>
           
-          <Col lg={3} md={6} sm={6} className="mb-4 mb-lg-0">
-            <h5 className="mb-3">Product</h5>
-            <ul className="list-unstyled footer-links">
-              <li className="mb-2">
-                <a href="#features" className="text-muted text-decoration-none" onClick={smoothScrollToAnchor}>Features</a>
+            <Col lg={2} md={6} xs={6}>
+              <div className="footer-nav">
+                <h5 className="footer-heading">Product</h5>
+                <ul className="footer-links">
+                  {navigationLinks.map((item, index) => (
+                    <li key={index}>
+                      <a 
+                        href={item.href} 
+                        className="footer-link" 
+                        onClick={smoothScrollToAnchor}
+                      >
+                        {item.text}
+                      </a>
               </li>
-              <li className="mb-2">
-                <a href="#pricing" className="text-muted text-decoration-none" onClick={smoothScrollToAnchor}>Pricing</a>
-              </li>
-              <li className="mb-2">
-                <a href="#integrations" className="text-muted text-decoration-none" onClick={smoothScrollToAnchor}>Integrations</a>
-              </li>
-              <li className="mb-2">
-                <a href="#updates" className="text-muted text-decoration-none" onClick={smoothScrollToAnchor}>Updates</a>
-              </li>
+                  ))}
             </ul>
+              </div>
           </Col>
           
-          <Col lg={3} md={6} sm={6} className="mb-4 mb-lg-0">
-            <h5 className="mb-3">Support</h5>
-            <ul className="list-unstyled footer-links">
-              <li className="mb-2">
-                <a href="#help-center" className="text-muted text-decoration-none" onClick={smoothScrollToAnchor}>Help Center</a>
+            <Col lg={3} md={6} xs={6}>
+              <div className="footer-nav">
+                <h5 className="footer-heading">Support</h5>
+                <ul className="footer-links">
+                  {supportLinks.map((item, index) => (
+                    <li key={index}>
+                      <a 
+                        href={item.href} 
+                        className="footer-link" 
+                        onClick={smoothScrollToAnchor}
+                      >
+                        {item.text}
+                      </a>
               </li>
-              <li id="contact" className="mb-2">
-                Contact us: support@slingrfp.com
-              </li>
-              <li className="mb-2">
-                <a href="#faq" className="text-muted text-decoration-none" onClick={smoothScrollToAnchor}>FAQ</a>
-              </li>
-              <li className="mb-2">
-                <a href="#community" className="text-muted text-decoration-none" onClick={smoothScrollToAnchor}>Community</a>
-              </li>
+                  ))}
             </ul>
+              </div>
           </Col>
           
-          <Col lg={3} md={6} sm={6}>
-            <h5 className="mb-3">Stay Updated</h5>
-            <p className="text-muted mb-3">Get the latest updates by subscribing to our newsletter</p>
-            <div className="input-group mb-3">
-              <input type="email" className="form-control" placeholder="Your email" aria-label="Your email" />
-              <button className="btn btn-primary" type="button">Subscribe</button>
+            <Col lg={3} md={6}>
+              <div className="footer-nav">
+                <h5 className="footer-heading">Contact</h5>
+                <div className="contact-info">
+                  <p className="contact-email">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-envelope-fill" viewBox="0 0 16 16">
+                      <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
+                    </svg>
+                    <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+                  </p>
+                </div>
             </div>
           </Col>
         </Row>
+        </Container>
+      </div>
         
-        <hr className="my-4" />
-        
+      <div className="footer-bottom">
+        <Container>
         <Row className="align-items-center">
-          <Col md={6} className="text-center text-md-start mb-3 mb-md-0">
-            <p className="text-muted small mb-0">
-              © {new Date().getFullYear()} Company Name. All rights reserved.
+            <Col md={6}>
+              <p className="copyright">
+                {footerData?.copyright || `© ${new Date().getFullYear()} SlingRFP. All rights reserved.`}
             </p>
           </Col>
-          <Col md={6} className="text-center text-md-end">
-            <ul className="list-inline small mb-0">
-              <li className="list-inline-item mb-2 mb-sm-0">
-                <a href="#privacy-policy" className="text-muted text-decoration-none">Privacy Policy</a>
-              </li>
-              <li className="list-inline-item ms-sm-3 mb-2 mb-sm-0">
-                <a href="#terms-of-service" className="text-muted text-decoration-none">Terms of Service</a>
-              </li>
-              <li className="list-inline-item ms-sm-3">
-                <a href="#cookies" className="text-muted text-decoration-none">Cookies</a>
-              </li>
-            </ul>
+            <Col md={6}>
+              <div className="legal-links">
+                {legalLinks.map((item, index) => (
+                  <a key={index} href={item.href} className="legal-link">
+                    {item.text}
+                  </a>
+                ))}
+              </div>
           </Col>
         </Row>
       </Container>
+      </div>
       
       <style jsx global>{`
-        .footer-links a {
-          display: block;
-          padding: 0.25rem 0;
-          transition: color 0.2s ease;
+        /* Основные стили футера */
+        .site-footer {
+          position: relative;
+          font-size: 0.95rem;
+          transition: all 0.3s ease;
         }
         
-        .footer-links a:hover {
-          color: var(--primary) !important;
+        /* Стили для темной темы */
+        .footer-dark {
+          background-color: #0f172a;
+          color: rgba(255, 255, 255, 0.75);
         }
         
-        .social-icon {
-          display: inline-flex;
+        /* Стили для светлой темы */
+        .footer-light {
+          background-color: #f1f5f9;
+          color: #1e293b;
+          box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.08);
+        }
+        
+        /* Верхняя часть футера */
+        .footer-top {
+          padding: 4rem 0 3rem;
+          position: relative;
+        }
+        
+        /* Нижняя часть футера */
+        .footer-bottom {
+          padding: 1.5rem 0;
+          position: relative;
+        }
+        
+        .footer-dark .footer-bottom {
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-light .footer-bottom {
+          border-top: 1px solid rgba(0, 0, 0, 0.06);
+        }
+        
+        /* Брендинг */
+        .footer-brand {
+          margin-bottom: 1.5rem;
+        }
+        
+        .footer-logo {
+          display: inline-block;
+          font-size: 1.75rem;
+          font-weight: 700;
+          margin-bottom: 1rem;
+          text-decoration: none;
+          transition: all 0.2s ease;
+          background: linear-gradient(90deg, #6366f1, #8b5cf6);
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          -webkit-text-fill-color: transparent;
+          position: relative;
+        }
+        
+        .footer-logo:hover {
+          transform: translateY(-2px);
+          filter: brightness(1.1);
+        }
+        
+        .footer-dark .footer-description {
+          color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .footer-light .footer-description {
+          color: #475569;
+        }
+        
+        .footer-description {
+          font-size: 0.95rem;
+          margin-bottom: 1.5rem;
+          line-height: 1.6;
+          max-width: 320px;
+        }
+        
+        /* Социальные ссылки */
+        .social-links {
+          display: flex;
+          gap: 0.8rem;
+          margin-bottom: 1rem;
+        }
+        
+        .footer-dark .social-link {
+          background-color: rgba(255, 255, 255, 0.08);
+          color: rgba(255, 255, 255, 0.85);
+        }
+        
+        .footer-light .social-link {
+          background-color: rgba(0, 0, 0, 0.04);
+          color: #475569;
+        }
+        
+        .social-link {
+          display: flex;
           align-items: center;
           justify-content: center;
-          transition: transform 0.2s ease, color 0.2s ease;
+          width: 36px;
+          height: 36px;
+          border-radius: 8px;
+          transition: all 0.3s ease;
         }
         
-        .social-icon:hover {
-          transform: translateY(-2px);
-          color: var(--primary) !important;
+        .social-link:hover {
+          background-color: #6366f1;
+          color: white;
+          transform: translateY(-3px);
+          box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
         }
         
-        @media (max-width: 767px) {
-          .list-inline-item {
+        /* Заголовки в футере */
+        .footer-dark .footer-heading {
+          color: white;
+        }
+        
+        .footer-light .footer-heading {
+          color: #0f172a;
+        }
+        
+        .footer-heading {
+          font-size: 1.1rem;
+          font-weight: 600;
+          margin-bottom: 1.2rem;
+          position: relative;
+          letter-spacing: 0.01em;
+        }
+        
+        .footer-heading::after {
+          content: '';
+          position: absolute;
+          bottom: -5px;
+          left: 0;
+          width: 30px;
+          height: 2px;
+          background: linear-gradient(90deg, #6366f1, transparent);
+          border-radius: 2px;
+        }
+        
+        /* Группы навигационных ссылок */
+        .footer-nav {
+          margin-bottom: 1.5rem;
+        }
+        
+        .footer-links {
+          list-style: none;
+          padding-left: 0;
+          margin-bottom: 0;
+        }
+        
+        .footer-links li {
+          margin-bottom: 0.75rem;
+        }
+        
+        .footer-dark .footer-link {
+          color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .footer-light .footer-link {
+          color: #475569;
+        }
+        
+        .footer-link {
+          text-decoration: none;
+          transition: all 0.2s ease;
+          position: relative;
             display: inline-block;
-            margin-right: 1rem;
+          padding: 2px 0;
+        }
+        
+        .footer-dark .footer-link:hover {
+          color: white;
+        }
+        
+        .footer-light .footer-link:hover {
+          color: #6366f1;
+        }
+        
+        .footer-link:hover {
+          transform: translateX(3px);
+        }
+        
+        .footer-link::after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          width: 0;
+          height: 1px;
+          background-color: #6366f1;
+          transition: width 0.3s ease;
+        }
+        
+        .footer-link:hover::after {
+          width: 100%;
+        }
+        
+        /* Контактная информация */
+        .contact-info {
+          margin-bottom: 1rem;
+        }
+        
+        .contact-email {
+          display: flex;
+          align-items: center;
+          gap: 0.7rem;
+          margin-bottom: 0.75rem;
+        }
+        
+        .footer-dark .contact-email a {
+          color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .footer-light .contact-email a {
+          color: #475569;
+        }
+        
+        .contact-email a {
+          text-decoration: none;
+          transition: all 0.2s ease;
+          position: relative;
+        }
+        
+        .footer-dark .contact-email a:hover {
+          color: white;
+        }
+        
+        .footer-light .contact-email a:hover {
+          color: #6366f1;
+        }
+        
+        .contact-email a::after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          width: 0;
+          height: 1px;
+          background-color: #6366f1;
+          transition: width 0.3s ease;
+        }
+        
+        .contact-email a:hover::after {
+          width: 100%;
+        }
+        
+        .contact-email svg {
+          flex-shrink: 0;
+          color: #6366f1;
+        }
+        
+        /* Copyright и легальные ссылки */
+        .footer-dark .copyright {
+          color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .footer-light .copyright {
+          color: #64748b;
+        }
+        
+        .copyright {
+          font-size: 0.85rem;
+          margin-bottom: 0;
+        }
+        
+        .legal-links {
+          display: flex;
+          justify-content: flex-end;
+          gap: 1.5rem;
+        }
+        
+        .footer-dark .legal-link {
+          color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .footer-light .legal-link {
+          color: #64748b;
+        }
+        
+        .legal-link {
+          font-size: 0.85rem;
+          text-decoration: none;
+          transition: all 0.2s ease;
+          position: relative;
+        }
+        
+        .footer-dark .legal-link:hover {
+          color: white;
+        }
+        
+        .footer-light .legal-link:hover {
+          color: #6366f1;
+        }
+        
+        .legal-link::after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          width: 0;
+          height: 1px;
+          background-color: currentColor;
+          transition: width 0.3s ease;
+        }
+        
+        .legal-link:hover::after {
+          width: 100%;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 991.98px) {
+          .footer-top {
+            padding: 3.5rem 0 2rem;
           }
           
-          .list-inline-item.ms-3 {
-            margin-left: 0 !important;
+          .footer-brand {
+            margin-bottom: 2rem;
+          }
+          
+          .footer-description {
+            max-width: 100%;
+          }
+        }
+        
+        @media (max-width: 767.98px) {
+          .footer-top {
+            padding: 3rem 0 1.5rem;
+          }
+          
+          .footer-nav {
+            margin-bottom: 2rem;
+          }
+          
+          .legal-links {
+            justify-content: flex-start;
+            margin-top: 1rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+          }
+          
+          .copyright {
+            text-align: center;
+          }
+          
+          .legal-links {
+            justify-content: center;
           }
         }
       `}</style>

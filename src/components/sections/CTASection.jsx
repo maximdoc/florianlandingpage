@@ -2,59 +2,45 @@
 
 import { Container, Row, Col, Form } from 'react-bootstrap';
 import Button from '../ui/Button';
+import SectionContainer from '../SectionContainer';
+import Icon from '../ui/Icon';
+import { getSectionById } from '@/utils/contentUtils';
 
 export default function CTASection() {
+  // Получаем данные секции из JSON-файла
+  const ctaSection = getSectionById('home', 'cta');
+
+  // Если данные секции не найдены, не отображаем компонент
+  if (!ctaSection) {
+    return null;
+  }
+
   return (
-    <section id="strategy-call" className="cta-section-container py-6">
+    <SectionContainer 
+      id="strategy-call" 
+      className="cta-section-container py-6" 
+      backgroundVariant={ctaSection.backgroundVariant || "dark"}
+    >
       <Container>
         <div className="cta-card-enhanced">
           <Row className="g-0">
             <Col lg={6} className="cta-content-col">
               <div className="content-wrapper">
-                <h2 className="display-5 fw-bold mb-4">
-                  Ready to turn <span className="text-gradient">government contracting</span> into a <span className="text-gradient">growth engine</span>?
-                </h2>
+                <h2 className="display-5 fw-bold mb-4" dangerouslySetInnerHTML={{ __html: ctaSection.title }} />
                 
                 <p className="lead mb-4">
-                  Join businesses that are securing predictable B2G revenue streams with SlingRFP's full-service approach.
+                  {ctaSection.subtitle}
                 </p>
                 
                 <div className="benefits-grid">
-                  <div className="benefit-item">
-                    <div className="benefit-icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
-                      </svg>
+                  {ctaSection.benefits.map((benefit, index) => (
+                    <div className="benefit-item" key={index}>
+                      <div className="benefit-icon">
+                        <Icon name="check" width={14} height={14} />
+                      </div>
+                      <span>{benefit}</span>
                     </div>
-                    <span>Bid-ready in 30 days</span>
-                  </div>
-                  
-                  <div className="benefit-item">
-                    <div className="benefit-icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
-                      </svg>
-                    </div>
-                    <span>No experience needed</span>
-                  </div>
-                  
-                  <div className="benefit-item">
-                    <div className="benefit-icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
-                      </svg>
-                    </div>
-                    <span>Full-service approach</span>
-                  </div>
-                  
-                  <div className="benefit-item">
-                    <div className="benefit-icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
-                      </svg>
-                    </div>
-                    <span>Target 10%+ win rate</span>
-                  </div>
+                  ))}
                 </div>
               </div>
               
@@ -65,49 +51,33 @@ export default function CTASection() {
             
             <Col lg={6} className="cta-form-col">
               <div className="form-wrapper">
-                <h3 className="form-title mb-4">Book Your Free Strategy Call</h3>
+                <h3 className="form-title mb-4">{ctaSection.formTitle}</h3>
                 
                 <Form>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Full Name</Form.Label>
-                    <Form.Control 
-                      type="text" 
-                      placeholder="Enter your full name" 
-                      className="form-control-enhanced"
-                    />
-                  </Form.Group>
-                  
-                  <Form.Group className="mb-3">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control 
-                      type="email" 
-                      placeholder="Enter your email" 
-                      className="form-control-enhanced"
-                    />
-                  </Form.Group>
-                  
-                  <Form.Group className="mb-4">
-                    <Form.Label>Company Name</Form.Label>
-                    <Form.Control 
-                      type="text" 
-                      placeholder="Enter your company name" 
-                      className="form-control-enhanced"
-                    />
-                  </Form.Group>
+                  {ctaSection.formFields.map((field, index) => (
+                    <Form.Group className="mb-3" key={index}>
+                      <Form.Label>{field.label}</Form.Label>
+                      <Form.Control 
+                        type={field.type} 
+                        placeholder={field.placeholder} 
+                        className="form-control-enhanced"
+                      />
+                    </Form.Group>
+                  ))}
                   
                   <div className="d-grid">
                     <Button 
                       type="submit" 
                       variant="primary"
-                      endIcon={<span>→</span>}
+                      endIcon={ctaSection.submitButton.endIcon && <Icon name={ctaSection.submitButton.endIcon} width={16} height={16} />}
                       className="w-100"
                     >
-                      Schedule My Call
+                      {ctaSection.submitButton.text}
                     </Button>
                   </div>
                   
                   <div className="form-disclaimer mt-3 text-center">
-                    No obligation, 15-minute consultation
+                    {ctaSection.disclaimer}
                   </div>
                 </Form>
               </div>
@@ -117,6 +87,7 @@ export default function CTASection() {
       </Container>
       
       <style jsx global>{`
+        /* Базовые CSS-переменные для совместимости с темами */
         :root {
           --cta-bg: var(--primary);
           --cta-card-bg: #ffffff;
@@ -238,26 +209,68 @@ export default function CTASection() {
         .benefit-item {
           display: flex;
           align-items: center;
-          gap: 0.75rem;
+          font-size: 0.95rem;
+          margin-bottom: 0.75rem;
         }
         
         .benefit-icon {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 32px;
-          height: 32px;
-          border-radius: 50%;
-          background-color: var(--benefit-icon-bg);
-          color: var(--benefit-icon-color);
+          width: 28px;
+          height: 28px;
+          border-radius: 10px;
+          margin-right: 0.75rem;
           flex-shrink: 0;
-          box-shadow: 0 3px 10px rgba(var(--primary-rgb), 0.1);
-          transition: all 0.3s ease;
+          position: relative;
+          overflow: hidden;
+          background: linear-gradient(135deg, #6366f1, #8b5cf6);
+          color: white;
+          /* 3D effect with enhanced shadows */
+          box-shadow: 
+            0 3px 10px rgba(99, 102, 241, 0.3),
+            0 0 0 1px rgba(255, 255, 255, 0.1),
+            inset 0 -1px 3px rgba(0, 0, 0, 0.15),
+            inset 0 1px 3px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Glowing effect */
+        .benefit-icon::before {
+          content: '';
+          position: absolute;
+          inset: -2px;
+          background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.1));
+          border-radius: 12px;
+          z-index: -1;
+          filter: blur(6px);
+          opacity: 0.8;
+        }
+        
+        /* Upper highlight for 3D effect */
+        .benefit-icon::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 50%;
+          background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), transparent);
+          border-radius: 10px 10px 0 0;
+          opacity: 0.7;
+        }
+        
+        .benefit-icon svg {
+          position: relative;
+          z-index: 1;
         }
         
         .benefit-item:hover .benefit-icon {
-          transform: scale(1.05);
-          box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.15);
+          transform: translateY(-1px);
+          box-shadow: 
+            0 5px 12px rgba(99, 102, 241, 0.4),
+            0 0 0 1px rgba(255, 255, 255, 0.15),
+            inset 0 -1px 3px rgba(0, 0, 0, 0.15),
+            inset 0 1px 3px rgba(255, 255, 255, 0.4);
         }
         
         .benefit-item span {
@@ -359,6 +372,6 @@ export default function CTASection() {
           font-size: 0.875rem;
         }
       `}</style>
-    </section>
+    </SectionContainer>
   );
 } 

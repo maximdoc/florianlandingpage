@@ -2,12 +2,17 @@
 
 import { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import Link from 'next/link';
 import Button from '../ui/Button';
+import SectionContainer from '../SectionContainer';
+import Icon from '../ui/Icon';
+import { getSectionById } from '@/utils/contentUtils';
 
 export default function BenefitsSection() {
   const [hoveredBenefit, setHoveredBenefit] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
+  
+  // Получаем данные секции из JSON-файла
+  const benefitsSection = getSectionById('home', 'benefits');
   
   useEffect(() => {
     // Simple intersection observer for animation on scroll
@@ -24,65 +29,18 @@ export default function BenefitsSection() {
       if (section) observer.unobserve(section);
     };
   }, []);
-  
-  // Define benefits data for easier maintenance
-  const benefitsData = [
-    {
-      id: 1,
-      title: "Turn-key Readiness",
-      description: "Bid on Day 1—no months-long prep.",
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM3.5 5h2V3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5V5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-.89l.24 1.17A5.5 5.5 0 0 1 9.98 12h-.96a5.53 5.53 0 0 0 1.83-3H8.5v3h-1V9H5.35a5.53 5.53 0 0 0 1.83 3h-.96a5.5 5.5 0 0 1-2.37-3.84L4.09 7h-.89a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5z"/>
-        </svg>
-      ),
-      magicTitle: "UNDER-THE-HOOD MAGIC",
-      magicDescription: "Automated profile & credential builder",
-      iconBg: "var(--primary-light)"
-    },
-    {
-      id: 2,
-      title: "Higher Qualification Rate",
-      description: "Fewer instant disqualifications.",
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-        </svg>
-      ),
-      magicTitle: "UNDER-THE-HOOD MAGIC",
-      magicDescription: "Real-time gap detection + certificate concierge",
-      iconBg: "var(--primary-light)"
-    },
-    {
-      id: 3,
-      title: "Compounding Win Rates",
-      description: "Models learn from every loss and win.",
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M0 0h1v15h15v1H0V0Zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07Z"/>
-        </svg>
-      ),
-      magicTitle: "UNDER-THE-HOOD MAGIC",
-      magicDescription: "Reinforcement learning + agency feedback ingestion",
-      iconBg: "var(--primary-light)"
-    },
-    {
-      id: 4,
-      title: "Single Point of Contact",
-      description: "One invoice, one dashboard, zero hand-offs.",
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
-        </svg>
-      ),
-      magicTitle: "UNDER-THE-HOOD MAGIC",
-      magicDescription: "Integrated full-service workflow",
-      iconBg: "var(--primary-light)"
-    }
-  ];
 
+  // Если данные секции не найдены, не отображаем компонент
+  if (!benefitsSection) {
+    return null;
+  }
+  
   return (
-    <section className="benefits-section py-6 position-relative overflow-hidden">
+    <SectionContainer 
+      id="benefits"
+      className="benefits-section py-6 position-relative overflow-hidden" 
+      backgroundVariant={benefitsSection.backgroundVariant || "light"}
+    >
       {/* Decorative elements */}
       <div className="position-absolute shape-1"></div>
       <div className="position-absolute shape-2"></div>
@@ -91,17 +49,16 @@ export default function BenefitsSection() {
       <Container className="position-relative" style={{ zIndex: 2 }}>
         <Row className={`text-center mb-5 ${isVisible ? 'visible' : ''}`}>
           <Col lg={8} className="mx-auto">
-            <h2 className="display-5 mb-3 title-animation">
-              Core <span className="text-gradient">Benefits</span>
-            </h2>
+            <h2 className="display-5 mb-3 title-animation" 
+                dangerouslySetInnerHTML={{ __html: benefitsSection.title }} />
             <p className="lead subtitle-animation">
-              Our unique approach delivers measurable advantages for your government contracting journey
+              {benefitsSection.subtitle}
             </p>
           </Col>
         </Row>
         
         <Row className="g-4 benefits-cards">
-          {benefitsData.map((benefit, index) => (
+          {benefitsSection.tiles.map((benefit, index) => (
             <Col lg={6} className={`benefit-col ${isVisible ? 'visible' : ''}`} 
                  style={{ animationDelay: `${index * 0.15}s` }} 
                  key={benefit.id}>
@@ -111,11 +68,8 @@ export default function BenefitsSection() {
                 onMouseLeave={() => setHoveredBenefit(null)}
               >
                 <div className="benefit-header">
-                  <div 
-                    className="benefit-icon-wrapper"
-                    style={{ background: benefit.iconBg }}
-                  >
-                    {benefit.icon}
+                  <div className="benefit-icon-wrapper">
+                    <Icon name={benefit.icon} width={28} height={28} />
                   </div>
                   <div className="benefit-content">
                     <h3 className="benefit-title">{benefit.title}</h3>
@@ -136,11 +90,11 @@ export default function BenefitsSection() {
           <Col className="text-center cta-animation">
             <div className="cta-wrapper mt-5 pt-3">
               <Button 
-                href="#strategy-call" 
+                href={benefitsSection.ctaButton.href} 
                 variant="primary" 
                 size="lg"
               >
-                Book Your Free Strategy Call
+                {benefitsSection.ctaButton.text}
               </Button>
               <div className="btn-glow"></div>
             </div>
@@ -388,14 +342,32 @@ export default function BenefitsSection() {
           border-radius: 16px;
           margin-right: 18px;
           transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-          box-shadow: var(--icon-wrapper-shadow), 0 5px 15px rgba(var(--primary-rgb), 0.1);
           flex-shrink: 0;
           position: relative;
           overflow: hidden;
-          background: var(--primary-light);
-          opacity: 0.9;
+          background: linear-gradient(135deg, #6366f1, #8b5cf6);
+          /* 3D эффект с улучшенными тенями */
+          box-shadow: 
+            0 5px 15px rgba(99, 102, 241, 0.4),
+            0 0 0 1px rgba(255, 255, 255, 0.1),
+            inset 0 -2px 5px rgba(0, 0, 0, 0.2),
+            inset 0 2px 5px rgba(255, 255, 255, 0.3);
         }
         
+        /* Эффект свечения */
+        .benefit-icon-wrapper::before {
+          content: '';
+          position: absolute;
+          inset: -3px;
+          background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.1));
+          border-radius: 18px;
+          z-index: -1;
+          filter: blur(8px);
+          opacity: 0.8;
+          transition: opacity 0.3s ease;
+        }
+        
+        /* Верхний блик для 3D эффекта */
         .benefit-icon-wrapper::after {
           content: '';
           position: absolute;
@@ -403,38 +375,36 @@ export default function BenefitsSection() {
           left: 0;
           width: 100%;
           height: 50%;
-          background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), transparent);
-          opacity: 0.6;
-          transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-        
-        .benefit-card:hover .benefit-icon-wrapper::after {
-          opacity: 1;
-          transform: translateY(3px);
+          background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), transparent);
+          border-radius: 16px 16px 0 0;
+          opacity: 0.7;
         }
         
         .benefit-icon-wrapper svg {
-          width: 30px;
-          height: 30px;
-          color: var(--icon-color);
+          color: white;
           position: relative;
           z-index: 1;
-          filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.1));
-          transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        
+        /* Улучшенный эффект при наведении */
+        .benefit-card:hover .benefit-icon-wrapper,
+        .benefit-card.active .benefit-icon-wrapper {
+          transform: translateY(-2px);
+          box-shadow: 
+            0 8px 20px rgba(99, 102, 241, 0.5),
+            0 0 0 1px rgba(255, 255, 255, 0.15),
+            inset 0 -2px 5px rgba(0, 0, 0, 0.2),
+            inset 0 2px 5px rgba(255, 255, 255, 0.4);
+        }
+        
+        .benefit-card:hover .benefit-icon-wrapper::before,
+        .benefit-card.active .benefit-icon-wrapper::before {
+          opacity: 1;
+          filter: blur(10px);
         }
         
         .benefit-content {
           flex: 1;
-        }
-        
-        .benefit-card.active .benefit-icon-wrapper,
-        .benefit-card:hover .benefit-icon-wrapper {
-          transform: scale(1.08) translateY(-3px);
-          box-shadow: 0 8px 25px rgba(var(--primary-rgb), 0.2);
-        }
-        
-        .benefit-card:hover .benefit-icon-wrapper svg {
-          transform: scale(1.1);
         }
         
         .benefit-title {
@@ -587,6 +557,6 @@ export default function BenefitsSection() {
           }
         }
       `}</style>
-    </section>
+    </SectionContainer>
   );
 } 

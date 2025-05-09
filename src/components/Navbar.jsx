@@ -4,11 +4,18 @@ import { Navbar as BootstrapNavbar, Nav, Container, Button } from 'react-bootstr
 import Link from 'next/link';
 import ThemeToggle from './ThemeToggle';
 import { useState, useEffect, useRef } from 'react';
+import { getGlobalSettings } from '@/utils/contentUtils';
 
 export default function Navbar() {
   const [expanded, setExpanded] = useState(false);
   const [navbarHeight, setNavbarHeight] = useState(0);
   const navLinksRef = useRef([]);
+  
+  // Получаем данные навигации из JSON
+  const globalSettings = getGlobalSettings();
+  const headerData = globalSettings?.header || {};
+  const navigationItems = headerData?.navigationItems || [];
+  const logoText = headerData?.logo || globalSettings?.title?.split(' ')[0] || "PRODUCT";
 
   // Get navbar height for positioning the dropdown correctly
   useEffect(() => {
@@ -113,7 +120,7 @@ export default function Navbar() {
     >
       <Container>
         <Link href="/" className="navbar-brand fw-bold">
-          <span className="text-primary-color">PRODUCT</span>
+          <span className="text-primary-color">{logoText}</span>
         </Link>
         
         <div className="d-flex align-items-center">
@@ -136,45 +143,21 @@ export default function Navbar() {
         
         <BootstrapNavbar.Collapse id="basic-navbar-nav" className={`custom-navbar-collapse ${expanded ? 'show' : ''}`} style={{ top: navbarHeight + 'px' }}>
           <Nav className="ms-auto align-items-lg-center">
-            <a 
-              href="#features" 
-              className="nav-link py-2 px-3" 
-              onClick={smoothScrollToAnchor}
-              ref={el => navLinksRef.current[0] = el}
-            >
-              Features
-            </a>
-            
-            <a 
-              href="#benefits" 
-              className="nav-link py-2 px-3" 
-              onClick={smoothScrollToAnchor}
-              ref={el => navLinksRef.current[1] = el}
-            >
-              Benefits
-            </a>
-            
-            <a 
-              href="#testimonials" 
-              className="nav-link py-2 px-3" 
-              onClick={smoothScrollToAnchor}
-              ref={el => navLinksRef.current[2] = el}
-            >
-              Testimonials
-            </a>
-            
-            <a 
-              href="#faq" 
-              className="nav-link py-2 px-3" 
-              onClick={smoothScrollToAnchor}
-              ref={el => navLinksRef.current[3] = el}
-            >
-              FAQ
-            </a>
+            {navigationItems.map((item, index) => (
+              <a 
+                key={index}
+                href={item.href} 
+                className="nav-link py-2 px-3" 
+                onClick={smoothScrollToAnchor}
+                ref={el => navLinksRef.current[index] = el}
+              >
+                {item.text}
+              </a>
+            ))}
             
             <div 
               className="d-flex align-items-center mt-3 mt-lg-0 px-3 px-lg-0"
-              ref={el => navLinksRef.current[4] = el}
+              ref={el => navLinksRef.current[navigationItems.length] = el}
             >
               {/* Hide ThemeToggle on mobile - we moved it above */}
               <div className="d-none d-lg-block">

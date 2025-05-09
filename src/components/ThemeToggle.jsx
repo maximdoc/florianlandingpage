@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [isChanging, setIsChanging] = useState(false);
 
   // Set mounted to true when component mounts
   useEffect(() => {
@@ -18,14 +19,31 @@ export default function ThemeToggle() {
   }
   
   const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
+    // Предотвращаем повторное переключение темы во время анимации
+    if (isChanging) return;
+    
+    setIsChanging(true);
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    
+    // Добавляем класс для анимации
+    document.documentElement.classList.add('theme-transition');
+    
+    // Устанавливаем новую тему
+    setTheme(newTheme);
+    
+    // Удаляем класс после завершения анимации и разрешаем новое переключение
+    setTimeout(() => {
+      document.documentElement.classList.remove('theme-transition');
+      setIsChanging(false);
+    }, 600); // Чуть больше чем --theme-transition-speed для уверенности
   };
 
   return (
     <button
       onClick={toggleTheme}
-      className="theme-toggle"
+      className={`theme-toggle ${isChanging ? 'changing' : ''}`}
       aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+      disabled={isChanging}
     >
       {theme === 'dark' ? (
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-sun" viewBox="0 0 16 16">

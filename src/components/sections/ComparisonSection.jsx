@@ -2,27 +2,26 @@
 
 import { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import SectionContainer from '../SectionContainer';
+import { getSectionById } from '@/utils/contentUtils';
 
 export default function ComparisonSection() {
   const [activeCard, setActiveCard] = useState(null);
   
-  // Define comparison items for easier maintenance
-  const beforeItems = [
-    { id: 1, text: "Weeks hunting for paperwork" },
-    { id: 2, text: "Surprise 'non-responsive' rejections" },
-    { id: 3, text: "5% win rate" },
-    { id: 4, text: "No insight into why you lost" }
-  ];
+  // Получаем данные секции из JSON-файла
+  const comparisonSection = getSectionById('home', 'comparison');
   
-  const afterItems = [
-    { id: 1, text: "Profile auto-compiled & stored" },
-    { id: 2, text: "100% compliance checklist hit" },
-    { id: 3, text: "Target 10%+ win rate in 18 months", highlight: true },
-    { id: 4, text: "AI analytics + coach debrief" }
-  ];
-
+  // Если данные секции не найдены, не отображаем компонент
+  if (!comparisonSection) {
+    return null;
+  }
+  
   return (
-    <section className="comparison-section py-6 position-relative overflow-hidden">
+    <SectionContainer 
+      id="comparison" 
+      className="comparison-section py-8 position-relative overflow-hidden" 
+      backgroundVariant={comparisonSection.backgroundVariant || "dark"}
+    >
       {/* Decorative elements */}
       <div className="position-absolute decorative-shape top-shape"></div>
       <div className="position-absolute decorative-shape bottom-shape"></div>
@@ -30,11 +29,9 @@ export default function ComparisonSection() {
       <Container className="position-relative" style={{ zIndex: 2 }}>
         <Row className="text-center mb-5">
           <Col lg={8} className="mx-auto">
-            <h2 className="display-5 mb-3 fade-in">
-              Life <span className="text-gradient">Before vs. After</span> SlingRFP
-            </h2>
+            <h2 className="display-5 mb-3 fade-in" dangerouslySetInnerHTML={{ __html: comparisonSection.title }} />
             <p className="lead text-body-secondary mb-5">
-              See the transformative impact of our B2G contracting solution
+              {comparisonSection.subtitle}
             </p>
           </Col>
         </Row>
@@ -51,7 +48,7 @@ export default function ComparisonSection() {
             </div>
             
             <ul className="comparison-list">
-              {beforeItems.map(item => (
+              {comparisonSection.beforeItems.map(item => (
                 <li key={item.id} className="comparison-item negative">
                   <div className="icon-wrapper">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
@@ -64,7 +61,7 @@ export default function ComparisonSection() {
             </ul>
             
             <div className="result-box negative">
-              <p>Result: Frustration, wasted resources, and missed opportunities</p>
+              <p>{comparisonSection.beforeResult}</p>
             </div>
           </div>
           
@@ -79,7 +76,7 @@ export default function ComparisonSection() {
             </div>
             
             <ul className="comparison-list">
-              {afterItems.map(item => (
+              {comparisonSection.afterItems.map(item => (
                 <li key={item.id} className="comparison-item positive">
                   <div className="icon-wrapper">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
@@ -92,7 +89,7 @@ export default function ComparisonSection() {
             </ul>
             
             <div className="result-box positive">
-              <p>Result: Predictable revenue from public sector contracts</p>
+              <p>{comparisonSection.afterResult}</p>
             </div>
           </div>
         </div>
@@ -101,9 +98,9 @@ export default function ComparisonSection() {
           <Col lg={10} className="mx-auto text-center">
             <div className="bottom-line-box">
               <div className="glow-effect"></div>
-              <h3 className="bottom-line-title">The <span className="text-gradient">Bottom Line</span></h3>
+              <h3 className="bottom-line-title" dangerouslySetInnerHTML={{ __html: comparisonSection.bottomLine.title }} />
               <p className="bottom-line-text">
-                SlingRFP transforms government contracting from a high-effort, low-reward gamble into a streamlined, predictable revenue channel for your business.
+                {comparisonSection.bottomLine.text}
               </p>
             </div>
           </Col>
@@ -247,8 +244,9 @@ export default function ComparisonSection() {
           left: 0;
           right: 0;
           height: 3px;
-          background: linear-gradient(90deg, var(--before-color), transparent);
+          background: linear-gradient(90deg, var(--before-color), transparent 90%);
           opacity: 0.5;
+          transition: opacity 0.4s ease;
         }
         
         .after-card::before {
@@ -258,8 +256,9 @@ export default function ComparisonSection() {
           left: 0;
           right: 0;
           height: 3px;
-          background: linear-gradient(90deg, var(--after-color), transparent);
+          background: linear-gradient(90deg, var(--after-color), transparent 90%);
           opacity: 0.5;
+          transition: opacity 0.4s ease;
         }
         
         .before-card.active::before, 
@@ -536,6 +535,6 @@ export default function ComparisonSection() {
           }
         }
       `}</style>
-    </section>
+    </SectionContainer>
   );
 } 

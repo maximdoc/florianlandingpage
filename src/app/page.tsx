@@ -1,5 +1,5 @@
 import HeroSection from '@/components/sections/HeroSection';
-import ProblemSolutionSection from '@/components/sections/ProblemSolutionSection';
+import SolutionSection from '@/components/sections/SolutionSection';
 import BenefitsSection from '@/components/sections/BenefitsSection';
 import ComparisonSection from '@/components/sections/ComparisonSection';
 import FeaturesSection from '@/components/sections/FeaturesSection';
@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <PageLayout>
       <HeroSection />
-      <ProblemSolutionSection />
+      <SolutionSection />
       <BenefitsSection />
       <ComparisonSection />
       <FeaturesSection />
