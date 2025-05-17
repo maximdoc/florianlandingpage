@@ -1,0 +1,438 @@
+{
+  "global": {
+    "title": "SlingRFP - Government Contracting Made Easy",
+    "description": "Transform your business with efficient government contracting solutions",
+    "header": {
+      "logo": "SlingRFP",
+      "navigationItems": [
+        {
+          "text": "Features",
+          "href": "#features"
+        },
+        {
+          "text": "Benefits",
+          "href": "#benefits"
+        },
+        {
+          "text": "Testimonials",
+          "href": "#testimonials"
+        },
+        {
+          "text": "FAQ",
+          "href": "#faq"
+        }
+      ]
+    },
+    "footer": {
+      "copyright": "© 2025 SlingRFP",
+      "contactEmail": "support@slingrfp.com",
+      "navigationLinks": [
+        {
+          "text": "Features",
+          "href": "#features"
+        },
+        {
+          "text": "Benefits",
+          "href": "#benefits"
+        },
+        {
+          "text": "Testimonials",
+          "href": "#testimonials"
+        },
+        {
+          "text": "FAQ",
+          "href": "#faq"
+        },
+        {
+          "text": "Comparison",
+          "href": "#comparison"
+        }
+      ],
+      "supportLinks": [
+        {
+          "text": "FAQ",
+          "href": "#faq"
+        },
+        {
+          "text": "Get Started",
+          "href": "#cta"
+        }
+      ],
+      "legalLinks": [
+        {
+          "text": "Privacy Policy",
+          "href": "#privacy-policy"
+        },
+        {
+          "text": "Terms of Service",
+          "href": "#terms-of-service"
+        }
+      ],
+      "socialLinks": [
+        {
+          "platform": "Twitter",
+          "url": "https://twitter.com/slingrfp",
+          "icon": "twitter"
+        },
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/company/slingrfp",
+          "icon": "linkedin"
+        }
+      ]
+    }
+  },
+  "pages": [
+    {
+      "id": "home",
+      "slug": "/",
+      "title": "SlingRFP - Government Contracting Solutions",
+      "meta": {
+        "title": "SlingRFP | Simplified Government Contracting",
+        "description": "Transform your business with our streamlined approach to government contracts"
+      },
+      "sections": [
+        {
+          "id": "hero",
+          "type": "hero",
+          "title": "SlingRFP <span class=\"text-gradient\">Government</span> <br class=\"d-none d-sm-block\" /><span class=\"text-gradient\">Contracts</span> on <br class=\"d-none d-sm-block\" /><span class=\"fw-bold\">Solutions</span>",
+          "subtitle": "SlingRFP's full‑service AI platform <strong>builds your gov‑ready profile, plugs every compliance gap, and writes winning proposals</strong>—so you capture predictable B2G revenue with almost zero lift.",
+          "features": [
+            "We create (and maintain) your complete vendor dossier",
+            "Automated gap analysis flags missing certs & docs—then we secure them for you",
+            "Proposals drafted, submitted, and iterated until the win rate climbs"
+          ],
+          "ctaButton": {
+            "text": "Book a 15-min Strategy Call",
+            "href": "#strategy-call"
+          },
+          "userStats": {
+            "count": "5,000+",
+            "text": "professionals trust our platform daily"
+          },
+          "dashboardImage": "/images/optimized/dashboard-second.webp",
+          "backgroundVariant": "light"
+        },
+        {
+          "id": "solution",
+          "type": "solution",
+          "title": "The <span class=\"text-gradient\">SlingRFP</span> Solution",
+          "subtitle": "Our comprehensive approach transforms your business from having no government presence to securing repeat awards without hiring a dedicated capture team.",
+          "steps": [
+            {
+              "number": 1,
+              "title": "Profile Builder",
+              "description": "We assemble every credential, past performance doc, and certificate you need."
+            },
+            {
+              "number": 2,
+              "title": "Gap Tracker",
+              "description": "Continuous scans reveal missing qualifications; our team closes them fast."
+            },
+            {
+              "number": 3,
+              "title": "Opportunity Match",
+              "description": "AI surfaces solicitations you're truly eligible for."
+            },
+            {
+              "number": 4,
+              "title": "Proposal Studio",
+              "description": "LLM‑powered writers craft and submit compliant bids."
+            },
+            {
+              "number": 5,
+              "title": "Win‑Analytics Loop",
+              "description": "Post‑award debriefs retrain the models, boosting future win odds."
+            }
+          ],
+          "result": {
+            "title": "Result",
+            "description": "You move from <em>no presence</em> to <em>repeat awards</em> without hiring a capture team.",
+            "ctaButton": {
+              "text": "Book Your Free Strategy Call",
+              "href": "#strategy-call"
+            }
+          },
+          "backgroundVariant": "dark"
+        },
+        {
+          "id": "comparison",
+          "type": "comparison",
+          "title": "Life <span class=\"text-gradient\">Before vs. After</span> SlingRFP",
+          "subtitle": "See the transformative impact of our B2G contracting solution",
+          "beforeItems": [
+            {
+              "id": 1,
+              "text": "Weeks hunting for paperwork"
+            },
+            {
+              "id": 2,
+              "text": "Surprise 'non-responsive' rejections"
+            },
+            {
+              "id": 3,
+              "text": "5% win rate"
+            },
+            {
+              "id": 4,
+              "text": "No insight into why you lost"
+            }
+          ],
+          "afterItems": [
+            {
+              "id": 1,
+              "text": "Profile auto-compiled & stored"
+            },
+            {
+              "id": 2,
+              "text": "100% compliance checklist hit"
+            },
+            {
+              "id": 3,
+              "text": "Target 10%+ win rate in 18 months",
+              "highlight": true
+            },
+            {
+              "id": 4,
+              "text": "AI analytics + coach debrief"
+            }
+          ],
+          "beforeResult": "Result: Frustration, wasted resources, and missed opportunities",
+          "afterResult": "Result: Predictable revenue from public sector contracts",
+          "bottomLine": {
+            "title": "The <span class=\"text-gradient\">Bottom Line</span>",
+            "text": "SlingRFP transforms government contracting from a high-effort, low-reward gamble into a streamlined, predictable revenue channel for your business."
+          },
+          "backgroundVariant": "dark"
+        },
+        {
+          "id": "benefits",
+          "type": "benefits",
+          "title": "Core <span class=\"text-gradient\">Benefits</span>",
+          "subtitle": "Our unique approach delivers measurable advantages for your government contracting journey",
+          "tiles": [
+            {
+              "id": 1,
+              "title": "Turn-key Readiness",
+              "description": "Bid on Day 1—no months-long prep.",
+              "icon": "briefcase",
+              "magicTitle": "UNDER-THE-HOOD MAGIC",
+              "magicDescription": "Automated profile & credential builder"
+            },
+            {
+              "id": 2,
+              "title": "Higher Qualification Rate",
+              "description": "Fewer instant disqualifications.",
+              "icon": "check-circle",
+              "magicTitle": "UNDER-THE-HOOD MAGIC",
+              "magicDescription": "Real-time gap detection + certificate concierge"
+            },
+            {
+              "id": 3,
+              "title": "Compounding Win Rates",
+              "description": "Models learn from every loss and win.",
+              "icon": "chart-line",
+              "magicTitle": "UNDER-THE-HOOD MAGIC",
+              "magicDescription": "Reinforcement learning + agency feedback ingestion"
+            },
+            {
+              "id": 4,
+              "title": "Single Point of Contact",
+              "description": "One invoice, one dashboard, zero hand-offs.",
+              "icon": "user",
+              "magicTitle": "UNDER-THE-HOOD MAGIC",
+              "magicDescription": "Integrated full-service workflow"
+            }
+          ],
+          "ctaButton": {
+            "text": "Book Your Free Strategy Call",
+            "href": "#strategy-call"
+          },
+          "backgroundVariant": "light"
+        },
+        {
+          "id": "features",
+          "type": "features",
+          "title": "Feature <span class=\"text-gradient\">Stack</span>",
+          "subtitle": "Our comprehensive toolset for government contracting success",
+          "tiles": [
+            {
+              "id": 1,
+              "title": "Vendor Profile Builder",
+              "description": "Comprehensive solution for licenses, insurances, NAICS codes, and SAM.gov registration",
+              "icon": "user-profile"
+            },
+            {
+              "id": 2,
+              "title": "Qualification Gap Tracker",
+              "description": "Auto-reminders and concierge filing to ensure compliance",
+              "icon": "search"
+            },
+            {
+              "id": 3,
+              "title": "Nationwide RFP Crawler",
+              "description": "Covers 50 states and 30,000+ agencies for complete opportunity sourcing",
+              "icon": "globe"
+            },
+            {
+              "id": 4,
+              "title": "Smart Eligibility Scoring",
+              "description": "Intelligent filtering to skip unwinnable bids and focus on viable opportunities",
+              "icon": "check"
+            },
+            {
+              "id": 5,
+              "title": "One-Click Proposal Generator",
+              "description": "Creates Word/PDF documents with automated e-signature routing",
+              "icon": "document"
+            },
+            {
+              "id": 6,
+              "title": "Post-Award Analytics Dashboard",
+              "description": "Tracks win factors and ROI for continuous improvement",
+              "icon": "chart"
+            },
+            {
+              "id": 7,
+              "title": "SOC 2-compliant security",
+              "description": "Enterprise-grade protection with role-based access controls",
+              "icon": "lock"
+            }
+          ],
+          "ctaSection": {
+            "title": "Ready to <span class=\"text-gradient\">Transform</span> Your Government Contracting Journey?",
+            "ctaButton": {
+              "text": "Book Your Free Strategy Call",
+              "href": "#strategy-call"
+            }
+          },
+          "backgroundVariant": "light"
+        },
+        {
+          "id": "testimonials",
+          "type": "testimonials",
+          "title": "Trusted By <span class=\"text-gradient\">Thousands</span> Globally",
+          "subtitle": "Hear from satisfied SlingRFP users who have achieved financial success with our innovative tools and personalized insights.",
+          "sectionLabel": "TESTIMONIALS",
+          "testimonials": [
+            {
+              "id": 1,
+              "quote": "SlingRFP stood up our entire vendor profile—including a Women‑Owned Small Business cert—then won us a $1.8M facilities contract.",
+              "author": "Tracy Mills",
+              "position": "COO, CleanEdge Services",
+              "avatarDark": "/images/people-one.png",
+              "avatarLight": "/images/people-one-light.png",
+              "rating": 5
+            },
+            {
+              "id": 2,
+              "quote": "They handle everything: sourcing, gaps, writing, negotiations. We just deliver the work.",
+              "author": "Raj Patel",
+              "position": "CTO, OptiCloud IT",
+              "avatarDark": "/images/people-two.png",
+              "avatarLight": "/images/people-two-light.png",
+              "rating": 5
+            },
+            {
+              "id": 3,
+              "quote": "Their AI-powered approach found opportunities we would have missed entirely. Revenue up 40% in our first year.",
+              "author": "Sarah Johnson",
+              "position": "Founder, TechSolutions Inc.",
+              "avatarDark": "/images/people-three.png",
+              "avatarLight": "/images/people-three-light.png",
+              "rating": 5
+            },
+            {
+              "id": 4,
+              "quote": "The proposal generation saved us hundreds of hours. Our win rate jumped from 4% to 15% in six months.",
+              "author": "Michael Chen",
+              "position": "VP Operations, Nexus Systems",
+              "avatarDark": "/images/people-fourth.png",
+              "avatarLight": "/images/people-fourth-light.png",
+              "rating": 5
+            }
+          ],
+          "backgroundVariant": "dark"
+        },
+        {
+          "id": "faq",
+          "type": "faq",
+          "title": "<span class=\"text-gradient\">FAQs</span>",
+          "subtitle": "Common questions about getting started with SlingRFP",
+          "items": [
+            {
+              "id": "1",
+              "question": "Do we need any certifications beforehand?",
+              "answer": "No. We'll identify what's missing (e.g., ISO, WOSB) and guide you through obtaining each one."
+            },
+            {
+              "id": "2",
+              "question": "What if we've never sold to government?",
+              "answer": "Perfect. 80% of our clients were brand-new to B2G. We handle education, paperwork, and positioning."
+            },
+            {
+              "id": "3",
+              "question": "How is pricing structured?",
+              "answer": "$10K onboarding covers profile creation & first bid cycle, then success-based fees tied to contract value."
+            },
+            {
+              "id": "4",
+              "question": "How soon can we bid?",
+              "answer": "Most clients have a qualifying profile ready in 30 days and submit their first proposal within 45."
+            },
+            {
+              "id": "5",
+              "question": "Do we keep all data and templates?",
+              "answer": "Yes. You own every document, certificate, and proposal we create."
+            }
+          ],
+          "ctaSection": {
+            "title": "Still have questions? <span class=\"highlight-text\">Let's talk</span>",
+            "subtitle": "Our team is ready to answer all your questions about government contracting",
+            "button": {
+              "text": "Get in Touch",
+              "href": "#contact"
+            }
+          },
+          "backgroundVariant": "light"
+        },
+        {
+          "id": "cta",
+          "type": "cta",
+          "title": "Ready to turn <span class=\"text-gradient\">government contracting</span> into a <span class=\"text-gradient\">growth engine</span>?",
+          "subtitle": "Join businesses that are securing predictable B2G revenue streams with SlingRFP's full-service approach.",
+          "benefits": [
+            "Bid-ready in 30 days",
+            "No experience needed",
+            "Full-service approach",
+            "Target 10%+ win rate"
+          ],
+          "formTitle": "Book Your Free Strategy Call",
+          "formFields": [
+            {
+              "label": "Full Name",
+              "type": "text",
+              "placeholder": "Enter your full name"
+            },
+            {
+              "label": "Email address",
+              "type": "email",
+              "placeholder": "Enter your email"
+            },
+            {
+              "label": "Company Name",
+              "type": "text",
+              "placeholder": "Enter your company name"
+            }
+          ],
+          "submitButton": {
+            "text": "Schedule My Call",
+            "endIcon": "arrow-right"
+          },
+          "disclaimer": "No obligation, 15-minute consultation",
+          "backgroundVariant": "dark"
+        }
+      ]
+    }
+  ]
+}
