@@ -194,8 +194,39 @@ export const contentService = {
    */
   async updateCompleteContent(completeContent) {
     try {
-      // Update the file
-      fs.writeFileSync(CONTENT_JSON_PATH, JSON.stringify(completeContent, null, 2), 'utf8');
+      // Validate the content structure
+      if (!completeContent) {
+        throw new Error('Content cannot be null or undefined');
+      }
+
+      // Make sure we have at least a global object and pages array
+      if (!completeContent.global) {
+        completeContent.global = {};
+      }
+      
+      if (!completeContent.pages || !Array.isArray(completeContent.pages)) {
+        completeContent.pages = [];
+      }
+      
+      // Create a temporary file path
+      const tempFilePath = `${CONTENT_JSON_PATH}.temp`;
+      
+      // First write to a temporary file
+      fs.writeFileSync(tempFilePath, JSON.stringify(completeContent, null, 2), 'utf8');
+      
+      // Verify the temporary file exists and is valid JSON
+      try {
+        const testRead = JSON.parse(fs.readFileSync(tempFilePath, 'utf8'));
+        
+        // If we can read it back successfully, move it to the actual file
+        fs.renameSync(tempFilePath, CONTENT_JSON_PATH);
+      } catch (validationError) {
+        // Clean up the temp file if it exists
+        if (fs.existsSync(tempFilePath)) {
+          fs.unlinkSync(tempFilePath);
+        }
+        throw new Error(`Generated invalid JSON: ${validationError.message}`);
+      }
       
       return completeContent;
     } catch (error) {

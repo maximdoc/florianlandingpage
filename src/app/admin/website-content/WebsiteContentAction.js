@@ -58,9 +58,12 @@ function sanitizeData(data) {
  * @param {number} currentDepth - Current depth (for recursion)
  * @returns {Object} - Processed object with limited depth
  */
-function limitObjectDepth(obj, maxDepth = 25, currentDepth = 0) {
+function limitObjectDepth(obj, maxDepth = 10, currentDepth = 0) {
+  // Handle null, undefined, or primitive values
+  if (obj === null || obj === undefined || typeof obj !== 'object') return obj;
+  
+  // Stop if we've reached max depth
   if (currentDepth >= maxDepth) return "[MAX_DEPTH]";
-  if (obj === null || typeof obj !== 'object') return obj;
   
   // Handle arrays
   if (Array.isArray(obj)) {
@@ -84,118 +87,50 @@ function limitObjectDepth(obj, maxDepth = 25, currentDepth = 0) {
  * @returns {Object} Result of the update operation
  */
 export async function updateWebsiteContent(contentData) {
-  console.log('Starting update process with data:', 
-    JSON.stringify({
-      hasGlobal: !!contentData?.global,
-      pagesCount: contentData?.pages?.length || 0,
-      pagesSlugs: contentData?.pages?.map(p => p.slug || 'no-slug') || []
-    })
-  );
+  console.log('Starting update process');
   
   try {
-    if (!contentData || (!contentData.global && !contentData.pages)) {
-      throw new Error('Invalid content data provided');
+    if (!contentData) {
+      throw new Error('No content data provided');
     }
     
-    // Sanitize input data to prevent circular references
-    let sanitizedData = sanitizeData(contentData);
+    if (!contentData.global && (!contentData.pages || !Array.isArray(contentData.pages) || contentData.pages.length === 0)) {
+      throw new Error('Invalid content structure: must include global content or pages array');
+    }
     
-    // Apply depth limitation to prevent stack overflow
-    sanitizedData = limitObjectDepth(sanitizedData);
-    
-    const result = {};
-    const updatedPaths = ['/'];
-    
-    // Approach 1: Try updating the complete content in one operation
+    // Create a safe copy to work with, avoiding circular references or deep nesting
     try {
-      console.log('Trying to update complete content in one operation');
+      // Sanitize input data to prevent circular references
+      let sanitizedData = sanitizeData(contentData);
+      
+      // Apply depth limitation to prevent stack overflow
+      sanitizedData = limitObjectDepth(sanitizedData, 10);
+      
+      const result = {};
+      const updatedPaths = ['/'];
+      
+      // Update complete content with sanitized data
+      console.log('Updating complete content');
       await contentService.updateCompleteContent(sanitizedData);
-      result.success = true;
-      console.log('Complete content update successful');
-    } catch (completeUpdateError) {
-      console.error('Complete content update failed, falling back to individual updates:', completeUpdateError);
       
-      // Approach 2: Fall back to individual updates if complete update fails
-      // Update global content if provided
-      if (sanitizedData.global) {
-        console.log('Updating global content');
-        const globalResult = await contentService.updateGlobalContent(sanitizedData.global);
-        result.global = 'updated';
+      console.log('Content updated successfully');
+      
+      // Revalidate all affected paths
+      console.log('Revalidating paths');
+      for (const path of updatedPaths) {
+        revalidatePath(path);
+        console.log(`Revalidated path: ${path}`);
       }
       
-      // Update pages if provided
-      if (sanitizedData.pages && Array.isArray(sanitizedData.pages)) {
-        console.log(`Processing ${sanitizedData.pages.length} pages`);
-        const pagesResult = [];
-        
-        for (const page of sanitizedData.pages) {
-          // Ensure page has a slug, use a default if missing
-          if (!page.slug) {
-            console.warn('Page missing slug, setting default');
-            page.slug = page.id || '/';
-          }
-          
-          console.log(`Updating page with slug: ${page.slug}`);
-          
-          try {
-            // Ensure we have all required fields for a page
-            if (!page.title) {
-              console.warn(`Page ${page.slug} missing title, adding default`);
-              page.title = `Page ${page.id || ''}`;
-            }
-            
-            const pageResult = await contentService.updatePageBySlug(page.slug, page);
-            console.log(`Page ${page.slug} updated successfully`);
-            pagesResult.push({ 
-              slug: page.slug, 
-              status: 'updated',
-              id: page.id || 'unknown'
-            });
-            
-            // Add page path to revalidation list
-            if (!updatedPaths.includes(page.slug)) {
-              updatedPaths.push(page.slug);
-            }
-          } catch (error) {
-            console.error(`Error updating page ${page.slug}:`, error);
-            pagesResult.push({ 
-              slug: page.slug, 
-              status: 'error', 
-              message: error.message,
-              id: page.id || 'unknown'
-            });
-          }
-        }
-        
-        result.pages = pagesResult;
-      }
+      return {
+        success: true,
+        message: 'Content updated successfully',
+        revalidatedPaths: updatedPaths
+      };
+    } catch (error) {
+      console.error('Error processing content data:', error);
+      throw new Error(`Failed to process content data: ${error.message}`);
     }
-    
-    // Revalidate all affected paths
-    for (const path of updatedPaths) {
-      revalidatePath(path);
-      console.log(`Revalidated path: ${path}`);
-    }
-    
-    // Refresh content after updates
-    try {
-      const refreshResult = await refreshContent();
-      result.contentRefreshed = true;
-      console.log('Content refreshed successfully:', refreshResult);
-    } catch (refreshError) {
-      console.error('Error refreshing content:', refreshError);
-      result.contentRefreshed = false;
-      result.refreshError = refreshError.message;
-    }
-    
-    console.log('Content update completed successfully:', result);
-    
-    return {
-      success: true,
-      message: 'Content updated successfully',
-      result,
-      revalidatedPaths: updatedPaths
-    };
   } catch (error) {
     console.error('Error in updateWebsiteContent server action:', error);
     throw new Error(error.message || 'Failed to update website content');

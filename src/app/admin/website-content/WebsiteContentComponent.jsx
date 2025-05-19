@@ -28,7 +28,7 @@ export default function WebsiteContentComponent({ initialContent }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setStatusMessage('Updating content...');
+    setStatusMessage('Validating content...');
     setStatusType('info');
     setJsonError('');
     
@@ -38,18 +38,47 @@ export default function WebsiteContentComponent({ initialContent }) {
       try {
         contentData = JSON.parse(jsonContent);
       } catch (parseError) {
-        setJsonError('Invalid JSON format. Please check your input.');
-        setStatusMessage('Invalid JSON format');
+        setJsonError(`Invalid JSON format: ${parseError.message}`);
+        setStatusMessage('Failed: Invalid JSON format');
         setStatusType('danger');
         setIsSubmitting(false);
         return;
       }
       
+      // Validate basic structure
+      if (!contentData || typeof contentData !== 'object') {
+        setJsonError('Content must be a valid JSON object');
+        setStatusMessage('Failed: Invalid content structure');
+        setStatusType('danger');
+        setIsSubmitting(false);
+        return;
+      }
+      
+      // Check for required structure
+      if (!contentData.global && (!contentData.pages || !Array.isArray(contentData.pages) || contentData.pages.length === 0)) {
+        setJsonError('Content must contain either "global" object or non-empty "pages" array');
+        setStatusMessage('Failed: Missing required content structure');
+        setStatusType('danger');
+        setIsSubmitting(false);
+        return;
+      }
+      
+      // Limit object size to avoid potential issues
+      const jsonSize = new Blob([jsonContent]).size;
+      if (jsonSize > 5 * 1024 * 1024) { // 5MB limit
+        setJsonError('Content is too large (>5MB). Please reduce size.');
+        setStatusMessage('Failed: Content too large');
+        setStatusType('danger');
+        setIsSubmitting(false);
+        return;
+      }
+      
+      setStatusMessage('Updating content...');
+      
       // Call the server action to update content
       const result = await updateWebsiteContent(contentData);
       
       // Handle success
-      console.log('Update result:', result);
       setStatusMessage('Content updated successfully!');
       setStatusType('success');
       
