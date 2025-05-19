@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { getCompleteContent, getContentVersionInfo } from '@/actions/contentActions';
+import { contentService } from '@/services/contentService';
 import WebsiteContentComponent from './WebsiteContentComponent';
 
 // Force dynamic rendering to prevent caching
@@ -38,52 +38,16 @@ function sanitizeData(data) {
 // Server component that fetches data
 async function ContentAdmin() {
   try {
-    // Fetch complete content using server action
-    const completeContent = await getCompleteContent();
-    
-    // Get version information using server action
-    const versionInfo = await getContentVersionInfo();
-    
-    // Merge version info with content data
-    const contentWithVersioning = {
-      ...completeContent,
-      version: versionInfo.version,
-      timestamp: versionInfo.timestamp,
-      versionCount: versionInfo.versionCount
-    };
+    // Fetch complete content from MongoDB
+    const completeContent = await contentService.getCompleteContent();
     
     // Sanitize data to prevent circular references
-    const safeContent = sanitizeData(contentWithVersioning);
+    const safeContent = sanitizeData(completeContent);
     
     return (
-      <div>
-        <div className="mb-4">
-          <h4 className="mb-2">Content Version Information</h4>
-          <div className="card">
-            <div className="card-body">
-              <div className="d-flex justify-content-between align-items-center">
-                <div>
-                  <p className="mb-1">
-                    <strong>Current Version:</strong> v{safeContent.version || 'None'}
-                  </p>
-                  <p className="mb-1">
-                    <strong>Last Updated:</strong> {safeContent.timestamp 
-                      ? new Date(safeContent.timestamp).toLocaleString() 
-                      : 'Never'}
-                  </p>
-                  <p className="mb-0">
-                    <strong>Total Versions:</strong> {safeContent.versionCount || 0}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <WebsiteContentComponent 
-          initialContent={safeContent}
-        />
-      </div>
+      <WebsiteContentComponent 
+        initialContent={safeContent}
+      />
     );
   } catch (error) {
     return (

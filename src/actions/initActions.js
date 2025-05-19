@@ -1,6 +1,6 @@
 'use server';
 
-import { getCompleteContent } from '@/services/contentService';
+import { contentService } from '@/services/contentService';
 import { revalidatePath } from 'next/cache';
 
 /**
@@ -9,7 +9,7 @@ import { revalidatePath } from 'next/cache';
 export async function initializeContent() {
   try {
     console.log('Initializing content...');
-    const content = await getCompleteContent();
+    const content = await contentService.getCompleteContent();
     
     if (!content) {
       return {

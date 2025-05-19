@@ -85,8 +85,8 @@
   "pages": [
     {
       "id": "home",
-      "slug": "/",
       "title": "SlingRFP - Government Contracting Solutions",
+      "slug": "/",
       "meta": {
         "title": "SlingRFP | Simplified Government Contracting",
         "description": "Transform your business with our streamlined approach to government contracts"
@@ -95,7 +95,7 @@
         {
           "id": "hero",
           "type": "hero",
-          "title": "SlingRFP <span class=\"text-gradient\">Government</span> <br class=\"d-none d-sm-block\" /><span class=\"text-gradient\">Contracts</span> on <br class=\"d-none d-sm-block\" /><span class=\"fw-bold\">Solutions</span>",
+          "title": "Test SlingRFP <span class=\"text-gradient\">Government</span> <br class=\"d-none d-sm-block\" /><span class=\"text-gradient\">Contracts</span> on <br class=\"d-none d-sm-block\" /><span class=\"fw-bold\">Solutions</span>",
           "subtitle": "SlingRFP's full‑service AI platform <strong>builds your gov‑ready profile, plugs every compliance gap, and writes winning proposals</strong>—so you capture predictable B2G revenue with almost zero lift.",
           "features": [
             "We create (and maintain) your complete vendor dossier",
@@ -311,9 +311,9 @@
         {
           "id": "testimonials",
           "type": "testimonials",
+          "sectionLabel": "TESTIMONIALS",
           "title": "Trusted By <span class=\"text-gradient\">Thousands</span> Globally",
           "subtitle": "Hear from satisfied SlingRFP users who have achieved financial success with our innovative tools and personalized insights.",
-          "sectionLabel": "TESTIMONIALS",
           "testimonials": [
             {
               "id": 1,

@@ -1,16 +1,6 @@
 'use server';
 
-import { 
-  getGlobalContent as getContentGlobal,
-  getPageBySlug,
-  getAllPages as getAllContentPages,
-  getCompleteContent as getComplete,
-  updateGlobalContent as updateContentGlobal,
-  updatePageBySlug,
-  updateCompleteContent as updateContentComplete,
-  refreshContentFromDatabase as refreshFromDb,
-  getContentVersionInfo as getVersionInfo
-} from '@/services/contentService';
+import { contentService } from '@/services/contentService';
 import { revalidatePath } from 'next/cache';
 
 /**
@@ -19,7 +9,7 @@ import { revalidatePath } from 'next/cache';
 export async function getGlobalContent() {
   try {
     // Use content service to get global content
-    const globalContent = await getContentGlobal();
+    const globalContent = await contentService.getGlobalContent();
     
     if (!globalContent) {
       return {
@@ -45,7 +35,7 @@ export async function getGlobalContent() {
  */
 export async function getPageContent(slug) {
   try {
-    const pageContent = await getPageBySlug(slug);
+    const pageContent = await contentService.getPageBySlug(slug);
     
     if (!pageContent) {
       return {
@@ -71,7 +61,7 @@ export async function getPageContent(slug) {
  */
 export async function getAllPages() {
   try {
-    const pages = await getAllContentPages();
+    const pages = await contentService.getAllPages();
     return pages;
   } catch (error) {
     console.error('Error fetching all pages:', error);
@@ -88,7 +78,7 @@ export async function getAllPages() {
 export async function syncContent() {
   try {
     // Fetch content from the file
-    const content = await getComplete();
+    const content = await contentService.getCompleteContent();
     
     if (!content) {
       return {
@@ -135,7 +125,7 @@ export async function updateGlobalContent(formData) {
     }
     
     // Update global content
-    await updateContentGlobal(globalContent);
+    await contentService.updateGlobalContent(globalContent);
     
     // Revalidate paths
     revalidatePath('/');
@@ -185,7 +175,7 @@ export async function updatePageContent(formData) {
     pageContent.slug = slug;
     
     // Update page content
-    await updatePageBySlug(slug, pageContent);
+    await contentService.updatePageBySlug(slug, pageContent);
     
     // Revalidate paths
     revalidatePath('/');
@@ -225,7 +215,7 @@ export async function updateCompleteContent(formData) {
     }
     
     // Update content
-    await updateContentComplete(completeContent);
+    await contentService.updateCompleteContent(completeContent);
     
     // Revalidate paths
     revalidatePath('/');
@@ -240,82 +230,5 @@ export async function updateCompleteContent(formData) {
       success: false,
       message: `Failed to update content: ${error.message}`
     };
-  }
-}
-
-/**
- * Server action to refresh content from the database
- */
-export async function refreshContentFromDatabase() {
-  try {
-    const result = await refreshFromDb();
-    
-    // Revalidate paths to ensure Next.js updates the cache
-    revalidatePath('/');
-    revalidatePath('/admin/website-content');
-    
-    return {
-      success: true,
-      message: 'Content refreshed successfully',
-      version: result.version,
-      timestamp: result.timestamp
-    };
-  } catch (error) {
-    console.error('Error refreshing content from database:', error);
-    throw new Error(`Failed to refresh content: ${error.message}`);
-  }
-}
-
-/**
- * Server action to get the current content version info
- */
-export async function getContentVersionInfo() {
-  try {
-    return await getVersionInfo();
-  } catch (error) {
-    console.error('Error getting content version info:', error);
-    throw new Error(`Failed to get version info: ${error.message}`);
-  }
-}
-
-/**
- * Server action to get complete content
- */
-export async function getCompleteContent() {
-  try {
-    return await getComplete();
-  } catch (error) {
-    console.error('Error getting complete content:', error);
-    throw new Error(`Failed to get content: ${error.message}`);
-  }
-}
-
-/**
- * Server action to update content
- * @param {Object} content - The content to update
- */
-export async function updateContent(content) {
-  try {
-    // Sanitize the content data
-    const sanitizedContent = {
-      global: content.global || {},
-      pages: content.pages || []
-    };
-    
-    const result = await updateContentComplete(sanitizedContent);
-    
-    // Revalidate paths to ensure Next.js updates the cache
-    revalidatePath('/');
-    revalidatePath('/admin/website-content');
-    
-    return {
-      success: true,
-      message: 'Content updated successfully',
-      version: result.version,
-      timestamp: result.timestamp
-    };
-  } catch (error) {
-    console.error('Error updating content:', error);
-    throw new Error(`Failed to update content: ${error.message}`);
   }
 } 

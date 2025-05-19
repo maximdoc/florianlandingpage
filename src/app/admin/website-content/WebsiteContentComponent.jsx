@@ -3,12 +3,10 @@
 import { useState, useEffect } from 'react';
 import Button from '@/components/ui/Button';
 import { updateWebsiteContent } from './WebsiteContentAction';
-import { refreshContentFromDatabase } from '@/actions/contentActions';
 
-// The client component for editing website content via JSON
+// The simplified client component for editing website content via JSON
 export default function WebsiteContentComponent({ initialContent }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   const [statusType, setStatusType] = useState('');
   const [jsonContent, setJsonContent] = useState('');
@@ -25,26 +23,6 @@ export default function WebsiteContentComponent({ initialContent }) {
       setJsonError('Failed to load initial content. Please check the data format.');
     }
   }, [initialContent]);
-  
-  // Handle refresh button click
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    setStatusMessage('Refreshing content from database...');
-    setStatusType('info');
-    
-    try {
-      // Use the server action to refresh content
-      await refreshContentFromDatabase();
-      
-      // Force reload to get fresh data
-      window.location.reload();
-    } catch (error) {
-      console.error('Error refreshing content:', error);
-      setStatusMessage(`Error refreshing: ${error.message || 'Failed to refresh content'}`);
-      setStatusType('danger');
-      setIsRefreshing(false);
-    }
-  };
   
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -67,15 +45,8 @@ export default function WebsiteContentComponent({ initialContent }) {
         return;
       }
       
-      // Sanitize the content data by removing MongoDB-specific fields
-      // This prevents validation errors when MongoDB tries to cast fields
-      const sanitizedContent = {
-        global: contentData.global || {},
-        pages: contentData.pages || []
-      };
-      
       // Call the server action to update content
-      const result = await updateWebsiteContent(sanitizedContent);
+      const result = await updateWebsiteContent(contentData);
       
       // Handle success
       console.log('Update result:', result);
@@ -95,16 +66,6 @@ export default function WebsiteContentComponent({ initialContent }) {
     }
   };
   
-  // Extract version info for display
-  const versionInfo = initialContent.version 
-    ? `v${initialContent.version} - ${new Date(initialContent.timestamp).toLocaleString()}`
-    : 'Not versioned';
-  
-  // Display active status if available
-  const activeStatus = initialContent.active !== undefined 
-    ? initialContent.active ? 'Active' : 'Inactive'
-    : '';
-  
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -114,18 +75,6 @@ export default function WebsiteContentComponent({ initialContent }) {
             {statusMessage}
           </div>
         )}
-        
-        <div className="d-flex justify-content-end mb-3">
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={handleRefresh}
-            disabled={isRefreshing}
-            className="me-2"
-          >
-            {isRefreshing ? 'Refreshing...' : 'Refresh from Database'}
-          </Button>
-        </div>
         
         <div className="card mb-4">
           <div className="card-header">
@@ -139,9 +88,10 @@ export default function WebsiteContentComponent({ initialContent }) {
               
               <div className="small text-muted mb-2">
                 <pre style={{ margin: 0 }}>
-                  version: {versionInfo}
-                  active: {activeStatus}
-                  timestamp: {initialContent.timestamp ? new Date(initialContent.timestamp).toISOString() : 'N/A'}
+                  page:
+                  version:
+                  active:
+                  timestamp:
                 </pre>
               </div>
               
