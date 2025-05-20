@@ -1,4 +1,5 @@
 import HeroSection from '@/components/sections/HeroSection';
+import MissionValueSection from '@/components/sections/MissionValueSection';
 import SolutionSection from '@/components/sections/SolutionSection';
 import BenefitsSection from '@/components/sections/BenefitsSection';
 import ComparisonSection from '@/components/sections/ComparisonSection';
@@ -65,6 +66,7 @@ export default function Home() {
   return (
     <PageLayout>
       <HeroSection />
+      <MissionValueSection />
       <SolutionSection />
       <BenefitsSection />
       <ComparisonSection />

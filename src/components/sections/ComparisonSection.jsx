@@ -604,6 +604,16 @@ export default function ComparisonSection() {
           color: var(--after-color);
         }
 
+        /* Ensure SVG icons are properly centered and sized */
+        .comparison-item .icon-wrapper svg {
+          width: 16px;
+          height: 16px;
+          display: block;
+          position: relative;
+          top: 0;
+          left: 0;
+        }
+
         .comparison-item span.highlight {
           font-weight: 700;
           color: var(--after-color);

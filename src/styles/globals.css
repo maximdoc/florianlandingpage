@@ -16,35 +16,35 @@
   --warning: #f39c12;
   --danger: #e74c3c;
   --info: #3498db;
-  
+
   /* Text colors */
   --text-primary: #0e1525;
   --text-secondary: #4a5568;
   --text-muted: #718096;
   --text-light: #f8f9fa;
   --text-body: #2d3748;
-  
+
   /* Border colors */
   --border-color: #e2e8f0;
-  
+
   /* Shadow colors */
   --shadow-color: rgba(0, 0, 0, 0.1);
   --shadow-color-darker: rgba(0, 0, 0, 0.15);
-  
+
   /* Card colors */
   --card-bg: #ffffff;
   --card-bg-dark: #1a202c;
-  
+
   /* Gradients */
   --gradient-primary: linear-gradient(135deg, var(--primary) 0%, #4c75f2 100%);
   --gradient-dark: linear-gradient(135deg, #0e1525 0%, #1a202c 100%);
-  
+
   /* Transitions */
   --transition-speed: 0.3s;
   --theme-transition-speed: 0.5s;
   --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
   --theme-transition-easing: cubic-bezier(0.16, 1, 0.3, 1);
-  
+
   /* Border radius */
   --border-radius-sm: 0.25rem;
   --border-radius: 12px;
@@ -52,7 +52,7 @@
   --border-radius-xl: 1.5rem;
   --border-radius-2xl: 2rem;
   --border-radius-full: 9999px;
-  
+
   /* Spacing */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
@@ -61,7 +61,7 @@
   --spacing-xl: 2rem;
   --spacing-2xl: 3rem;
   --spacing-3xl: 4rem;
-  
+
   /* Container widths */
   --container-max-width-xl: 1240px;
   --container-max-width-xxl: 1440px;
@@ -80,26 +80,26 @@
   --btn-primary-hover-bg: #4f46e5;
   --btn-primary-hover-text: #ffffff;
   --btn-primary-active-bg: #4338ca;
-  
+
   --btn-secondary-bg: transparent;
   --btn-secondary-text: #6366f1;
   --btn-secondary-border: rgba(99, 102, 241, 0.5);
   --btn-secondary-hover-bg: rgba(99, 102, 241, 0.1);
   --btn-secondary-hover-text: #4f46e5;
   --btn-secondary-active-bg: rgba(99, 102, 241, 0.2);
-  
+
   --btn-white-bg: #ffffff;
   --btn-white-text: #6366f1;
   --btn-white-hover-bg: #f0f4ff;
   --btn-white-hover-text: #4f46e5;
   --btn-white-active-bg: #e1e7fe;
-  
+
   --btn-dark-bg: #1e293b;
   --btn-dark-text: #ffffff;
   --btn-dark-hover-bg: #334155;
   --btn-dark-hover-text: #ffffff;
   --btn-dark-active-bg: #475569;
-  
+
   --btn-border-radius: 12px;
   --btn-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
   --btn-hover-box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
@@ -108,7 +108,7 @@
 
   /* Ключевые элементы для плавного перехода темы */
   --theme-transition-properties: background-color, color, border-color, box-shadow, fill, stroke;
-  
+
   /* Переменная для контроля начальной загрузки */
   --initial-load: 1;
 
@@ -139,7 +139,7 @@
   --shadow-color: rgba(0, 0, 0, 0.3);
   --shadow-color-darker: rgba(0, 0, 0, 0.5);
   --card-bg: #1a202c;
-  
+
   /* Dark theme for CTA section */
   --primary-color: #6366f1;
   --primary-hover: #818cf8;
@@ -153,24 +153,24 @@
   --btn-primary-text: #ffffff;
   --btn-primary-hover-bg: #818cf8;
   --btn-primary-hover-text: #ffffff;
-  
+
   --btn-secondary-border: rgba(99, 102, 241, 0.6);
   --btn-secondary-text: #6366f1;
   --btn-secondary-hover-bg: rgba(99, 102, 241, 0.15);
   --btn-secondary-hover-text: #818cf8;
   --btn-secondary-active-bg: rgba(99, 102, 241, 0.25);
-  
+
   --btn-white-bg: rgba(255, 255, 255, 0.9);
   --btn-white-text: #6366f1;
   --btn-white-hover-bg: #ffffff;
   --btn-white-hover-text: #4f46e5;
-  
+
   --btn-dark-bg: #0f172a;
   --btn-dark-text: #ffffff;
   --btn-dark-hover-bg: #1e293b;
   --btn-dark-hover-text: #ffffff;
   --btn-dark-active-bg: #334155;
-  
+
   --btn-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   --btn-hover-box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   --btn-active-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
@@ -181,7 +181,11 @@
 }
 
 /* Override Bootstrap container widths */
-.container, .container-lg, .container-md, .container-sm, .container-xl {
+.container,
+.container-lg,
+.container-md,
+.container-sm,
+.container-xl {
   max-width: 90%;
   padding-left: 2.5rem;
   padding-right: 2.5rem;
@@ -190,24 +194,37 @@
 }
 
 @media (min-width: 1200px) {
-  .container, .container-lg, .container-md, .container-sm, .container-xl {
+
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl {
     max-width: var(--container-max-width-xl);
   }
 }
 
 @media (min-width: 1600px) {
-  .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl,
+  .container-xxl {
     max-width: var(--container-max-width-xxl);
   }
 }
 
-/* При загрузке страницы блокируем анимации для предотвращения мерцания */
+/* Block animations when page loads to prevent flashing */
 .no-transitions * {
   transition: none !important;
 }
 
 /* Fix to prevent layout shifts when images load */
-img, svg, video {
+img,
+svg,
+video {
   max-width: 100%;
   height: auto;
   display: block;
@@ -231,7 +248,7 @@ body {
   line-height: 1.6;
   scroll-behavior: auto;
   transition: background-color var(--theme-transition-speed) var(--theme-transition-easing),
-              color var(--theme-transition-speed) var(--theme-transition-easing);
+    color var(--theme-transition-speed) var(--theme-transition-easing);
   width: 100%;
   overflow-x: hidden;
 }
@@ -266,7 +283,7 @@ body {
 .accordion-button,
 .glow-effect::before,
 .widget {
-  transition: 
+  transition:
     background-color var(--theme-transition-speed) ease,
     color var(--theme-transition-speed) ease,
     border-color var(--theme-transition-speed) ease,
@@ -395,7 +412,7 @@ body {
     clip-path: inset(0 0 100% 0);
     visibility: hidden;
   }
-  
+
   .custom-navbar-collapse.show {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -403,7 +420,7 @@ body {
     clip-path: inset(0 0 0 0);
     visibility: visible;
   }
-  
+
   .custom-navbar-collapse .nav-link {
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     padding: 0.9rem 1.25rem;
@@ -417,18 +434,18 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
   }
-  
+
   .custom-navbar-collapse.show .nav-link {
     opacity: 1;
     transform: translateX(0);
   }
-  
+
   .custom-navbar-collapse .nav-link:hover {
     background-color: rgba(var(--primary-rgb), 0.075);
     color: var(--primary);
     transform: translateX(5px);
   }
-  
+
   .custom-navbar-collapse .nav-link::before {
     content: '';
     position: absolute;
@@ -439,11 +456,11 @@ body {
     background-color: var(--primary);
     transition: width 0.3s ease;
   }
-  
+
   .custom-navbar-collapse .nav-link:hover::before {
     width: 100%;
   }
-  
+
   .custom-navbar-collapse .nav-link:last-of-type {
     border-bottom: none;
   }
@@ -485,7 +502,8 @@ body {
   padding-bottom: 8rem;
 }
 
-.challenge-section, .solution-section {
+.challenge-section,
+.solution-section {
   position: relative;
   overflow: hidden;
 }
@@ -503,7 +521,8 @@ body {
   margin-bottom: 2rem;
 }
 
-.challenge-description, .solution-description {
+.challenge-description,
+.solution-description {
   font-size: 1.2rem;
   line-height: 1.7;
   color: var(--text-secondary);
@@ -848,11 +867,25 @@ body {
   border-radius: 4px 4px 0 0;
 }
 
-.bar-1 { height: 40%; }
-.bar-2 { height: 70%; }
-.bar-3 { height: 90%; }
-.bar-4 { height: 60%; }
-.bar-5 { height: 50%; }
+.bar-1 {
+  height: 40%;
+}
+
+.bar-2 {
+  height: 70%;
+}
+
+.bar-3 {
+  height: 90%;
+}
+
+.bar-4 {
+  height: 60%;
+}
+
+.bar-5 {
+  height: 50%;
+}
 
 .widget-progress {
   display: flex;
@@ -914,9 +947,11 @@ body {
   0% {
     transform: translate(0, 0);
   }
+
   50% {
     transform: translate(-20px, 20px);
   }
+
   100% {
     transform: translate(20px, -20px);
   }
@@ -958,12 +993,12 @@ body {
     flex-direction: row;
     flex-wrap: wrap;
   }
-  
+
   .testimonial-card {
     flex: 1;
     min-width: 300px;
   }
-  
+
   .testimonial-card.secondary {
     margin-left: 0;
     margin-top: 3rem;
@@ -975,19 +1010,19 @@ body {
     flex-direction: column;
     height: auto;
   }
-  
+
   .platform-sidebar {
     width: 100%;
     border-right: none;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     padding: 1rem;
   }
-  
+
   .platform-widgets {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   .widget {
     height: auto;
     min-height: 150px;
@@ -995,18 +1030,23 @@ body {
 }
 
 /* Make all headings bold */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 700 !important;
   color: var(--text-primary);
   margin-bottom: 1rem;
 }
 
 /* Bold headings with gradient */
-h1 span.text-gradient, 
-h2 span.text-gradient, 
-h3 span.text-gradient, 
-h4 span.text-gradient, 
-h5 span.text-gradient, 
+h1 span.text-gradient,
+h2 span.text-gradient,
+h3 span.text-gradient,
+h4 span.text-gradient,
+h5 span.text-gradient,
 h6 span.text-gradient {
   font-weight: 800 !important;
 }
@@ -1028,10 +1068,10 @@ p {
   padding: 0.75rem 1.5rem;
   font-weight: 600;
   transition: transform var(--transition-speed) var(--transition-bounce),
-              background-color var(--transition-speed) ease,
-              border-color var(--transition-speed) ease,
-              box-shadow var(--transition-speed) ease,
-              color var(--transition-speed) ease;
+    background-color var(--transition-speed) ease,
+    border-color var(--transition-speed) ease,
+    box-shadow var(--transition-speed) ease,
+    color var(--transition-speed) ease;
   position: relative;
   overflow: hidden;
   letter-spacing: 0.01em;
@@ -1039,7 +1079,8 @@ p {
   line-height: 1.5;
 }
 
-.btn:focus, .btn:active {
+.btn:focus,
+.btn:active {
   outline: none;
   box-shadow: 0 0 0 0.25rem rgba(var(--primary-rgb), 0.25);
 }
@@ -1077,7 +1118,7 @@ p {
   color: var(--btn-primary-hover-text);
 }
 
-.btn-primary:active, 
+.btn-primary:active,
 .btn-primary:focus {
   background-color: var(--btn-primary-active-bg);
   border-color: var(--btn-primary-active-bg);
@@ -1253,8 +1294,8 @@ p {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color var(--transition-speed) ease, 
-              transform var(--transition-speed) var(--transition-bounce);
+  transition: color var(--transition-speed) ease,
+    transform var(--transition-speed) var(--transition-bounce);
 }
 
 .theme-toggle:hover {
@@ -1264,16 +1305,22 @@ p {
 
 /* Стили для кнопки во время изменения темы */
 .theme-toggle.changing {
-  animation: pulse 0.5s ease-in-out;
-  pointer-events: none;
-  opacity: 0.7;
+  animation: pulse 1.5s infinite;
 }
 
-/* Анимация пульсации для индикации смены темы */
+/* Animation for theme change indication */
 @keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* Section styling */
@@ -1422,11 +1469,6 @@ p {
   margin-bottom: 1rem;
 }
 
-.comparison-list li svg {
-  margin-right: 1rem;
-  flex-shrink: 0;
-}
-
 /* CTA section */
 .cta-section {
   background: var(--gradient-primary);
@@ -1537,13 +1579,25 @@ p {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  from { transform: translateY(50px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* Responsive adjustments */
@@ -1551,11 +1605,11 @@ p {
   .section-title {
     font-size: 2rem;
   }
-  
+
   .section-subtitle {
     font-size: 1rem;
   }
-  
+
   .comparison-table {
     grid-template-columns: 1fr;
   }
@@ -1574,21 +1628,30 @@ p {
   }
 
   /* Fix text overflow issues */
-  h1, h2, h3, h4, h5, h6, p, .lead {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  .lead {
     max-width: 100%;
     overflow-wrap: break-word;
     word-wrap: break-word;
   }
 
   /* Reduce heading sizes on mobile */
-  h1, .h1 {
+  h1,
+  .h1 {
     font-size: calc(1.525rem + 1.5vw);
   }
-  
-  h2, .h2 {
+
+  h2,
+  .h2 {
     font-size: calc(1.325rem + 1vw);
   }
-  
+
   .display-4 {
     font-size: calc(1.475rem + 2.7vw);
   }
@@ -1610,7 +1673,8 @@ p {
   }
 
   /* Fix image sizing issues */
-  img, svg {
+  img,
+  svg {
     max-width: 100%;
     height: auto;
   }
@@ -1631,23 +1695,24 @@ p {
   section {
     margin-bottom: 0;
   }
-  
+
   .section-content {
     margin-top: 3rem;
   }
 }
 
 @media (min-width: 769px) and (max-width: 991px) {
+
   /* Adjust vertical spacing for tablets */
   .py-6 {
     padding-top: 7rem;
     padding-bottom: 7rem;
   }
-  
+
   section {
     margin-bottom: 0;
   }
-  
+
   /* Adjust container padding for tablets */
   .container {
     padding-left: 2rem;
@@ -1655,7 +1720,14 @@ p {
   }
 
   /* Fix text overflow issues on tablets */
-  h1, h2, h3, h4, h5, h6, p, .lead {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  .lead {
     max-width: 100%;
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -1668,13 +1740,15 @@ p {
 
   /* Fix CTA card padding for tablets */
   .cta-content-col,
-.cta-form-col {
+  .cta-form-col {
     padding: 3rem 2rem !important;
   }
 }
 
 /* Fix for all screen sizes */
-.card, .btn, .form-control {
+.card,
+.btn,
+.form-control {
   max-width: 100%;
 }
 
@@ -1684,7 +1758,8 @@ p {
 }
 
 /* Fix image responsiveness */
-.img-fluid, .img-responsive {
+.img-fluid,
+.img-responsive {
   max-width: 100%;
   height: auto;
 }
@@ -1724,7 +1799,7 @@ p {
     padding-right: 1.25rem;
     max-width: 100%;
   }
-  
+
   /* Adjust dashboard mockup for mobile */
   .dashboard-mockup {
     margin-top: 0;
@@ -1752,24 +1827,25 @@ section {
 }
 
 /* Remove spacing between rows - let section padding handle the spacing */
-.row + .row {
+.row+.row {
   margin-top: 0;
 }
 
 /* Card grids spacing */
-.card-grid, 
-.feature-grid, 
+.card-grid,
+.feature-grid,
 .benefits-grid {
   gap: 2rem;
 }
 
 @media (max-width: 768px) {
-  .card-grid, 
-  .feature-grid, 
+
+  .card-grid,
+  .feature-grid,
   .benefits-grid {
     gap: 1.5rem;
   }
-  
+
   section {
     margin-bottom: 0;
   }
@@ -1816,41 +1892,26 @@ section {
   letter-spacing: 0.01em;
 }
 
-/* Специальные стили для анимации перехода между темами */
+/* Special styles for theme transition animation */
 .theme-transition {
   transition: none !important;
 }
 
-/* Применяем переходы только к CSS-свойствам, отвечающим за тему */
+/* Apply transitions only to CSS properties related to theme */
 .theme-transition * {
   transition-property: var(--theme-transition-properties);
   transition-timing-function: var(--theme-transition-easing);
   transition-duration: var(--theme-transition-speed) !important;
-  /* Оптимизация для GPU */
+  /* GPU optimization */
   will-change: background-color, color;
 }
 
-/* Ensure proper transitions for SVG elements */
-.theme-transition svg path {
-  transition: fill var(--theme-transition-speed) var(--theme-transition-easing),
-              stroke var(--theme-transition-speed) var(--theme-transition-easing) !important;
-}
-
-/* Ensure benefit icons have proper color transition */
-[data-bs-theme="dark"] .benefit-icon-wrapper svg {
-  color: white !important;
-}
-
-[data-bs-theme="light"] .benefit-icon-wrapper svg {
-  color: var(--primary) !important;
-}
-
-/* Стили для управления загрузкой и предотвращения CLS */
+/* Styles for managing loading and preventing CLS */
 .loading-state {
   visibility: hidden;
 }
 
-/* Предотвращаем мигание при первоначальной загрузке */
+/* Prevent flashing during initial load */
 .dashboard-container {
   backface-visibility: hidden;
   opacity: var(--initial-load, 0);
@@ -1862,28 +1923,7 @@ html.no-transitions .dashboard-container {
   transition: none !important;
 }
 
-/* Анимация появления элементов только после полной загрузки страницы */
-html.no-transitions .slide-up,
-html.no-transitions .fade-in {
-  opacity: 0 !important;
-}
-
-/* Скрываем трансформацию до полной загрузки страницы */
-@media (min-width: 993px) {
-  html.no-transitions .dashboard-container {
-    transform: perspective(1000px) rotateY(-8deg) rotateX(5deg) rotate(1deg) !important;
-    will-change: transform;
-  }
-}
-
-@media (max-width: 992px) {
-  html.no-transitions .dashboard-container {
-    transform: none !important;
-    will-change: transform;
-  }
-}
-
-/* Приоритезируем наиболее важные элементы для плавного перехода */
+/* Prioritize the most important elements for smooth transition */
 .theme-transition body,
 .theme-transition .navbar-main,
 .theme-transition .main-content,
@@ -1891,43 +1931,25 @@ html.no-transitions .fade-in {
   transition-property: background-color;
   transition-duration: var(--theme-transition-speed) !important;
   transition-timing-function: var(--theme-transition-easing) !important;
-  /* Первыми меняем основные контейнеры */
+  /* Change main containers first */
   transition-delay: 0s !important;
 }
 
-/* Высокоприоритетные карточки и контейнеры */
-.theme-transition .card,
-.theme-transition .benefit-card,
-.theme-transition .feature-card,
-.theme-transition .comparison-card,
-.theme-transition .solution-step-card,
-.theme-transition .testimonial-card,
-.theme-transition .cta-section,
-.theme-transition .bottom-line-box {
-  transition: 
-    background-color var(--theme-transition-speed) var(--theme-transition-easing),
-    color var(--theme-transition-speed) var(--theme-transition-easing),
-    border-color var(--theme-transition-speed) var(--theme-transition-easing),
-    box-shadow var(--theme-transition-speed) var(--theme-transition-easing) !important;
-  /* Применяем небольшую задержку для синхронизации с основными контейнерами */
-  transition-delay: 50ms !important;
-}
-
-/* Отключаем трансформации при смене темы для повышения производительности */
+/* Apply a small delay for synchronization with main containers */
 .theme-transition *:hover {
   transform: none !important;
 }
 
-/* Исключение для dashboard-container чтобы предотвратить движение при смене темы */
+/* Exception for dashboard-container to prevent movement during theme change */
 .theme-transition .dashboard-container,
 .theme-transition .preserve-transform {
   transform: perspective(1000px) rotateY(-8deg) rotateX(5deg) rotate(1deg) !important;
   transition: background-color var(--theme-transition-speed) var(--theme-transition-easing),
-              box-shadow var(--theme-transition-speed) var(--theme-transition-easing),
-              border-color var(--theme-transition-speed) var(--theme-transition-easing) !important;
+    box-shadow var(--theme-transition-speed) var(--theme-transition-easing),
+    border-color var(--theme-transition-speed) var(--theme-transition-easing) !important;
 }
 
-/* Обеспечиваем правильный цвет фона dashboard в обеих темах */
+/* Ensure correct dashboard background color in both themes */
 [data-bs-theme="light"] .dashboard-container {
   background-color: #ffffff !important;
 }
@@ -1942,8 +1964,9 @@ html.no-transitions .fade-in {
   transition: none !important;
 }
 
-/* Настройки для адаптивной версии - сохраняем отсутствие трансформации при смене темы */
+/* Settings for responsive version - maintain no transformation during theme change */
 @media (max-width: 992px) {
+
   .theme-transition .dashboard-container,
   .theme-transition .preserve-transform {
     transform: none !important;
@@ -1962,13 +1985,33 @@ html.no-transitions .fade-in {
 
 /* Navbar item hover effect with jelly animation */
 @keyframes jellyEffect {
-  0% { transform: scale(1); }
-  30% { transform: scale(1.15, 0.9); }
-  40% { transform: scale(0.95, 1.05); }
-  50% { transform: scale(1.05, 0.95); }
-  65% { transform: scale(0.98, 1.02); }
-  80% { transform: scale(1.02, 0.98); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  30% {
+    transform: scale(1.15, 0.9);
+  }
+
+  40% {
+    transform: scale(0.95, 1.05);
+  }
+
+  50% {
+    transform: scale(1.05, 0.95);
+  }
+
+  65% {
+    transform: scale(0.98, 1.02);
+  }
+
+  80% {
+    transform: scale(1.02, 0.98);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 .nav-link {
@@ -2005,6 +2048,7 @@ html.no-transitions .fade-in {
 
 /* Jelly animation only for non-mobile devices */
 @media (min-width: 992px) {
+
   .nav-link:active,
   .nav-link:focus {
     animation: jellyEffect 0.6s both;
@@ -2033,7 +2077,7 @@ html.no-transitions .fade-in {
     font-weight: 500;
     text-align: center;
   }
-  
+
   .navbar-main .nav-link::before {
     content: '';
     position: absolute;
@@ -2046,21 +2090,21 @@ html.no-transitions .fade-in {
     z-index: -1;
     transition: height 0.3s var(--transition-bounce);
   }
-  
+
   .navbar-main .nav-link:hover::before {
     height: 100%;
   }
-  
+
   .navbar-main .nav-link:hover {
     color: var(--primary);
     animation: jellyEffect 0.6s both;
   }
-  
+
   .navbar-main .nav-item.active .nav-link {
     color: var(--primary);
   }
-  
+
   .navbar-main .nav-item.active .nav-link::before {
     height: 100%;
   }
-} 
+}

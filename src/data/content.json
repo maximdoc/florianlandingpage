@@ -95,22 +95,57 @@
         {
           "id": "hero",
           "type": "hero",
-          "title": "Test 2 SlingRFP <span class=\"text-gradient\">Government</span> <br class=\"d-none d-sm-block\" /><span class=\"text-gradient\">Contracts</span> on <br class=\"d-none d-sm-block\" /><span class=\"fw-bold\">Solutions</span>",
-          "subtitle": "SlingRFP's full‑service AI platform <strong>builds your gov‑ready profile, plugs every compliance gap, and writes winning proposals</strong>—so you capture predictable B2G revenue with almost zero lift.",
+          "title": "Win Government Contracts. <span class=\"text-gradient\">Unlock New Revenue.</span>",
+          "subtitle": "AI-powered matching, proposal writing, and submission—end to end.",
           "features": [
             "We create (and maintain) your complete vendor dossier",
             "Automated gap analysis flags missing certs & docs—then we secure them for you",
             "Proposals drafted, submitted, and iterated until the win rate climbs"
           ],
           "ctaButton": {
-            "text": "Book a 15-min Strategy Call",
+            "text": "Get Started",
             "href": "#strategy-call"
+          },
+          "secondaryCtaButton": {
+            "text": "See How It Works",
+            "href": "#solution"
           },
           "userStats": {
             "count": "5,000+",
             "text": "professionals trust our platform daily"
           },
           "dashboardImage": "/images/optimized/dashboard-second.webp",
+          "backgroundVariant": "dark"
+        },
+        {
+          "id": "mission",
+          "type": "mission",
+          "label": "Our Mission",
+          "mission": "To democratize government contracting—making the process transparent, simple, and success-driven for growing businesses.",
+          "promiseLabel": "Our Promise",
+          "promises": [
+            {
+              "title": "Clarity",
+              "description": "No more drowning in opportunities. We surface only what fits.",
+              "icon": "light-bulb"
+            },
+            {
+              "title": "Control",
+              "description": "Full-service support—from registrations to deliverables.",
+              "icon": "sliders"
+            },
+            {
+              "title": "Confidence",
+              "description": "Performance-based fees—our success is your success.",
+              "icon": "chart-up"
+            }
+          ],
+          "valuePropLabel": "Single-Line Value Prop",
+          "valueProp": "A dedicated government proposal team powered by AI insights—no software license, no overhead hire.",
+          "ctaButton": {
+            "text": "Learn More",
+            "href": "#solution"
+          },
           "backgroundVariant": "light"
         },
         {
@@ -154,6 +189,51 @@
             }
           },
           "backgroundVariant": "dark"
+        },
+        {
+          "id": "benefits",
+          "type": "benefits",
+          "title": "Why <span class=\"text-gradient\">SlingRFP</span>?",
+          "subtitle": "Our comprehensive approach delivers measurable advantages for your government contracting journey",
+          "tiles": [
+            {
+              "id": 1,
+              "title": "Predictive Analytics",
+              "description": "Forecast your win rate and tailor strategies accordingly.",
+              "icon": "chart-line",
+              "magicTitle": "UNDER-THE-HOOD MAGIC",
+              "magicDescription": "AI-powered opportunity scoring and performance modeling"
+            },
+            {
+              "id": 2,
+              "title": "Expert Team",
+              "description": "Former government bidders, writers, and project managers.",
+              "icon": "user",
+              "magicTitle": "UNDER-THE-HOOD MAGIC",
+              "magicDescription": "Decades of combined experience in government contracting"
+            },
+            {
+              "id": 3,
+              "title": "End-to-End Service",
+              "description": "From DUNS to delivery—one partner, total coverage.",
+              "icon": "briefcase",
+              "magicTitle": "UNDER-THE-HOOD MAGIC",
+              "magicDescription": "Integrated workflow from registration to award management"
+            },
+            {
+              "id": 4,
+              "title": "Aligned Incentives",
+              "description": "You pay when you get paid.",
+              "icon": "check-circle",
+              "magicTitle": "UNDER-THE-HOOD MAGIC",
+              "magicDescription": "Performance-based fee structure tied to your success"
+            }
+          ],
+          "ctaButton": {
+            "text": "Book Your Free Strategy Call",
+            "href": "#strategy-call"
+          },
+          "backgroundVariant": "light"
         },
         {
           "id": "comparison",
@@ -204,51 +284,6 @@
             "text": "SlingRFP transforms government contracting from a high-effort, low-reward gamble into a streamlined, predictable revenue channel for your business."
           },
           "backgroundVariant": "dark"
-        },
-        {
-          "id": "benefits",
-          "type": "benefits",
-          "title": "Core <span class=\"text-gradient\">Benefits</span>",
-          "subtitle": "Our unique approach delivers measurable advantages for your government contracting journey",
-          "tiles": [
-            {
-              "id": 1,
-              "title": "Turn-key Readiness",
-              "description": "Bid on Day 1—no months-long prep.",
-              "icon": "briefcase",
-              "magicTitle": "UNDER-THE-HOOD MAGIC",
-              "magicDescription": "Automated profile & credential builder"
-            },
-            {
-              "id": 2,
-              "title": "Higher Qualification Rate",
-              "description": "Fewer instant disqualifications.",
-              "icon": "check-circle",
-              "magicTitle": "UNDER-THE-HOOD MAGIC",
-              "magicDescription": "Real-time gap detection + certificate concierge"
-            },
-            {
-              "id": 3,
-              "title": "Compounding Win Rates",
-              "description": "Models learn from every loss and win.",
-              "icon": "chart-line",
-              "magicTitle": "UNDER-THE-HOOD MAGIC",
-              "magicDescription": "Reinforcement learning + agency feedback ingestion"
-            },
-            {
-              "id": 4,
-              "title": "Single Point of Contact",
-              "description": "One invoice, one dashboard, zero hand-offs.",
-              "icon": "user",
-              "magicTitle": "UNDER-THE-HOOD MAGIC",
-              "magicDescription": "Integrated full-service workflow"
-            }
-          ],
-          "ctaButton": {
-            "text": "Book Your Free Strategy Call",
-            "href": "#strategy-call"
-          },
-          "backgroundVariant": "light"
         },
         {
           "id": "features",

@@ -89,7 +89,7 @@ export default function FeaturesSection() {
           </Row>
 
           <Row className="features-grid g-3 mb-5 mx-0">
-            {/* Создаем 6 карточек-скелетонов */}
+            {/* Create 6 skeleton cards */}
             {Array(6)
               .fill(0)
               .map((_, index) => (

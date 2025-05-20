@@ -438,7 +438,7 @@ export default function ProblemSolutionSection() {
           }
         }
         
-        /* Дополнительные стили для маленьких экранов */
+        /* Additional styles for small screens */
         @media (max-width: 576px) {
           .solution-step-card {
             width: 100%;

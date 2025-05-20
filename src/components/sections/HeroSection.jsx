@@ -350,13 +350,13 @@ export default function HeroSection() {
           }
         }
         
-        /* Remove any backgrounds from hero-section class */
+        /* Hero section styles */
         .hero-section {
           position: relative;
           width: 100%;
         }
         
-        /* Декоративная сетка точек */
+        /* Dot grid patterns */
         .dots-grid {
           background-image: radial-gradient(var(--primary) 1.5px, transparent 1.5px);
           background-size: 18px 18px;
@@ -386,23 +386,7 @@ export default function HeroSection() {
           background-size: 14px 14px;
         }
         
-        /* Убираем анимацию для статичности
-        @keyframes floatDots {
-          0% {
-            transform-origin: center;
-            transform: rotate(0deg);
-          }
-          50% {
-            transform-origin: center;
-            transform: rotate(5deg);
-          }
-          100% {
-            transform-origin: center;
-            transform: rotate(0deg);
-          }
-        }
-        */
-        
+        /* Light vs dark theme styles */
         [data-bs-theme="light"] .dots-grid {
           opacity: 0.35;
           background-image: radial-gradient(var(--primary) 2.5px, transparent 2.5px);
@@ -414,30 +398,131 @@ export default function HeroSection() {
           background-image: radial-gradient(rgba(255, 255, 255, 0.9) 1.8px, transparent 1.8px);
         }
         
-        /* Скрываем декоративные точки на мобильных устройствах */
+        /* Background blob styling */
+        .background-blob {
+          max-width: 150px;
+          max-height: 150px;
+          opacity: 0.4;
+        }
+        
+        /* Dashboard image container styles */
+        .dashboard-container {
+          transform: perspective(1000px) rotateY(-8deg) rotateX(5deg) rotate(1deg);
+          transform-origin: center center;
+          transition: transform 0.5s ease;
+          will-change: transform;
+          max-width: 100%;
+          width: 100%;
+          height: auto;
+          position: relative;
+        }
+        
+        .dashboard-mockup {
+          aspect-ratio: 16/10;
+          width: 100%;
+          height: auto;
+          position: relative;
+        }
+        
+        .dashboard-animation-container {
+          position: relative;
+          transition: transform 0.5s ease-in-out;
+        }
+        
+        .dashboard-animation-container:hover {
+          transform: translateY(-5px);
+        }
+        
+        /* User avatar styling */
+        .user-avatar {
+          position: relative;
+          width: 44px !important;
+          height: 44px !important;
+          border-radius: 50%;
+          overflow: hidden;
+          display: block;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        /* Feature item styling */
+        .feature-item .me-3 {
+          flex-shrink: 0;
+          width: 24px;
+          height: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: var(--primary-light);
+          border-radius: 50%;
+          margin-top: 2px !important;
+        }
+        
+        .feature-item svg {
+          width: 16px;
+          height: 16px;
+        }
+        
+        /* Mobile stats container styles */
+        .mobile-stats-container .card {
+          padding: 0.75rem;
+        }
+        
+        .mobile-stats-container .rounded-circle {
+          width: 32px !important;
+          height: 32px !important;
+        }
+        
+        .mobile-stats-container svg {
+          width: 16px;
+          height: 16px;
+        }
+        
+        /* Dark theme specific styles */
+        [data-bs-theme="dark"] .feature-item p {
+          color: rgba(255, 255, 255, 0.9);
+        }
+        
+        [data-bs-theme="dark"] .hero-lead {
+          color: rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        [data-bs-theme="dark"] .text-secondary {
+          color: rgba(255, 255, 255, 0.7) !important;
+        }
+        
+        [data-bs-theme="dark"] .text-dark {
+          color: #ffffff !important;
+        }
+        
+        [data-bs-theme="dark"] .user-counter {
+          background-color: var(--primary);
+          border-color: #111827;
+        }
+        
+        [data-bs-theme="dark"] .dashboard-container {
+          background-color: #1a1f2c !important;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-bs-theme="dark"] .mobile-stats-container .card {
+          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        [data-bs-theme="dark"] .mobile-stats-container p {
+          color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Light theme specific styles */
+        [data-bs-theme="light"] .text-dark {
+          color: #0f172a !important;
+        }
+        
+        /* Responsive adjustments */
         @media (max-width: 992px) {
           .dots-grid {
             display: none;
           }
-        }
-        
-        /* Показываем только некоторые точки на средних устройствах */
-        @media (min-width: 993px) and (max-width: 1200px) {
-          .dots-grid-top-left,
-          .dots-grid-bottom-right,
-          .dots-grid-center-right {
-            display: none;
-          }
           
-          .dots-grid-top-right,
-          .dots-grid-bottom-left {
-            width: 120px;
-            height: 120px;
-          }
-        }
-        
-        /* Responsive adjustments for hero section */
-        @media (max-width: 992px) {
           .dashboard-container {
             transform: none !important;
             margin-top: 1rem;
@@ -454,6 +539,27 @@ export default function HeroSection() {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+          }
+        }
+        
+        @media (min-width: 993px) and (max-width: 1200px) {
+          .dots-grid-top-left,
+          .dots-grid-bottom-right,
+          .dots-grid-center-right {
+            display: none;
+          }
+          
+          .dots-grid-top-right,
+          .dots-grid-bottom-left {
+            width: 120px;
+            height: 120px;
+          }
+        }
+        
+        @media (max-width: 991.98px) {
+          .dashboard-container {
+            max-width: 90%;
+            margin: 0 auto;
           }
         }
         
@@ -497,189 +603,12 @@ export default function HeroSection() {
             padding-top: 2rem !important;
           }
         }
-        
-        /* Dark theme improvements */
-        [data-bs-theme="dark"] .feature-item p {
-          color: rgba(255, 255, 255, 0.9);
-        }
-        
-        [data-bs-theme="dark"] .hero-lead {
-          color: rgba(255, 255, 255, 0.8) !important;
-        }
-        
-        [data-bs-theme="dark"] .text-secondary {
-          color: rgba(255, 255, 255, 0.7) !important;
-        }
-        
-        [data-bs-theme="dark"] .text-dark {
-          color: #ffffff !important;
-        }
-        
-        [data-bs-theme="dark"] .user-counter {
-          background-color: var(--primary);
-          border-color: #111827;
-        }
-        
-        [data-bs-theme="dark"] .dashboard-container {
-          background-color: #1a1f2c !important;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .feature-item .me-3 {
-          flex-shrink: 0;
-          width: 24px;
-          height: 24px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background-color: var(--primary-light);
-          border-radius: 50%;
-          margin-top: 2px !important;
-        }
-        
-        .feature-item svg {
-          width: 16px;
-          height: 16px;
-        }
-        
-        /* Improved mobile stats styles */
-        .mobile-stats-container .card {
-          padding: 0.75rem;
-        }
-        
-        .mobile-stats-container .rounded-circle {
-          width: 32px !important;
-          height: 32px !important;
-        }
-        
-        .mobile-stats-container svg {
-          width: 16px;
-          height: 16px;
-        }
-        
-        [data-bs-theme="dark"] .mobile-stats-container .card {
-          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-        }
-        
-        [data-bs-theme="dark"] .mobile-stats-container p {
-          color: rgba(255, 255, 255, 0.9);
-        }
-        
-        /* Fix for background blob */
-        .background-blob {
-          max-width: 150px;
-          max-height: 150px;
-          opacity: 0.4;
-        }
-        
-        /* Dashboard image container with explicit styles */
-        .dashboard-container {
-          transform: perspective(1000px) rotateY(-8deg) rotateX(5deg) rotate(1deg);
-          transform-origin: center center;
-          transition: transform 0.5s ease;
-          will-change: transform;
-          max-width: 100%;
-          width: 100%;
-          height: auto;
-          position: relative;
-        }
-        
-        /* Fix for mobile layouts */
-        @media (max-width: 992px) {
-          .dashboard-container {
-            transform: none !important;
-          }
-        }
-
-        /* Add aspect ratio explicitly to prevent CLS */
-        .dashboard-mockup {
-          aspect-ratio: 16/10;
-          width: 100%;
-          height: auto;
-          position: relative;
-        }
-        
-        /* Image placeholders to prevent layout shifts */
-        .user-avatar {
-          position: relative;
-          width: 44px !important;
-          height: 44px !important;
-          border-radius: 50%;
-          overflow: hidden;
-          display: block;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        /* Fix for text color in different themes */
-        [data-bs-theme="light"] .text-dark {
-          color: #0f172a !important;
-        }
-        
-        [data-bs-theme="dark"] .text-dark {
-          color: #ffffff !important;
-        }
-        
-        [data-bs-theme="dark"] .user-counter {
-          background-color: var(--primary);
-          border-color: #111827;
-        }
-        
-        [data-bs-theme="dark"] .dashboard-container {
-          background-color: #1a1f2c !important;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .feature-item .me-3 {
-          flex-shrink: 0;
-          width: 24px;
-          height: 24px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background-color: var(--primary-light);
-          border-radius: 50%;
-          margin-top: 2px !important;
-        }
-        
-        .feature-item svg {
-          width: 16px;
-          height: 16px;
-        }
-        
-        /* Improved mobile stats styles */
-        .mobile-stats-container .card {
-          padding: 0.75rem;
-        }
-        
-        .mobile-stats-container .rounded-circle {
-          width: 32px !important;
-          height: 32px !important;
-        }
-        
-        .mobile-stats-container svg {
-          width: 16px;
-          height: 16px;
-        }
-        
-        [data-bs-theme="dark"] .mobile-stats-container .card {
-          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-        }
-        
-        [data-bs-theme="dark"] .mobile-stats-container p {
-          color: rgba(255, 255, 255, 0.9);
-        }
-        
-        /* Fix for background blob */
-        .background-blob {
-          max-width: 150px;
-          max-height: 150px;
-          opacity: 0.4;
-        }
       `}</style>
 
       <Container>
         <Row className="align-items-center gy-4 gy-lg-5">
-          <Col lg={6} className="mb-3 mb-lg-5">
+          {/* Left column: headline, tagline, features, CTAs */}
+          <Col lg={6} className="mb-3 mb-lg-0">
             <div className="mb-4 fade-in">
               <h1 className="display-4 fw-bold mb-3 hero-title" dangerouslySetInnerHTML={{ __html: heroSection.title }} />
 
@@ -693,16 +622,29 @@ export default function HeroSection() {
                 ))}
               </div>
 
-              {/* Add CTA Button */}
+              {/* Add CTA Buttons - Primary and Secondary side by side */}
               {heroSection.ctaButton && (
-                <div className="mb-4">
+                <div className="mb-4 d-flex flex-wrap gap-3">
                   <Button 
                     href={heroSection.ctaButton.href} 
                     variant="primary" 
                     size="lg"
+                    className="hero-primary-cta"
                   >
                     {heroSection.ctaButton.text}
                   </Button>
+                  
+                  {/* Add Secondary CTA Button */}
+                  {heroSection.secondaryCtaButton && (
+                    <Button 
+                      href={heroSection.secondaryCtaButton.href} 
+                      variant="secondary" 
+                      size="lg"
+                      className="hero-secondary-cta"
+                    >
+                      {heroSection.secondaryCtaButton.text}
+                    </Button>
+                  )}
                 </div>
               )}
 
@@ -765,8 +707,9 @@ export default function HeroSection() {
           </Col>
 
           <Col lg={6} className="position-relative">
+            {/* Right column: looping animation/illustration */}
             <div
-              className={`position-relative slide-up ${!isLoaded ? 'loading-state' : ''}`}
+              className={`position-relative slide-up dashboard-animation-container ${!isLoaded ? 'loading-state' : ''}`}
               style={{ 
                 animationDelay: "0.3s", 
                 zIndex: 1,
@@ -778,7 +721,7 @@ export default function HeroSection() {
                 <div className="dashboard-mockup rounded-3 overflow-hidden">
                   <Image
                     src={dashboardSrc}
-                    alt="Platform dashboard showing productivity tools"
+                    alt="SlingRFP Dashboard"
                     width={1600}
                     height={1000}
                     style={{ 
@@ -789,7 +732,7 @@ export default function HeroSection() {
                     className="rounded-3"
                     priority={true}
                     placeholder="blur"
-                    blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAEPgIvMxPSXgAAAABJRU5ErkJggg=="
+                    blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN88P/BfwAJMAOQn+GUHAAAAABJRU5ErkJggg=="
                   />
                 </div>
               </div>

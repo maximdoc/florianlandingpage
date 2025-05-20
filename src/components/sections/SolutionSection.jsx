@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Button from "../ui/Button";
 import SectionContainer from "../SectionContainer";
+import Icon from "../ui/Icon";
 import { getSectionById } from "@/utils/contentUtils";
 
 export default function SolutionSection() {
@@ -53,7 +54,35 @@ export default function SolutionSection() {
     setActiveStep(index);
   };
 
-  if (!solutionSection || loading) {
+  // Map the steps to the required format with proper emojis
+  const howItWorksSteps = [
+    {
+      number: 1,
+      icon: "search",
+      title: "Discover",
+      description: "AI-curated solicitations aligned with your strengths and goals."
+    },
+    {
+      number: 2,
+      icon: "check-circle",
+      title: "Qualify",
+      description: "Detailed win-rate scores and eligibility checks—no wasted effort."
+    },
+    {
+      number: 3,
+      icon: "edit",
+      title: "Craft",
+      description: "Persuasive proposal drafts with data-backed narratives."
+    },
+    {
+      number: 4,
+      icon: "rocket",
+      title: "Submit & Win",
+      description: "Full submission handling, compliance checks, and post-award support."
+    }
+  ];
+
+  if (loading || !solutionSection) {
     return (
       <SectionContainer
         className="solution-section-container"
@@ -71,11 +100,11 @@ export default function SolutionSection() {
 
           <Row className="justify-content-center mb-5">
             <Col lg={10} className="solution-steps-container">
-              {/* Skeleton for steps - generating 3 placeholders */}
-              {[1, 2, 3].map((_, index) => (
+              {/* Skeleton for steps - generating 4 placeholders */}
+              {[1, 2, 3, 4].map((_, index) => (
                 <div key={index} className="solution-step-card skeleton-card">
-                  <div className="step-number">
-                    <div className="skeleton-number-circle"></div>
+                  <div className="step-icon">
+                    <div className="skeleton-icon-wrapper"></div>
                   </div>
                   <div className="step-content">
                     <div className="skeleton-step-title"></div>
@@ -117,7 +146,7 @@ export default function SolutionSection() {
           .skeleton-result-title,
           .skeleton-result-description,
           .skeleton-button,
-          .skeleton-number-circle {
+          .skeleton-icon-wrapper {
             background: linear-gradient(
               90deg,
               rgba(255, 255, 255, 0.05) 25%,
@@ -137,7 +166,7 @@ export default function SolutionSection() {
           [data-bs-theme="light"] .skeleton-result-title,
           [data-bs-theme="light"] .skeleton-result-description,
           [data-bs-theme="light"] .skeleton-button,
-          [data-bs-theme="light"] .skeleton-number-circle {
+          [data-bs-theme="light"] .skeleton-icon-wrapper {
             background: linear-gradient(
               90deg,
               rgba(0, 0, 0, 0.04) 25%,
@@ -165,9 +194,9 @@ export default function SolutionSection() {
             transform: none !important;
           }
 
-          .skeleton-number-circle {
-            width: 48px;
-            height: 48px;
+          .skeleton-icon-wrapper {
+            width: 56px;
+            height: 56px;
             border-radius: 16px;
           }
 
@@ -222,6 +251,7 @@ export default function SolutionSection() {
 
   return (
     <SectionContainer
+      id="solution"
       className="solution-section-container"
       backgroundVariant={solutionSection.backgroundVariant || "dark"}
     >
@@ -238,41 +268,43 @@ export default function SolutionSection() {
           <Col lg={10} xl={8}>
             <h2
               className="display-5 mb-3 solution-title-animation"
-              dangerouslySetInnerHTML={{ __html: solutionSection.title }}
+              dangerouslySetInnerHTML={{ __html: "How It <span class='text-gradient'>Works</span>" }}
             />
             <p className="lead solution-subtitle-animation">
-              {solutionSection.subtitle}
+              Our proven four-step process simplifies government contracting from discovery to award
             </p>
           </Col>
         </Row>
 
         <Row className="justify-content-center mb-5">
           <Col lg={10} className="solution-steps-container">
-            {solutionSection.steps &&
-              solutionSection.steps.map((step, index) => (
-                <div
-                  key={step.number}
-                  className={`solution-step-card ${
-                    activeStep === index ? "active" : ""
-                  } ${isVisible ? "visible" : ""}`}
-                  style={{ animationDelay: `${0.4 + index * 0.15}s` }}
-                  onMouseEnter={() => handleStepHover(index)}
-                  onMouseLeave={() => handleStepHover(null)}
-                >
-                  <div className="step-number">
-                    <div className="number-circle">{step.number}</div>
+            {howItWorksSteps.map((step, index) => (
+              <div
+                key={step.number}
+                className={`solution-step-card ${
+                  activeStep === index ? "active" : ""
+                } ${isVisible ? "visible" : ""}`}
+                style={{ animationDelay: `${0.4 + index * 0.15}s` }}
+                onMouseEnter={() => handleStepHover(index)}
+                onMouseLeave={() => handleStepHover(null)}
+              >
+                <div className="step-icon">
+                  <div className="icon-wrapper">
+                    <Icon name={step.icon} />
                   </div>
-                  <div className="step-content">
-                    <h3 className="step-title">{step.title}</h3>
-                    <p className="step-description">{step.description}</p>
-                  </div>
-                  <div
-                    className={`step-dot-pattern ${
-                      index % 2 === 0 ? "pattern-right" : "pattern-left"
-                    }`}
-                  ></div>
+                  <span className="step-number">{step.number}</span>
                 </div>
-              ))}
+                <div className="step-content">
+                  <h3 className="step-title">{step.title}</h3>
+                  <p className="step-description">{step.description}</p>
+                </div>
+                <div
+                  className={`step-dot-pattern ${
+                    index % 2 === 0 ? "pattern-right" : "pattern-left"
+                  }`}
+                ></div>
+              </div>
+            ))}
           </Col>
         </Row>
 
@@ -287,15 +319,10 @@ export default function SolutionSection() {
                 <div className="glow-effect-2"></div>
 
                 <div className="result-content">
-                  <h3 className="result-title">
-                    {solutionSection.result.title}
-                  </h3>
-                  <p
-                    className="result-description"
-                    dangerouslySetInnerHTML={{
-                      __html: solutionSection.result.description,
-                    }}
-                  />
+                  <h3 className="result-title">Ready to Start?</h3>
+                  <p className="result-description">
+                    Get personalized guidance on winning your first government contract
+                  </p>
                   {solutionSection.result.ctaButton && (
                     <Button
                       href={solutionSection.result.ctaButton.href}
@@ -355,6 +382,7 @@ export default function SolutionSection() {
           position: relative;
           width: 100%;
           overflow: hidden;
+          padding: 5rem 0;
         }
 
         /* Animated shapes */
@@ -443,9 +471,9 @@ export default function SolutionSection() {
 
         /* Solution steps styling */
         .solution-steps-container {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 1rem;
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1.5rem;
           justify-content: center;
         }
 
@@ -455,14 +483,13 @@ export default function SolutionSection() {
           background: var(--step-card-bg);
           border: 1px solid var(--step-card-border);
           border-radius: 16px;
-          padding: 1.25rem;
+          padding: 1.5rem;
           transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
           position: relative;
           box-shadow: var(--card-shadow), 0 0 15px rgba(0, 0, 0, 0.03);
           backdrop-filter: blur(10px);
           overflow: hidden;
-          width: calc(50% - 0.5rem);
-          margin-bottom: 1rem;
+          height: 100%;
         }
 
         /* Dot pattern styling */
@@ -528,25 +555,23 @@ export default function SolutionSection() {
           opacity: 1;
         }
 
-        .step-number {
-          margin-right: 1rem;
+        .step-icon {
+          margin-right: 1.25rem;
           position: relative;
         }
 
-        .number-circle {
-          width: 48px;
-          height: 48px;
+        .icon-wrapper {
           display: flex;
           align-items: center;
           justify-content: center;
+          width: 56px;
+          height: 56px;
           background: linear-gradient(135deg, #6366f1, #8b5cf6);
           color: white;
           border-radius: 16px;
-          font-weight: 700;
-          font-size: 1.1rem;
-          transition: all 0.3s ease;
           position: relative;
           overflow: hidden;
+          transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
           /* 3D effect with enhanced shadows */
           box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4),
             0 0 0 1px rgba(255, 255, 255, 0.1),
@@ -555,7 +580,7 @@ export default function SolutionSection() {
         }
 
         /* Glowing effect */
-        .number-circle::before {
+        .icon-wrapper::before {
           content: "";
           position: absolute;
           inset: -3px;
@@ -572,7 +597,7 @@ export default function SolutionSection() {
         }
 
         /* Upper highlight for 3D effect */
-        .number-circle::after {
+        .icon-wrapper::after {
           content: "";
           position: absolute;
           top: 0;
@@ -588,18 +613,42 @@ export default function SolutionSection() {
           opacity: 0.7;
         }
 
-        /* Enhance hover state */
-        .solution-step-card:hover .number-circle,
-        .solution-step-card.active .number-circle {
-          transform: translateY(-2px);
+        .icon-wrapper svg {
+          position: relative;
+          z-index: 1;
+          width: 24px;
+          height: 24px;
+        }
+
+        .step-number {
+          position: absolute;
+          top: -8px;
+          right: -8px;
+          width: 22px;
+          height: 22px;
+          background: #ffffff;
+          color: #6366f1;
+          border-radius: 50%;
+          font-size: 0.75rem;
+          font-weight: 700;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+          z-index: 2;
+        }
+
+        .solution-step-card:hover .icon-wrapper,
+        .solution-step-card.active .icon-wrapper {
+          transform: translateY(-5px);
           box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5),
             0 0 0 1px rgba(255, 255, 255, 0.15),
             inset 0 -2px 5px rgba(0, 0, 0, 0.2),
             inset 0 2px 5px rgba(255, 255, 255, 0.4);
         }
 
-        .solution-step-card:hover .number-circle::before,
-        .solution-step-card.active .number-circle::before {
+        .solution-step-card:hover .icon-wrapper::before,
+        .solution-step-card.active .icon-wrapper::before {
           opacity: 1;
           filter: blur(10px);
         }
@@ -609,30 +658,30 @@ export default function SolutionSection() {
         }
 
         .step-title {
-          font-size: 1.15rem;
+          font-size: 1.2rem;
           font-weight: 700;
-          margin-bottom: 0.4rem;
+          margin-bottom: 0.5rem;
           color: var(--text-primary);
         }
 
         .step-description {
           color: var(--text-secondary);
           margin-bottom: 0;
-          line-height: 1.4;
+          line-height: 1.5;
           font-size: 0.95rem;
         }
 
         /* Result card styling */
         .result-card {
           background: var(--result-card-bg);
-          border-radius: 14px;
-          padding: 1.5rem;
+          border-radius: 16px;
+          padding: 2rem;
           color: var(--result-text-color);
           position: relative;
           overflow: hidden;
           box-shadow: 0 15px 30px rgba(99, 102, 241, 0.25);
           transition: all 0.4s ease;
-          margin-top: 0.5rem;
+          margin-top: 1rem;
           max-width: 750px;
           margin-left: auto;
           margin-right: auto;
@@ -669,37 +718,35 @@ export default function SolutionSection() {
 
         .result-title {
           font-weight: 700;
-          margin-bottom: 0.5rem;
-          font-size: 1.3rem;
+          margin-bottom: 0.75rem;
+          font-size: 1.5rem;
           color: #fff;
         }
 
         .result-description {
           font-size: 1.1rem;
-          margin-bottom: 1rem;
+          margin-bottom: 1.5rem;
           color: rgba(255, 255, 255, 0.9);
         }
 
         /* Responsive adjustments */
         @media (max-width: 991.98px) {
+          .solution-steps-container {
+            grid-template-columns: 1fr;
+          }
+
           .solution-step-card {
-            width: 100%;
-            padding: 1rem;
+            padding: 1.25rem;
           }
 
-          .number-circle {
-            width: 36px;
-            height: 36px;
-            font-size: 0.9rem;
-            border-radius: 12px;
+          .icon-wrapper {
+            width: 48px;
+            height: 48px;
           }
 
-          .number-circle::before {
-            border-radius: 14px;
-          }
-
-          .number-circle::after {
-            border-radius: 12px 12px 0 0;
+          .icon-wrapper svg {
+            width: 20px;
+            height: 20px;
           }
 
           .step-title {
@@ -707,34 +754,36 @@ export default function SolutionSection() {
           }
 
           .result-card {
-            padding: 1.25rem;
+            padding: 1.5rem;
           }
 
           .result-description {
             font-size: 1rem;
-            margin-bottom: 0.75rem;
+            margin-bottom: 1rem;
           }
         }
 
         @media (max-width: 767.98px) {
           .solution-section-container {
-            padding: 3.5rem 0;
+            padding: 4rem 0;
           }
 
-          .number-circle {
-            width: 32px;
-            height: 32px;
-            font-size: 0.85rem;
-            margin-right: 0.75rem;
-            border-radius: 10px;
+          .icon-wrapper {
+            width: 42px;
+            height: 42px;
           }
 
-          .number-circle::before {
-            border-radius: 12px;
+          .icon-wrapper svg {
+            width: 18px;
+            height: 18px;
           }
 
-          .number-circle::after {
-            border-radius: 10px 10px 0 0;
+          .step-number {
+            width: 20px;
+            height: 20px;
+            font-size: 0.7rem;
+            top: -6px;
+            right: -6px;
           }
 
           .step-title {
@@ -746,15 +795,18 @@ export default function SolutionSection() {
           }
 
           .result-title {
-            font-size: 1.15rem;
-            margin-bottom: 0.4rem;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+          }
+          
+          .result-description {
+            font-size: 0.95rem;
           }
         }
 
-        /* Дополнительные стили для маленьких экранов */
+        /* Additional styles for small screens */
         @media (max-width: 576px) {
           .solution-step-card {
-            width: 100%;
             margin-left: 0 !important;
             margin-right: 0 !important;
           }

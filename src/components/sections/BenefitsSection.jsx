@@ -132,6 +132,57 @@ export default function BenefitsSection() {
               </div>
             </Col>
           </Row>
+          
+          {/* Skeleton for Additional Copy Options */}
+          <Row className="mt-5">
+            <Col lg={10} className="mx-auto">
+              <div className="skeleton-quote-container">
+                <div className="skeleton-grid">
+                  <div className="skeleton-quote-item">
+                    <div className="skeleton-quote-icon-wrapper">
+                      <div className="skeleton-quote-icon"></div>
+                    </div>
+                    <div className="skeleton-quote-text-line"></div>
+                    <div className="skeleton-quote-text-line" style={{ width: "85%" }}></div>
+                    <div className="skeleton-quote-dot-pattern pattern-right"></div>
+                  </div>
+                  <div className="skeleton-quote-item">
+                    <div className="skeleton-quote-icon-wrapper">
+                      <div className="skeleton-quote-icon"></div>
+                    </div>
+                    <div className="skeleton-quote-text-line"></div>
+                    <div className="skeleton-quote-text-line" style={{ width: "75%" }}></div>
+                    <div className="skeleton-quote-dot-pattern pattern-left"></div>
+                  </div>
+                </div>
+                
+                {/* Decorative dot patterns for skeleton */}
+                <div
+                  className="position-absolute dots-grid dots-grid-quote-top-right"
+                  style={{
+                    top: "10%",
+                    right: "5%",
+                    width: "120px",
+                    height: "120px",
+                    zIndex: 0,
+                    opacity: 0.2
+                  }}
+                ></div>
+                
+                <div
+                  className="position-absolute dots-grid dots-grid-quote-bottom-left"
+                  style={{
+                    bottom: "15%",
+                    left: "5%",
+                    width: "100px", 
+                    height: "100px",
+                    zIndex: 0,
+                    opacity: 0.2
+                  }}
+                ></div>
+              </div>
+            </Col>
+          </Row>
         </Container>
      
         <style jsx global>{`
@@ -243,6 +294,124 @@ export default function BenefitsSection() {
             border-radius: 12px;
             margin: 0 auto;
           }
+          
+          .skeleton-quote-container {
+            height: auto;
+            border-radius: 20px;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 1rem;
+            position: relative;
+            overflow: hidden;
+          }
+          
+          .skeleton-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            position: relative;
+          }
+          
+          .skeleton-quote-item {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+          }
+          
+          /* Mimic dot pattern styling */
+          .skeleton-quote-dot-pattern {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 40%;
+            z-index: 0;
+            opacity: 0.15;
+            background-image: radial-gradient(
+              rgba(255, 255, 255, 0.3) 1px,
+              transparent 0
+            );
+            background-size: 12px 12px;
+          }
+          
+          .skeleton-quote-icon-wrapper {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            position: relative;
+            z-index: 2;
+          }
+          
+          .skeleton-quote-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            margin-bottom: 0;
+            background: linear-gradient(
+              135deg,
+              rgba(99, 102, 241, 0.3),
+              rgba(139, 92, 246, 0.2)
+            );
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.2);
+          }
+          
+          .skeleton-quote-icon::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+              90deg,
+              rgba(255, 255, 255, 0.05) 25%,
+              rgba(255, 255, 255, 0.15) 50%,
+              rgba(255, 255, 255, 0.05) 75%
+            );
+            background-size: 200px 100%;
+            animation: skeleton-loading 1.5s infinite linear;
+          }
+          
+          .skeleton-quote-text-line {
+            height: 16px;
+            width: 100%;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            background: linear-gradient(
+              90deg,
+              rgba(255, 255, 255, 0.05) 25%,
+              rgba(255, 255, 255, 0.1) 50%,
+              rgba(255, 255, 255, 0.05) 75%
+            );
+            background-size: 200px 100%;
+            animation: skeleton-loading 1.5s infinite linear;
+            position: relative;
+            z-index: 1;
+          }
+          
+          @media (max-width: 768px) {
+            .skeleton-grid {
+              grid-template-columns: 1fr;
+              gap: 1rem;
+            }
+            
+            .skeleton-quote-container {
+              padding: 1.5rem;
+            }
+            
+            .skeleton-quote-item {
+              padding: 1.25rem;
+            }
+          }
         `}</style>
       </SectionContainer>
     );
@@ -349,6 +518,40 @@ export default function BenefitsSection() {
                 </div>
               </Col>
             ))}
+        </Row>
+
+        {/* Additional Copy Options */}
+        <Row className={`mt-5 additional-copy ${isVisible ? "visible" : ""}`}>
+          <Col lg={10} className="mx-auto">
+            <div className="quote-container">
+              <div className="quote-grid">
+                <div className="quote-item">
+                  <div className="quote-icon-wrapper">
+                    <div className="quote-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9.59 4.59A2 2 0 1 1 11 8H8a6 6 0 0 0 6 6v2a8 8 0 0 1-8-8V4.59z" fill="currentColor"/>
+                        <path d="M15.59 4.59A2 2 0 1 1 17 8h-3a6 6 0 0 0 6 6v2a8 8 0 0 1-8-8V4.59z" fill="currentColor"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <p className="quote-text">No training required. Plug into a proven government sales engine.</p>
+                  <div className="quote-dot-pattern pattern-right"></div>
+                </div>
+                <div className="quote-item">
+                  <div className="quote-icon-wrapper">
+                    <div className="quote-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9.59 4.59A2 2 0 1 1 11 8H8a6 6 0 0 0 6 6v2a8 8 0 0 1-8-8V4.59z" fill="currentColor"/>
+                        <path d="M15.59 4.59A2 2 0 1 1 17 8h-3a6 6 0 0 0 6 6v2a8 8 0 0 1-8-8V4.59z" fill="currentColor"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <p className="quote-text">Leave the regs and registrations to us—focus on execution.</p>
+                  <div className="quote-dot-pattern pattern-left"></div>
+                </div>
+              </div>
+            </div>
+          </Col>
         </Row>
 
         <Row className={`${isVisible ? "visible" : ""}`}>
@@ -953,6 +1156,272 @@ export default function BenefitsSection() {
           .dots-grid-bottom-left {
             width: 120px;
             height: 120px;
+          }
+        }
+
+        /* Add styles for the additional copy section */
+        .additional-copy {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+          transition-delay: 0.5s;
+        }
+        
+        .additional-copy.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        .quote-container {
+          background: var(--section-bg);
+          border-radius: 20px;
+          padding: 2rem;
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+          position: relative;
+          overflow: hidden;
+          border: 1px solid var(--card-border);
+        }
+        
+        [data-bs-theme="dark"] .quote-container {
+          background: linear-gradient(180deg, rgba(67, 97, 238, 0.05) 0%, rgba(67, 97, 238, 0.02) 100%);
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .quote-container::before {
+          content: "";
+          position: absolute;
+          width: 500px;
+          height: 500px;
+          background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.05), transparent);
+          border-radius: 50%;
+          top: -300px;
+          left: -100px;
+          filter: blur(50px);
+          z-index: 0;
+        }
+        
+        .quote-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 1.5rem;
+          position: relative;
+          z-index: 1;
+        }
+        
+        .quote-item {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 1.5rem;
+          background: var(--card-bg);
+          border-radius: 12px;
+          border: 1px solid var(--card-border);
+          overflow: hidden;
+          transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s ease;
+          box-shadow: var(--card-shadow),
+            0 0 20px rgba(var(--primary-rgb), 0.03);
+          backdrop-filter: blur(10px);
+        }
+        
+        .quote-item::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 3px;
+          background: linear-gradient(
+            90deg,
+            rgba(var(--primary-rgb), 0.8) 0%,
+            rgba(139, 92, 246, 0.8) 100%
+          );
+          opacity: 0;
+          transition: opacity 0.4s ease;
+        }
+        
+        .quote-item::after {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          width: 40%;
+          height: 30%;
+          background: radial-gradient(
+            circle at bottom right,
+            rgba(var(--primary-rgb), 0.03),
+            transparent 70%
+          );
+          opacity: 0;
+          transition: opacity 0.5s ease;
+          z-index: 0;
+        }
+        
+        .quote-item:hover {
+          transform: translateY(-8px) scale(1.01);
+          box-shadow: var(--card-hover-shadow),
+            0 15px 35px rgba(var(--primary-rgb), 0.08);
+        }
+        
+        .quote-item:hover::before {
+          opacity: 1;
+        }
+        
+        .quote-item:hover::after {
+          opacity: 1;
+        }
+        
+        /* Quote dot pattern styling */
+        .quote-dot-pattern {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          width: 40%;
+          z-index: 0;
+          opacity: 0.3;
+        }
+        
+        .pattern-right {
+          right: 0;
+          background-image: radial-gradient(
+            var(--feature-dot-color) 1px,
+            transparent 0
+          );
+          background-size: 12px 12px;
+        }
+        
+        .pattern-left {
+          left: 0;
+          right: auto;
+          background-image: radial-gradient(
+            var(--feature-dot-color) 1px,
+            transparent 0
+          );
+          background-size: 12px 12px;
+        }
+        
+        .quote-icon-wrapper {
+          display: flex;
+          align-items: center;
+          margin-bottom: 1.25rem;
+          position: relative;
+          z-index: 2;
+        }
+        
+        .quote-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 48px;
+          height: 48px;
+          border-radius: 16px;
+          transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+          position: relative;
+          overflow: hidden;
+          background: linear-gradient(135deg, #6366f1, #8b5cf6);
+          /* 3D effect with improved shadows */
+          box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4),
+            0 0 0 1px rgba(255, 255, 255, 0.1),
+            inset 0 -2px 5px rgba(0, 0, 0, 0.2),
+            inset 0 2px 5px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Glow effect */
+        .quote-icon::before {
+          content: "";
+          position: absolute;
+          inset: -3px;
+          background: linear-gradient(
+            135deg,
+            rgba(99, 102, 241, 0.2),
+            rgba(139, 92, 246, 0.1)
+          );
+          border-radius: 18px;
+          z-index: -1;
+          filter: blur(8px);
+          opacity: 0.8;
+          transition: opacity 0.3s ease;
+        }
+        
+        .quote-icon::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 50%;
+          background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.5),
+            transparent
+          );
+          border-radius: 16px 16px 0 0;
+          opacity: 0.7;
+        }
+        
+        .quote-icon svg {
+          color: white;
+          position: relative;
+          z-index: 1;
+          transition: color 0.3s ease;
+          fill: currentColor;
+          will-change: transform;
+        }
+        
+        .quote-item:hover .quote-icon {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5),
+            0 0 0 1px rgba(255, 255, 255, 0.15),
+            inset 0 -2px 5px rgba(0, 0, 0, 0.2),
+            inset 0 2px 5px rgba(255, 255, 255, 0.4);
+        }
+        
+        .quote-item:hover .quote-icon::before {
+          opacity: 1;
+          filter: blur(10px);
+        }
+        
+        .quote-text {
+          font-size: 1.125rem;
+          line-height: 1.6;
+          color: var(--text-primary);
+          margin: 0;
+          font-weight: 500;
+          position: relative;
+          z-index: 1;
+        }
+        
+        /* Dots grid styles for quote container */
+        .dots-grid-quote-top-right {
+          transform: rotate(10deg);
+        }
+        
+        .dots-grid-quote-bottom-left {
+          transform: rotate(-5deg);
+        }
+        
+        @media (max-width: 768px) {
+          .quote-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+          }
+          
+          .quote-container {
+            padding: 1.5rem;
+          }
+          
+          .quote-item {
+            padding: 1.25rem;
+          }
+          
+          .quote-text {
+            font-size: 1rem;
+          }
+          
+          .dots-grid-quote-top-right,
+          .dots-grid-quote-bottom-left {
+            display: none;
           }
         }
       `}</style>

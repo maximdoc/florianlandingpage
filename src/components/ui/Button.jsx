@@ -4,8 +4,8 @@ import Link from 'next/link';
 import React from 'react';
 
 /**
- * Универсальный компонент кнопки, который поддерживает как обычные кнопки, так и кнопки-ссылки.
- * Имеет поддержку различных вариантов стилей и размеров.
+ * Universal button component that supports both regular buttons and link buttons.
+ * Supports various style variants and sizes.
  */
 const Button = ({
   children,
@@ -21,20 +21,20 @@ const Button = ({
   type = 'button',
   ...props
 }) => {
-  // Определяем базовый класс
+  // Define base class
   const baseClass = 'btn';
   
-  // Определяем классы в зависимости от варианта
+  // Define classes based on variant
   const variantClass = `btn-${variant}`;
   
-  // Определяем классы в зависимости от размера
+  // Define classes based on size
   const sizeClass = size === 'lg' ? 'btn-lg' : size === 'sm' ? 'btn-sm' : '';
   
-  // Определяем класс для кнопки с иконкой
+  // Define class for button with icon
   const iconClass = startIcon || endIcon ? 'btn-icon' : '';
   const iconOnlyClass = isIconOnly ? 'btn-icon-only' : '';
   
-  // Собираем все классы вместе
+  // Combine all classes together
   const classes = [
     baseClass,
     variantClass,
@@ -44,7 +44,7 @@ const Button = ({
     className,
   ].filter(Boolean).join(' ');
   
-  // Если у нас есть href, рендерим Link
+  // If we have href, render Link
   if (href) {
     return (
       <Link
@@ -59,7 +59,7 @@ const Button = ({
     );
   }
   
-  // Иначе рендерим кнопку
+  // Otherwise render button
   return (
     <button
       type={type}

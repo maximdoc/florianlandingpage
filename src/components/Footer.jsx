@@ -262,33 +262,33 @@ export default function Footer() {
       </div>
       
       <style jsx global>{`
-        /* Основные стили футера */
+        /* Main footer styles */
         .site-footer {
           position: relative;
           font-size: 0.95rem;
           transition: all 0.3s ease;
         }
         
-        /* Стили для темной темы */
+        /* Dark theme styles */
         .footer-dark {
           background-color: #0f172a;
           color: rgba(255, 255, 255, 0.75);
         }
         
-        /* Стили для светлой темы */
+        /* Light theme styles */
         .footer-light {
           background-color: #f1f5f9;
           color: #1e293b;
           box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.08);
         }
         
-        /* Верхняя часть футера */
+        /* Footer top section */
         .footer-top {
           padding: 4rem 0 3rem;
           position: relative;
         }
         
-        /* Нижняя часть футера */
+        /* Footer bottom section */
         .footer-bottom {
           padding: 1.5rem 0;
           position: relative;
@@ -302,7 +302,7 @@ export default function Footer() {
           border-top: 1px solid rgba(0, 0, 0, 0.06);
         }
         
-        /* Брендинг */
+        /* Branding */
         .footer-brand {
           margin-bottom: 1.5rem;
         }
@@ -342,7 +342,7 @@ export default function Footer() {
           max-width: 320px;
         }
         
-        /* Социальные ссылки */
+        /* Social links */
         .social-links {
           display: flex;
           gap: 0.8rem;
@@ -376,7 +376,7 @@ export default function Footer() {
           box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
         }
         
-        /* Заголовки в футере */
+        /* Footer headings */
         .footer-dark .footer-heading {
           color: white;
         }
@@ -404,7 +404,7 @@ export default function Footer() {
           border-radius: 2px;
         }
         
-        /* Группы навигационных ссылок */
+        /* Navigation link groups */
         .footer-nav {
           margin-bottom: 1.5rem;
         }
@@ -462,7 +462,7 @@ export default function Footer() {
           width: 100%;
         }
         
-        /* Контактная информация */
+        /* Contact information */
         .contact-info {
           margin-bottom: 1rem;
         }
@@ -516,7 +516,7 @@ export default function Footer() {
           color: #6366f1;
         }
         
-        /* Copyright и легальные ссылки */
+        /* Copyright and legal links */
         .footer-dark .copyright {
           color: rgba(255, 255, 255, 0.6);
         }
@@ -574,7 +574,7 @@ export default function Footer() {
           width: 100%;
         }
         
-        /* Адаптивность */
+        /* Responsiveness */
         @media (max-width: 991.98px) {
           .footer-top {
             padding: 3.5rem 0 2rem;
