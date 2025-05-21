@@ -860,14 +860,14 @@ export default function BenefitsSection() {
           position: relative;
           overflow: hidden;
           background: linear-gradient(135deg, #6366f1, #8b5cf6);
-          /* 3D эффект с улучшенными тенями */
+          /* 3D effect with enhanced shadows */
           box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4),
             0 0 0 1px rgba(255, 255, 255, 0.1),
             inset 0 -2px 5px rgba(0, 0, 0, 0.2),
             inset 0 2px 5px rgba(255, 255, 255, 0.3);
         }
 
-        /* Эффект свечения */
+        /* Glow effect */
         .benefit-icon-wrapper::before {
           content: "";
           position: absolute;
@@ -919,7 +919,7 @@ export default function BenefitsSection() {
           color: white !important; /* Important to override any inline styles */
         }
 
-        /* Улучшенный эффект при наведении */
+        /* Improved hover effect */
         .benefit-card:hover .benefit-icon-wrapper,
         .benefit-card.active .benefit-icon-wrapper {
           transform: translateY(-2px);
@@ -1404,7 +1404,7 @@ export default function BenefitsSection() {
         @media (max-width: 768px) {
           .quote-grid {
             grid-template-columns: 1fr;
-            gap: 1rem;
+            gap: 1.5rem;
           }
           
           .quote-container {

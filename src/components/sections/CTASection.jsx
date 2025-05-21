@@ -11,7 +11,7 @@ export default function CTASection() {
   const [ctaSection, setCtaSection] = useState(null);
   const [loading, setLoading] = useState(true);
   
-  // Загружаем данные секции из API
+  // Load section data from API
   useEffect(() => {
     async function loadCtaSection() {
       try {
@@ -28,12 +28,12 @@ export default function CTASection() {
     loadCtaSection();
   }, []);
   
-  // Если данные загружаются, показываем индикатор загрузки
+  // If data is loading, show loading indicator
   if (loading) {
     return <div className="p-5 text-center">Loading...</div>;
   }
 
-  // Если данные секции не найдены, не отображаем компонент
+  // If section data not found, don't display component
   if (!ctaSection) {
     return null;
   }
@@ -92,7 +92,7 @@ export default function CTASection() {
                     <div className="d-grid">
                       <Button 
                         type="submit" 
-                        variant="primary"
+                        variant="action"
                         endIcon={ctaSection.submitButton.endIcon && <Icon name={ctaSection.submitButton.endIcon} width={16} height={16} />}
                         className="w-100"
                       >
@@ -112,7 +112,6 @@ export default function CTASection() {
       </Container>
       
       <style jsx global>{`
-        /* Базовые CSS-переменные для совместимости с темами */
         :root {
           --cta-bg: var(--primary);
           --cta-card-bg: #ffffff;
@@ -188,9 +187,9 @@ export default function CTASection() {
           }
         }
         
-        @media (max-width: 768px) {
+        @media (max-width: 767.98px) {
           .cta-section-container {
-            padding: 3rem 0;
+            padding: 5rem 0;
           }
           
           .cta-content-col, 
@@ -249,11 +248,11 @@ export default function CTASection() {
           flex-shrink: 0;
           position: relative;
           overflow: hidden;
-          background: linear-gradient(135deg, #6366f1, #8b5cf6);
+          background: linear-gradient(135deg, #0052CC, #1C68E0);
           color: white;
           /* 3D effect with enhanced shadows */
           box-shadow: 
-            0 3px 10px rgba(99, 102, 241, 0.3),
+            0 3px 10px rgba(0, 82, 204, 0.3),
             0 0 0 1px rgba(255, 255, 255, 0.1),
             inset 0 -1px 3px rgba(0, 0, 0, 0.15),
             inset 0 1px 3px rgba(255, 255, 255, 0.3);
@@ -264,7 +263,7 @@ export default function CTASection() {
           content: '';
           position: absolute;
           inset: -2px;
-          background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.1));
+          background: linear-gradient(135deg, rgba(0, 82, 204, 0.2), rgba(28, 104, 224, 0.1));
           border-radius: 12px;
           z-index: -1;
           filter: blur(6px);
@@ -292,7 +291,7 @@ export default function CTASection() {
         .benefit-item:hover .benefit-icon {
           transform: translateY(-1px);
           box-shadow: 
-            0 5px 12px rgba(99, 102, 241, 0.4),
+            0 5px 12px rgba(0, 82, 204, 0.4),
             0 0 0 1px rgba(255, 255, 255, 0.15),
             inset 0 -1px 3px rgba(0, 0, 0, 0.15),
             inset 0 1px 3px rgba(255, 255, 255, 0.4);
@@ -305,7 +304,7 @@ export default function CTASection() {
         }
         
         [data-bs-theme="light"] .benefit-item span {
-          color: #1e293b !important;
+          color: #1E293B !important;
         }
         
         [data-bs-theme="dark"] .benefit-item span {

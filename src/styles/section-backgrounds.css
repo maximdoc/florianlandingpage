@@ -4,27 +4,25 @@
 
 /* Light theme variables */
 [data-bs-theme="light"] {
-  --section-bg-light: #ffffff;
-  --section-bg-dark: #f1f5f9;  /* Slightly darker for better contrast */
+  --section-bg-light: #FFFFFF;
+  --section-bg-dark: #F9FAFB;  /* Client's Soft Off-White for darker sections */
   --section-border: rgba(0, 0, 0, 0.03);
 }
 
 /* Dark theme variables */
 [data-bs-theme="dark"] {
-  --section-bg-light: #121829;
-  --section-bg-dark: #0a101e;
+  --section-bg-light: #1E293B; /* Client's Dark Slate */
+  --section-bg-dark: #0F172A; /* Darker shade of Dark Slate */
   --section-border: rgba(255, 255, 255, 0.05);
 }
 
 /* Apply alternating backgrounds to all section components */
 .section-container:nth-of-type(odd) {
   background-color: var(--section-bg-light);
-  border-bottom: 1px solid var(--section-border);
 }
 
 .section-container:nth-of-type(even) {
   background-color: var(--section-bg-dark);
-  border-bottom: 1px solid var(--section-border);
 }
 
 /* Visual separator between sections */

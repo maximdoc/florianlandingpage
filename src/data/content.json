@@ -21,7 +21,11 @@
           "text": "FAQ",
           "href": "#faq"
         }
-      ]
+      ],
+      "ctaButton": {
+        "text": "Get Started",
+        "href": "#strategy-call"
+      }
     },
     "footer": {
       "copyright": "© 2025 SlingRFP",
@@ -115,7 +119,7 @@
             "text": "professionals trust our platform daily"
           },
           "dashboardImage": "/images/optimized/dashboard-second.webp",
-          "backgroundVariant": "dark"
+          "backgroundVariant": "light"
         },
         {
           "id": "mission",
@@ -146,7 +150,7 @@
             "text": "Learn More",
             "href": "#solution"
           },
-          "backgroundVariant": "light"
+          "backgroundVariant": "dark"
         },
         {
           "id": "solution",
@@ -188,7 +192,7 @@
               "href": "#strategy-call"
             }
           },
-          "backgroundVariant": "dark"
+          "backgroundVariant": "light"
         },
         {
           "id": "benefits",
@@ -233,7 +237,7 @@
             "text": "Book Your Free Strategy Call",
             "href": "#strategy-call"
           },
-          "backgroundVariant": "light"
+          "backgroundVariant": "dark"
         },
         {
           "id": "comparison",
@@ -283,7 +287,7 @@
             "title": "The <span class=\"text-gradient\">Bottom Line</span>",
             "text": "SlingRFP transforms government contracting from a high-effort, low-reward gamble into a streamlined, predictable revenue channel for your business."
           },
-          "backgroundVariant": "dark"
+          "backgroundVariant": "light"
         },
         {
           "id": "features",
@@ -341,7 +345,7 @@
               "href": "#strategy-call"
             }
           },
-          "backgroundVariant": "light"
+          "backgroundVariant": "dark"
         },
         {
           "id": "testimonials",
@@ -387,6 +391,94 @@
               "rating": 5
             }
           ],
+          "backgroundVariant": "light"
+        },
+        {
+          "id": "trust",
+          "type": "trust",
+          "title": "Trust & <span class=\"text-gradient\">Social</span> Proof",
+          "subtitle": "Join hundreds of businesses that rely on SlingRFP for their government contracting success",
+          "featuredIn": {
+            "title": "As Featured In",
+            "logos": [
+              {
+                "id": 1,
+                "name": "GovTech News",
+                "image": "/images/logos/govtech-news.svg",
+                "url": "#"
+              },
+              {
+                "id": 2,
+                "name": "Federal Times",
+                "image": "/images/logos/federal-times.svg",
+                "url": "#"
+              },
+              {
+                "id": 3,
+                "name": "State RFP Review",
+                "image": "/images/logos/state-rfp.svg",
+                "url": "#"
+              }
+            ]
+          },
+          "partners": {
+            "title": "Our Partners & Clients",
+            "logos": [
+              {
+                "id": 1,
+                "name": "Partner 1",
+                "image": "/images/logos/partner1.svg",
+                "url": "#"
+              },
+              {
+                "id": 2,
+                "name": "Partner 2",
+                "image": "/images/logos/partner2.svg",
+                "url": "#"
+              },
+              {
+                "id": 3,
+                "name": "Partner 3",
+                "image": "/images/logos/partner3.svg",
+                "url": "#"
+              },
+              {
+                "id": 4,
+                "name": "Partner 4",
+                "image": "/images/logos/partner4.svg",
+                "url": "#"
+              },
+              {
+                "id": 5,
+                "name": "Partner 5",
+                "image": "/images/logos/partner5.svg",
+                "url": "#"
+              }
+            ]
+          },
+          "certifications": {
+            "title": "Certifications We Support",
+            "badges": [
+              {
+                "id": 1,
+                "name": "Service-Disabled Veteran-Owned",
+                "image": "/images/people-three.png",
+                "description": "Service-Disabled Veteran-Owned Small Business"
+              },
+              {
+                "id": 2,
+                "name": "Woman-Owned",
+                "image": "/images/people-three.png",
+                "description": "Woman-Owned Small Business"
+              },
+              {
+                "id": 3,
+                "name": "8(a) Eligible",
+                "image": "/images/people-three.png",
+                "description": "SBA 8(a) Business Development Program"
+              }
+            ]
+          },
           "backgroundVariant": "dark"
         },
         {
@@ -419,6 +511,21 @@
               "id": "5",
               "question": "Do we keep all data and templates?",
               "answer": "Yes. You own every document, certificate, and proposal we create."
+            },
+            {
+              "id": "6",
+              "question": "What industries do you support?",
+              "answer": "We serve technology, professional services, manufacturing, healthcare—any B2B sector."
+            },
+            {
+              "id": "7",
+              "question": "How long until we see results?",
+              "answer": "Clients typically receive their first qualified bid list within 48 hours and submit their first proposal in 1–2 weeks."
+            },
+            {
+              "id": "8",
+              "question": "What's included in your pricing?",
+              "answer": "Registration support, proposal writing, submission, and performance analytics; fees based only on awards."
             }
           ],
           "ctaSection": {

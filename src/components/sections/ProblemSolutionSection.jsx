@@ -11,7 +11,7 @@ export default function ProblemSolutionSection() {
   const [activeStep, setActiveStep] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
   
-  // Получаем данные секции из JSON-файла
+  // Get section data from JSON file
   const solutionSection = getSectionById('home', 'solution');
   
   // Add intersection observer for scroll animations
@@ -34,7 +34,7 @@ export default function ProblemSolutionSection() {
     setActiveStep(index);
   };
 
-  // Если данные секции не найдены, не отображаем компонент
+  // If section data not found, don't display component
   if (!solutionSection) {
     return null;
   }

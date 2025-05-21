@@ -15,7 +15,7 @@ export default function TestimonialsSection() {
   const [loading, setLoading] = useState(true);
   const sliderRef = useRef(null);
   
-  // Получаем данные секции из API
+  // Load section data from API
   useEffect(() => {
     async function loadTestimonialsSection() {
       try {
@@ -364,7 +364,7 @@ export default function TestimonialsSection() {
                 positionClass = 'hidden';
               }
               
-              // Выбор аватара в зависимости от текущей темы
+              // Choose avatar based on current theme
               const avatarSrc = theme === 'light' ? testimonial.avatarLight : testimonial.avatarDark;
               
               return (
@@ -476,8 +476,8 @@ export default function TestimonialsSection() {
         /* Section styling */
         .testimonials-section {
           position: relative;
-          background: var(--dark-bg, #121829);
-          padding: 6rem 0;
+          background: var(--section-bg);
+          padding: 5rem 0;
         }
         
         [data-bs-theme="light"] .testimonials-section {
@@ -778,7 +778,11 @@ export default function TestimonialsSection() {
         }
         
         /* Responsive adjustments */
-        @media (max-width: 992px) {
+        @media (max-width: 991px) {
+          .testimonials-section {
+            padding: 5rem 0;
+          }
+          
           .testimonial-slider {
             height: 420px;
           }
@@ -910,9 +914,9 @@ export default function TestimonialsSection() {
           }
         }
         
-        @media (max-width: 768px) {
+        @media (max-width: 767px) {
           .testimonials-section {
-            padding: 3rem 0 4rem;
+            padding: 5rem 0;
           }
           
           .testimonial-slider {

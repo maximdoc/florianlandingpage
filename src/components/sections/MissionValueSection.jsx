@@ -215,9 +215,9 @@ export default function MissionValueSection() {
                 <div className="mt-4">
                   <Button 
                     href={missionSection.ctaButton.href} 
-                    variant="primary"
+                    variant="action"
                   >
-                    {missionSection.ctaButton.text}
+                    Free Consultation
                   </Button>
                 </div>
               )}

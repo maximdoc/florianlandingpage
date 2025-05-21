@@ -403,8 +403,8 @@ export default function ComparisonSection() {
         /* Section styling */
         .comparison-section {
           position: relative;
-          background: var(--dark-bg, #111827);
-          padding: 7rem 0;
+          background: var(--section-bg);
+          padding: 5rem 0;
         }
 
         [data-bs-theme="light"] .comparison-section {
@@ -715,7 +715,11 @@ export default function ComparisonSection() {
         }
 
         /* Responsive adjustments */
-        @media (max-width: 992px) {
+        @media (max-width: 991px) {
+          .comparison-section {
+            padding: 5rem 0;
+          }
+
           .comparison-container {
             grid-template-columns: 1fr;
             gap: 2rem;

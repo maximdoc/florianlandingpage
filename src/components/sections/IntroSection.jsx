@@ -42,7 +42,7 @@ export default function IntroSection() {
     };
   }, []);
 
-  // Если данные загружаются или не загрузились, показываем skeleton
+  // If data is loading or not loaded, show skeleton
   if (loading || !introSection) {
     return (
       <SectionContainer className="intro-section-container position-relative overflow-hidden py-7" backgroundVariant="dark">

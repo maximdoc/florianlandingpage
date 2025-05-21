@@ -1,43 +1,43 @@
 /* Global CSS Variables */
 :root {
   /* Base colors */
-  --background: #ffffff;
-  --background-rgb: 255, 255, 255;
-  --foreground: #0e1525;
-  --primary: #4361ee;
-  --primary-rgb: 67, 97, 238;
-  --primary-hover: #3a56e6;
-  --primary-light: rgba(67, 97, 238, 0.1);
-  --secondary: #f8f9fa;
-  --secondary-hover: #e9ecef;
-  --accent: #4361ee;
-  --accent-hover: #3a56e6;
+  --background: #F9FAFB; /* Updated to client's Soft Off-White */
+  --background-rgb: 249, 250, 251;
+  --foreground: #1E293B; /* Updated to client's Dark Slate */
+  --primary: #0052CC; /* Updated to client's Deep Blue primary accent */
+  --primary-rgb: 0, 82, 204;
+  --primary-hover: #0047B3; /* Darker shade of primary for hover states */
+  --primary-light: rgba(0, 82, 204, 0.1);
+  --secondary: #FF6F61; /* Updated to client's Warm Coral secondary accent */
+  --secondary-hover: #FF5A4A; /* Darker shade of secondary for hover states */
+  --accent: #0052CC; /* Using primary as accent */
+  --accent-hover: #0047B3;
   --success: #2ecc71;
   --warning: #f39c12;
   --danger: #e74c3c;
   --info: #3498db;
 
   /* Text colors */
-  --text-primary: #0e1525;
-  --text-secondary: #4a5568;
-  --text-muted: #718096;
-  --text-light: #f8f9fa;
-  --text-body: #2d3748;
+  --text-primary: #1E293B; /* Updated to client's Dark Slate */
+  --text-secondary: #64748B; /* Updated to client's Medium Gray */
+  --text-muted: #94A3B8; /* Lighter shade of text-secondary */
+  --text-light: #F9FAFB; /* Using background color as text-light */
+  --text-body: #1E293B; /* Same as text-primary */
 
   /* Border colors */
-  --border-color: #e2e8f0;
+  --border-color: #E2E8F0;
 
   /* Shadow colors */
   --shadow-color: rgba(0, 0, 0, 0.1);
   --shadow-color-darker: rgba(0, 0, 0, 0.15);
 
   /* Card colors */
-  --card-bg: #ffffff;
-  --card-bg-dark: #1a202c;
+  --card-bg: #FFFFFF;
+  --card-bg-dark: #1E293B;
 
   /* Gradients */
-  --gradient-primary: linear-gradient(135deg, var(--primary) 0%, #4c75f2 100%);
-  --gradient-dark: linear-gradient(135deg, #0e1525 0%, #1a202c 100%);
+  --gradient-primary: linear-gradient(135deg, var(--primary) 0%, #1C68E0 100%);
+  --gradient-dark: linear-gradient(135deg, #1E293B 0%, #334155 100%);
 
   /* Transitions */
   --transition-speed: 0.3s;
@@ -66,39 +66,46 @@
   --container-max-width-xl: 1240px;
   --container-max-width-xxl: 1440px;
 
-  --primary-color: #4f46e5;
-  --primary-hover: #4338ca;
-  --text-color: #1f2937;
-  --text-light: #6b7280;
-  --background-light: #f9fafb;
-  --background-white: #ffffff;
+  --primary-color: #0052CC; /* Updated to client's Deep Blue */
+  --primary-hover: #0047B3;
+  --text-color: #1E293B; /* Updated to client's Dark Slate */
+  --text-light: #64748B; /* Updated to client's Medium Gray */
+  --background-light: #F9FAFB; /* Updated to client's Soft Off-White */
+  --background-white: #FFFFFF;
   --box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 
   /* Unified Button Styles */
-  --btn-primary-bg: #6366f1;
-  --btn-primary-text: #ffffff;
-  --btn-primary-hover-bg: #4f46e5;
-  --btn-primary-hover-text: #ffffff;
-  --btn-primary-active-bg: #4338ca;
+  --btn-primary-bg: #0052CC; /* Updated to client's Deep Blue */
+  --btn-primary-text: #FFFFFF;
+  --btn-primary-hover-bg: #0047B3;
+  --btn-primary-hover-text: #FFFFFF;
+  --btn-primary-active-bg: #003D99;
 
   --btn-secondary-bg: transparent;
-  --btn-secondary-text: #6366f1;
-  --btn-secondary-border: rgba(99, 102, 241, 0.5);
-  --btn-secondary-hover-bg: rgba(99, 102, 241, 0.1);
-  --btn-secondary-hover-text: #4f46e5;
-  --btn-secondary-active-bg: rgba(99, 102, 241, 0.2);
+  --btn-secondary-text: #0052CC; /* Updated to match primary */
+  --btn-secondary-border: rgba(0, 82, 204, 0.5);
+  --btn-secondary-hover-bg: rgba(0, 82, 204, 0.1);
+  --btn-secondary-hover-text: #0047B3;
+  --btn-secondary-active-bg: rgba(0, 82, 204, 0.2);
 
-  --btn-white-bg: #ffffff;
-  --btn-white-text: #6366f1;
-  --btn-white-hover-bg: #f0f4ff;
-  --btn-white-hover-text: #4f46e5;
-  --btn-white-active-bg: #e1e7fe;
+  --btn-white-bg: #FFFFFF;
+  --btn-white-text: #0052CC; /* Updated to match primary */
+  --btn-white-hover-bg: #F0F4FF;
+  --btn-white-hover-text: #0047B3;
+  --btn-white-active-bg: #E1E7FE;
 
-  --btn-dark-bg: #1e293b;
-  --btn-dark-text: #ffffff;
+  --btn-dark-bg: #1E293B; /* Updated to client's Dark Slate */
+  --btn-dark-text: #FFFFFF;
   --btn-dark-hover-bg: #334155;
-  --btn-dark-hover-text: #ffffff;
+  --btn-dark-hover-text: #FFFFFF;
   --btn-dark-active-bg: #475569;
+
+  /* Action button - uses secondary accent color for important CTAs */
+  --btn-action-bg: #FF6F61; /* Client's Warm Coral */
+  --btn-action-text: #FFFFFF;
+  --btn-action-hover-bg: #FF5A4A; /* Darker shade for hover */
+  --btn-action-hover-text: #FFFFFF;
+  --btn-action-active-bg: #FF4433; /* Even darker for active state */
 
   --btn-border-radius: 12px;
   --btn-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
@@ -106,78 +113,88 @@
   --btn-active-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   --btn-transition: all 0.3s ease;
 
-  /* Ключевые элементы для плавного перехода темы */
+  /* Key elements for smooth theme transition */
   --theme-transition-properties: background-color, color, border-color, box-shadow, fill, stroke;
 
-  /* Переменная для контроля начальной загрузки */
+  /* Variable for controlling initial loading */
   --initial-load: 1;
 
   /* Section container styles to prevent layout shifts */
-  --section-bg-light: #f8f9fa;
-  --section-bg-dark: #111827;
+  --section-bg-light: #F9FAFB; /* Updated to client's Soft Off-White */
+  --section-bg-dark: #1E293B; /* Updated to client's Dark Slate */
+  --section-border: #E2E8F0;
 }
 
 /* Dark theme */
 [data-bs-theme="dark"] {
-  --background: #0e1525;
-  --background-rgb: 14, 21, 37;
-  --foreground: #ffffff;
-  --primary: #4361ee;
-  --primary-rgb: 67, 97, 238;
-  --primary-hover: #3a56e6;
-  --primary-light: rgba(67, 97, 238, 0.15);
-  --secondary: #1a202c;
-  --secondary-hover: #2d3748;
-  --accent: #4361ee;
-  --accent-hover: #3a56e6;
-  --text-primary: #ffffff;
-  --text-secondary: #a0aec0;
-  --text-muted: #718096;
-  --text-light: #f8f9fa;
-  --text-body: #e2e8f0;
-  --border-color: #2d3748;
+  --background: #0F172A; /* Darker version of Dark Slate for background */
+  --background-rgb: 15, 23, 42;
+  --foreground: #FFFFFF;
+  --primary: #0052CC; /* Keeping the same primary color in dark mode */
+  --primary-rgb: 0, 82, 204;
+  --primary-hover: #0075EB; /* Lighter shade for hover in dark mode */
+  --primary-light: rgba(0, 82, 204, 0.15);
+  --secondary: #FF6F61; /* Keeping the same secondary color in dark mode */
+  --secondary-hover: #FF8A7E; /* Lighter shade for hover in dark mode */
+  --accent: #0052CC;
+  --accent-hover: #0075EB;
+  --text-primary: #FFFFFF;
+  --text-secondary: #94A3B8; /* Lighter version of Medium Gray for dark mode */
+  --text-muted: #64748B;
+  --text-light: #F9FAFB;
+  --text-body: #E2E8F0;
+  --border-color: #334155;
   --shadow-color: rgba(0, 0, 0, 0.3);
   --shadow-color-darker: rgba(0, 0, 0, 0.5);
-  --card-bg: #1a202c;
+  --card-bg: #1E293B; /* Using Dark Slate for card background */
 
   /* Dark theme for CTA section */
-  --primary-color: #6366f1;
-  --primary-hover: #818cf8;
-  --text-color: #f9fafb;
-  --text-light: #d1d5db;
-  --background-light: #1e293b;
-  --background-white: #111827;
+  --primary-color: #0052CC; /* Keeping the same primary color in dark mode */
+  --primary-hover: #0075EB;
+  --text-color: #F9FAFB;
+  --text-light: #CBD5E1;
+  --background-light: #1E293B;
+  --background-white: #0F172A;
   --box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
 
   /* Dark theme for buttons */
-  --btn-primary-text: #ffffff;
-  --btn-primary-hover-bg: #818cf8;
-  --btn-primary-hover-text: #ffffff;
+  --btn-primary-bg: #0052CC;
+  --btn-primary-text: #FFFFFF;
+  --btn-primary-hover-bg: #0075EB;
+  --btn-primary-hover-text: #FFFFFF;
 
-  --btn-secondary-border: rgba(99, 102, 241, 0.6);
-  --btn-secondary-text: #6366f1;
-  --btn-secondary-hover-bg: rgba(99, 102, 241, 0.15);
-  --btn-secondary-hover-text: #818cf8;
-  --btn-secondary-active-bg: rgba(99, 102, 241, 0.25);
+  --btn-secondary-border: rgba(0, 82, 204, 0.6);
+  --btn-secondary-text: #0052CC;
+  --btn-secondary-hover-bg: rgba(0, 82, 204, 0.15);
+  --btn-secondary-hover-text: #0075EB;
+  --btn-secondary-active-bg: rgba(0, 82, 204, 0.25);
 
   --btn-white-bg: rgba(255, 255, 255, 0.9);
-  --btn-white-text: #6366f1;
-  --btn-white-hover-bg: #ffffff;
-  --btn-white-hover-text: #4f46e5;
+  --btn-white-text: #0052CC;
+  --btn-white-hover-bg: #FFFFFF;
+  --btn-white-hover-text: #0047B3;
 
-  --btn-dark-bg: #0f172a;
-  --btn-dark-text: #ffffff;
-  --btn-dark-hover-bg: #1e293b;
-  --btn-dark-hover-text: #ffffff;
+  --btn-dark-bg: #0F172A;
+  --btn-dark-text: #FFFFFF;
+  --btn-dark-hover-bg: #1E293B;
+  --btn-dark-hover-text: #FFFFFF;
   --btn-dark-active-bg: #334155;
+  
+  /* Action button in dark mode */
+  --btn-action-bg: #FF6F61; /* Same coral for dark mode */
+  --btn-action-text: #FFFFFF;
+  --btn-action-hover-bg: #FF8A7E; /* Lighter shade for dark mode hover */
+  --btn-action-hover-text: #FFFFFF;
+  --btn-action-active-bg: #FFA59C; /* Even lighter for active state in dark mode */
 
   --btn-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   --btn-hover-box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   --btn-active-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
 
   /* Section container styles for dark theme */
-  --section-bg-light: #1e293b;
-  --section-bg-dark: #0f172a;
+  --section-bg-light: #1E293B;
+  --section-bg-dark: #0F172A;
+  --section-border: #334155;
 }
 
 /* Override Bootstrap container widths */
@@ -389,7 +406,6 @@ body {
 .custom-navbar-collapse {
   margin-top: 0.5rem;
   border-radius: var(--border-radius);
-  overflow: hidden;
 }
 
 @media (max-width: 991px) {
@@ -498,8 +514,8 @@ body {
 
 /* ProblemSolutionSection Styles */
 .py-6 {
-  padding-top: 8rem;
-  padding-bottom: 8rem;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
 }
 
 .challenge-section,
@@ -534,7 +550,7 @@ body {
 .testimonial-cards {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  gap: 1.5rem;
   margin-top: 3rem;
 }
 
@@ -1192,6 +1208,32 @@ p {
   color: var(--btn-dark-text);
 }
 
+/* New Action Button Style using secondary accent (Warm Coral) */
+.btn-action {
+  background-color: var(--btn-action-bg);
+  color: var(--btn-action-text);
+  border: 1px solid var(--btn-action-bg);
+  box-shadow: 0 4px 12px rgba(255, 111, 97, 0.25);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.btn-action:hover {
+  background-color: var(--btn-action-hover-bg);
+  border-color: var(--btn-action-hover-bg);
+  box-shadow: 0 6px 16px rgba(255, 111, 97, 0.35);
+  color: var(--btn-action-hover-text);
+  transform: translateY(-2px);
+}
+
+.btn-action:active,
+.btn-action:focus {
+  background-color: var(--btn-action-active-bg);
+  border-color: var(--btn-action-active-bg);
+  box-shadow: 0 2px 8px rgba(255, 111, 97, 0.2);
+  transform: translateY(0);
+}
+
 /* Button with glow effect */
 .btn.glow-effect:hover {
   box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.5);
@@ -1303,7 +1345,7 @@ p {
   transform: rotate(10deg);
 }
 
-/* Стили для кнопки во время изменения темы */
+/* Styles for button during theme change */
 .theme-toggle.changing {
   animation: pulse 1.5s infinite;
 }
@@ -1473,7 +1515,7 @@ p {
 .cta-section {
   background: var(--gradient-primary);
   color: white;
-  padding: 4rem 0;
+  padding: 5rem 0;
   border-radius: var(--border-radius-lg);
   position: relative;
   overflow: hidden;
@@ -1623,8 +1665,8 @@ p {
 
   /* Adjust vertical spacing for mobile */
   .py-6 {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
   }
 
   /* Fix text overflow issues */
@@ -1705,8 +1747,8 @@ p {
 
   /* Adjust vertical spacing for tablets */
   .py-6 {
-    padding-top: 7rem;
-    padding-bottom: 7rem;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
   }
 
   section {
@@ -1771,13 +1813,13 @@ p {
 
 @media (max-width: 576px) {
   .row {
-    --bs-gutter-x: 1rem;
+    --bs-gutter-x: 1.5rem;
   }
 
   /* Further adjust section spacing on small mobile */
   .py-6 {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
   }
 
   section {
@@ -1835,7 +1877,7 @@ section {
 .card-grid,
 .feature-grid,
 .benefits-grid {
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 @media (max-width: 768px) {
@@ -1861,14 +1903,14 @@ section {
 
 /* Hero section spacing */
 .hero-section {
-  padding-top: 3rem;
+  padding-top: 5rem;
   padding-bottom: 5rem;
 }
 
 @media (min-width: 768px) {
   .hero-section {
     padding-top: 5rem;
-    padding-bottom: 6rem;
+    padding-bottom: 5rem;
   }
 }
 

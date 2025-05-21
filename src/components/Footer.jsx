@@ -4,6 +4,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import Link from 'next/link';
 import { useEffect, useState, useMemo } from 'react';
 import { getGlobalSettings } from '@/utils/contentUtils';
+import Button from './ui/Button';
 
 export default function Footer() {
   // Combined state for all footer data
@@ -139,7 +140,7 @@ export default function Footer() {
   };
 
   // Destructure for easier access
-  const { theme, loading } = footerState;
+  const { theme, loading, navbarHeight } = footerState;
   const { socialLinks, navigationLinks, supportLinks, contactEmail, copyright } = footerState.footerData;
   const { title, description } = footerState.globalSettings;
 
@@ -195,6 +196,35 @@ export default function Footer() {
 
   return (
     <footer className={`site-footer ${theme === 'light' ? 'footer-light' : 'footer-dark'}`}>
+      {/* Footer Banner CTA */}
+      <div className="footer-banner">
+        <div className="banner-background-shapes">
+          <div className="banner-shape shape-1"></div>
+          <div className="banner-shape shape-2"></div>
+          <div className="banner-shape shape-3"></div>
+        </div>
+        <Container className="position-relative">
+          <Row className="justify-content-between align-items-center py-2">
+            <Col md={7} lg={7}>
+              <div className="banner-content">
+                <h3 className="banner-title">Ready to streamline your government contracting?</h3>
+                <p className="banner-text">Get personalized guidance on how to optimize your bidding strategy and win more contracts.</p>
+              </div>
+            </Col>
+            <Col md={5} lg={5} className="text-md-end mt-4 mt-md-0">
+              <Button 
+                href="#strategy-call" 
+                variant="action"
+                onClick={smoothScrollToAnchor}
+                className="banner-button"
+              >
+                Book Consultation
+              </Button>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+      
       <div className="footer-top">
         <Container>
           <Row className="gy-4 gy-lg-0">
@@ -611,6 +641,169 @@ export default function Footer() {
           
           .legal-links {
             justify-content: center;
+          }
+        }
+        
+        /* Footer Banner CTA */
+        .footer-banner {
+          background-color: var(--section-bg-light);
+          padding: 4rem 0;
+          position: relative;
+          z-index: 2;
+          overflow: hidden;
+        }
+        
+        .banner-background-shapes {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 0;
+          overflow: hidden;
+        }
+        
+        .banner-shape {
+          position: absolute;
+          border-radius: 50%;
+          background: var(--primary);
+          opacity: 0.05;
+          filter: blur(40px);
+        }
+        
+        .banner-shape.shape-1 {
+          width: 250px;
+          height: 250px;
+          top: -100px;
+          right: 10%;
+          animation: float-slow 8s ease-in-out infinite alternate;
+        }
+        
+        .banner-shape.shape-2 {
+          width: 200px;
+          height: 200px;
+          bottom: -80px;
+          left: 15%;
+          animation: float-slow 9s ease-in-out infinite alternate-reverse;
+          background: var(--secondary);
+        }
+        
+        .banner-shape.shape-3 {
+          width: 180px;
+          height: 180px;
+          top: 40%;
+          right: 25%;
+          transform: translateY(-50%);
+          animation: float-slow 7s ease-in-out infinite alternate;
+          opacity: 0.03;
+        }
+        
+        @keyframes float-slow {
+          0% {
+            transform: translateY(0) scale(1);
+          }
+          100% {
+            transform: translateY(15px) scale(1.05);
+          }
+        }
+        
+        .banner-content {
+          position: relative;
+          z-index: 1;
+          transition: transform 0.3s ease;
+        }
+        
+        .banner-title {
+          color: var(--text-primary);
+          font-size: 2rem;
+          font-weight: 700;
+          margin-bottom: 1rem;
+          position: relative;
+          display: inline-block;
+        }
+        
+        .banner-title::after {
+          content: '';
+          position: absolute;
+          bottom: -4px;
+          left: 0;
+          width: 60px;
+          height: 3px;
+          background: linear-gradient(90deg, var(--secondary), transparent);
+          border-radius: 3px;
+        }
+        
+        .banner-text {
+          color: var(--text-secondary);
+          font-size: 1.15rem;
+          line-height: 1.5;
+          margin-bottom: 0;
+          max-width: 90%;
+        }
+        
+        .banner-button {
+          padding: 0.85rem 1.75rem;
+          font-weight: 600;
+          font-size: 1.05rem;
+          border-radius: 8px;
+          box-shadow: 0 8px 20px rgba(255, 111, 97, 0.3);
+          transition: all 0.3s ease;
+        }
+        
+        .banner-button:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 12px 25px rgba(255, 111, 97, 0.4);
+        }
+        
+        @media (max-width: 991px) {
+          .footer-banner {
+            padding: 3.5rem 0;
+          }
+          
+          .banner-title {
+            font-size: 1.75rem;
+          }
+          
+          .banner-shape.shape-3 {
+            display: none;
+          }
+        }
+        
+        @media (max-width: 768px) {
+          .footer-banner {
+            padding: 3rem 0;
+            text-align: center;
+          }
+          
+          .banner-title {
+            font-size: 1.6rem;
+          }
+          
+          .banner-title::after {
+            left: 50%;
+            transform: translateX(-50%);
+          }
+          
+          .banner-text {
+            font-size: 1.05rem;
+            margin: 0 auto 1rem;
+            max-width: 100%;
+          }
+          
+          .banner-button {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            width: 100%;
+            max-width: 250px;
+          }
+          
+          .text-md-end {
+            text-align: center !important;
+          }
+          
+          .banner-shape.shape-1,
+          .banner-shape.shape-2 {
+            opacity: 0.03;
           }
         }
       `}</style>

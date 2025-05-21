@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Container, Row, Col } from "react-bootstrap";
 import Image from "next/image";
 import Link from "next/link";
@@ -337,7 +337,7 @@ export default function HeroSection() {
         }}
       ></div>
 
-      <style jsx global>{`
+      <style jsx>{`
         @keyframes float {
           0% {
             transform: translateY(0) rotate(0deg);
@@ -350,6 +350,75 @@ export default function HeroSection() {
           }
         }
         
+        @-webkit-keyframes float {
+          0% {
+            -webkit-transform: translateY(0) rotate(0deg);
+                    transform: translateY(0) rotate(0deg);
+          }
+          50% {
+            -webkit-transform: translateY(-20px) rotate(5deg);
+                    transform: translateY(-20px) rotate(5deg);
+          }
+          100% {
+            -webkit-transform: translateY(0) rotate(0deg);
+                    transform: translateY(0) rotate(0deg);
+          }
+        }
+        
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+        
+        @-webkit-keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+        
+        @keyframes slideUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @-webkit-keyframes slideUp {
+          from {
+            opacity: 0;
+            -webkit-transform: translateY(20px);
+                    transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            -webkit-transform: translateY(0);
+                    transform: translateY(0);
+          }
+        }
+        
+        .fade-in {
+          -webkit-animation: fadeIn 0.6s ease-in-out forwards;
+                  animation: fadeIn 0.6s ease-in-out forwards;
+        }
+        
+        .slide-up {
+          -webkit-animation: slideUp 0.6s ease-in-out forwards;
+                  animation: slideUp 0.6s ease-in-out forwards;
+        }
+      `}</style>
+      
+      <style jsx global>{`
         /* Hero section styles */
         .hero-section {
           position: relative;
@@ -429,10 +498,6 @@ export default function HeroSection() {
           transition: transform 0.5s ease-in-out;
         }
         
-        .dashboard-animation-container:hover {
-          transform: translateY(-5px);
-        }
-        
         /* User avatar styling */
         .user-avatar {
           position: relative;
@@ -442,6 +507,61 @@ export default function HeroSection() {
           overflow: hidden;
           display: block;
           box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+          z-index: 1;
+        }
+        
+        .user-avatar::after {
+          content: '';
+          position: absolute;
+          top: -2px;
+          left: -2px;
+          right: -2px;
+          bottom: -2px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, var(--primary) 0%, rgba(0,0,0,0) 60%);
+          opacity: 0.7;
+          z-index: -1;
+          pointer-events: none;
+        }
+        
+        [data-bs-theme="light"] .user-avatar {
+          border-color: #ffffff !important;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), 0 0 0 2px rgba(0, 0, 0, 0.05);
+        }
+        
+        [data-bs-theme="dark"] .user-avatar {
+          border-color: #111827 !important;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 0 0 2px rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-bs-theme="light"] .user-counter {
+          border-color: #ffffff !important;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), 0 0 0 2px rgba(0, 0, 0, 0.05);
+        }
+        
+        [data-bs-theme="dark"] .user-counter {
+          border-color: #111827 !important;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 0 0 2px rgba(255, 255, 255, 0.1);
+        }
+        
+        .user-avatars-container > div {
+          margin-right: -8px;
+        }
+        
+        .user-avatars-container > div:nth-child(1) {
+          z-index: 4;
+        }
+        
+        .user-avatars-container > div:nth-child(2) {
+          z-index: 3;
+        }
+        
+        .user-avatars-container > div:nth-child(3) {
+          z-index: 2;
+        }
+        
+        .user-avatars-container > div:nth-child(4) {
+          z-index: 1;
         }
         
         /* Feature item styling */
@@ -494,11 +614,6 @@ export default function HeroSection() {
           color: #ffffff !important;
         }
         
-        [data-bs-theme="dark"] .user-counter {
-          background-color: var(--primary);
-          border-color: #111827;
-        }
-        
         [data-bs-theme="dark"] .dashboard-container {
           background-color: #1a1f2c !important;
           border: 1px solid rgba(255, 255, 255, 0.1);
@@ -515,6 +630,12 @@ export default function HeroSection() {
         /* Light theme specific styles */
         [data-bs-theme="light"] .text-dark {
           color: #0f172a !important;
+        }
+        
+        [data-bs-theme="light"] .dashboard-container {
+          background-color: #ffffff !important;
+          border: 1px solid rgba(0, 0, 0, 0.1);
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
         }
         
         /* Responsive adjustments */
@@ -617,6 +738,11 @@ export default function HeroSection() {
               <div className="d-flex flex-column gap-3 mb-4 slide-up feature-items">
                 {heroSection.features && heroSection.features.map((feature, index) => (
                   <div key={index} className="d-flex align-items-start feature-item">
+                    <div className="me-3 feature-icon-circle">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="bi bi-check-circle-fill" width="16" height="16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                      </svg>
+                    </div>
                     <p className="mb-0">{feature}</p>
                   </div>
                 ))}
@@ -654,8 +780,8 @@ export default function HeroSection() {
                   style={{ animationDelay: "0.2s" }}
                 >
                   <div className="d-flex me-3 mb-2 mb-sm-0 user-avatars-container">
-                    <div style={{ marginRight: "-8px" }}>
-                      <div className="user-avatar border border-2 border-white">
+                    <div>
+                      <div className="user-avatar border-2">
                         <Image
                           src={userOneImage}
                           alt="User 1"
@@ -665,8 +791,8 @@ export default function HeroSection() {
                         />
                       </div>
                     </div>
-                    <div style={{ marginRight: "-8px" }}>
-                      <div className="user-avatar border border-2 border-white">
+                    <div>
+                      <div className="user-avatar border-2">
                         <Image
                           src={userTwoImage}
                           alt="User 2"
@@ -676,8 +802,8 @@ export default function HeroSection() {
                         />
                       </div>
                     </div>
-                    <div style={{ marginRight: "-8px" }}>
-                      <div className="user-avatar border border-2 border-white">
+                    <div>
+                      <div className="user-avatar border-2">
                         <Image
                           src={userThreeImage}
                           alt="User 3"
@@ -688,11 +814,10 @@ export default function HeroSection() {
                       </div>
                     </div>
                     <div
-                      className="position-relative d-flex align-items-center justify-content-center rounded-circle bg-primary text-white border border-2 border-white fs-xs fw-bold user-counter"
+                      className="position-relative d-flex align-items-center justify-content-center rounded-circle bg-primary text-white border-2 fs-xs fw-bold user-counter"
                       style={{ 
                         width: "44px", 
                         height: "44px",
-                        boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
                       }}
                     >
                       <span>+5k</span>
@@ -717,7 +842,7 @@ export default function HeroSection() {
                 transition: "opacity 0.3s ease-in-out"
               }}
             >
-              <div className="p-2 rounded-4 bg-white shadow-lg dashboard-container">
+              <div className="p-2 rounded-4 shadow-lg dashboard-container">
                 <div className="dashboard-mockup rounded-3 overflow-hidden">
                   <Image
                     src={dashboardSrc}

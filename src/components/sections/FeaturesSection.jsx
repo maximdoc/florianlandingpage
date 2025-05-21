@@ -429,9 +429,9 @@ export default function FeaturesSection() {
                   {featuresSection.ctaSection.ctaButton && (
                     <Button
                       href={featuresSection.ctaSection.ctaButton.href}
-                      variant="white"
+                      variant="primary"
                     >
-                      {featuresSection.ctaSection.ctaButton.text}
+                      Find Opportunities
                     </Button>
                   )}
                 </div>

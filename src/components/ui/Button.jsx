@@ -6,6 +6,13 @@ import React from 'react';
 /**
  * Universal button component that supports both regular buttons and link buttons.
  * Supports various style variants and sizes.
+ * 
+ * Variants:
+ * - primary: Deep Blue (#0052CC) - Default, used for most buttons
+ * - secondary: Outlined version of primary
+ * - white: White background with primary text
+ * - dark: Dark slate background with white text
+ * - action: Warm Coral (#FF6F61) - For key CTAs and important actions
  */
 const Button = ({
   children,

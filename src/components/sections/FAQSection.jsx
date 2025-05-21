@@ -49,7 +49,7 @@ export default function FAQSection() {
   const [faqSection, setFaqSection] = useState(null);
   const [loading, setLoading] = useState(true);
   
-  // Загружаем данные секции из API
+  // Load section data from API
   useEffect(() => {
     async function loadFaqSection() {
       try {
@@ -374,7 +374,7 @@ export default function FAQSection() {
         /* Section styling */
         .faq-section {
           position: relative;
-          padding: 6rem 0;
+          padding: 5rem 0;
           background-color: var(--background);
         }
         
