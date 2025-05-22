@@ -110,7 +110,7 @@ export default function FeaturesSection() {
           zIndex: -1,
           transform: "rotate(-10deg)",
           backgroundSize: "12px 12px",
-          opacity: "0.2",
+          opacity: "0.8",
         }}
       ></div>
 
@@ -679,11 +679,12 @@ export default function FeaturesSection() {
         /* Dots grid styles */
         .dots-grid {
           background-image: radial-gradient(
-            rgba(67, 97, 238, 0.15) 1.8px,
-            transparent 1.8px
+            var(--primary) 2.5px,
+            transparent 2.5px
           );
           background-size: 18px 18px;
           opacity: 0.35;
+          filter: brightness(0.8); /* Makes dots darker for better visibility */
         }
 
         /* Display only some dots on medium devices */

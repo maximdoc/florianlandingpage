@@ -743,9 +743,10 @@ export default function BenefitsSection() {
 
         /* Dots grid styles */
         .dots-grid {
-          background-image: radial-gradient(var(--primary) 1.5px, transparent 1.5px);
+          background-image: radial-gradient(var(--primary) 2.5px, transparent 2.5px);
           background-size: 18px 18px;
-          opacity: 0.35;
+          opacity: 0.8;
+          filter: brightness(0.3);
         }
         
         .dots-grid-top-right {

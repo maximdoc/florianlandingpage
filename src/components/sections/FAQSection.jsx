@@ -495,10 +495,10 @@ export default function FAQSection() {
 
         /* Dots grid styles */
         .dots-grid {
-          opacity: 0.35;
-          background-image: radial-gradient(#6366f1 2.5px, transparent 2.5px);
+          opacity: 0.8;
+          background-image: radial-gradient(var(--primary) 2.5px, transparent 2.5px);
           background-size: 18px 18px;
-          filter: brightness(0.8);
+          filter: brightness(0.3);
         }
         
         .dots-grid-top-right {
