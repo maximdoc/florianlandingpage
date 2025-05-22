@@ -41,9 +41,7 @@
 
   /* Transitions */
   --transition-speed: 0.3s;
-  --theme-transition-speed: 0.5s;
   --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --theme-transition-easing: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Border radius */
   --border-radius-sm: 0.25rem;
@@ -113,9 +111,6 @@
   --btn-active-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   --btn-transition: all 0.3s ease;
 
-  /* Key elements for smooth theme transition */
-  --theme-transition-properties: background-color, color, border-color, box-shadow, fill, stroke;
-
   /* Variable for controlling initial loading */
   --initial-load: 1;
 
@@ -123,78 +118,6 @@
   --section-bg-light: #F9FAFB; /* Updated to client's Soft Off-White */
   --section-bg-dark: #1E293B; /* Updated to client's Dark Slate */
   --section-border: #E2E8F0;
-}
-
-/* Dark theme */
-[data-bs-theme="dark"] {
-  --background: #0F172A; /* Darker version of Dark Slate for background */
-  --background-rgb: 15, 23, 42;
-  --foreground: #FFFFFF;
-  --primary: #0052CC; /* Keeping the same primary color in dark mode */
-  --primary-rgb: 0, 82, 204;
-  --primary-hover: #0075EB; /* Lighter shade for hover in dark mode */
-  --primary-light: rgba(0, 82, 204, 0.15);
-  --secondary: #FF6F61; /* Keeping the same secondary color in dark mode */
-  --secondary-hover: #FF8A7E; /* Lighter shade for hover in dark mode */
-  --accent: #0052CC;
-  --accent-hover: #0075EB;
-  --text-primary: #FFFFFF;
-  --text-secondary: #94A3B8; /* Lighter version of Medium Gray for dark mode */
-  --text-muted: #64748B;
-  --text-light: #F9FAFB;
-  --text-body: #E2E8F0;
-  --border-color: #334155;
-  --shadow-color: rgba(0, 0, 0, 0.3);
-  --shadow-color-darker: rgba(0, 0, 0, 0.5);
-  --card-bg: #1E293B; /* Using Dark Slate for card background */
-
-  /* Dark theme for CTA section */
-  --primary-color: #0052CC; /* Keeping the same primary color in dark mode */
-  --primary-hover: #0075EB;
-  --text-color: #F9FAFB;
-  --text-light: #CBD5E1;
-  --background-light: #1E293B;
-  --background-white: #0F172A;
-  --box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-
-  /* Dark theme for buttons */
-  --btn-primary-bg: #0052CC;
-  --btn-primary-text: #FFFFFF;
-  --btn-primary-hover-bg: #0075EB;
-  --btn-primary-hover-text: #FFFFFF;
-
-  --btn-secondary-border: rgba(0, 82, 204, 0.6);
-  --btn-secondary-text: #0052CC;
-  --btn-secondary-hover-bg: rgba(0, 82, 204, 0.15);
-  --btn-secondary-hover-text: #0075EB;
-  --btn-secondary-active-bg: rgba(0, 82, 204, 0.25);
-
-  --btn-white-bg: rgba(255, 255, 255, 0.9);
-  --btn-white-text: #0052CC;
-  --btn-white-hover-bg: #FFFFFF;
-  --btn-white-hover-text: #0047B3;
-
-  --btn-dark-bg: #0F172A;
-  --btn-dark-text: #FFFFFF;
-  --btn-dark-hover-bg: #1E293B;
-  --btn-dark-hover-text: #FFFFFF;
-  --btn-dark-active-bg: #334155;
-  
-  /* Action button in dark mode */
-  --btn-action-bg: #FF6F61; /* Same coral for dark mode */
-  --btn-action-text: #FFFFFF;
-  --btn-action-hover-bg: #FF8A7E; /* Lighter shade for dark mode hover */
-  --btn-action-hover-text: #FFFFFF;
-  --btn-action-active-bg: #FFA59C; /* Even lighter for active state in dark mode */
-
-  --btn-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  --btn-hover-box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-  --btn-active-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
-
-  /* Section container styles for dark theme */
-  --section-bg-light: #1E293B;
-  --section-bg-dark: #0F172A;
-  --section-border: #334155;
 }
 
 /* Override Bootstrap container widths */
@@ -264,8 +187,7 @@ body {
     Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   line-height: 1.6;
   scroll-behavior: auto;
-  transition: background-color var(--theme-transition-speed) var(--theme-transition-easing),
-    color var(--theme-transition-speed) var(--theme-transition-easing);
+  transition: background-color 0.3s ease, color 0.3s ease;
   width: 100%;
   overflow-x: hidden;
 }
@@ -275,7 +197,7 @@ body {
 *::before,
 *::after {
   box-sizing: border-box;
-  transition-duration: var(--theme-transition-speed);
+  transition-duration: 0.3s;
   transition-property: background-color, color, border-color, box-shadow, fill, stroke;
   transition-timing-function: ease;
 }
@@ -301,10 +223,10 @@ body {
 .glow-effect::before,
 .widget {
   transition:
-    background-color var(--theme-transition-speed) ease,
-    color var(--theme-transition-speed) ease,
-    border-color var(--theme-transition-speed) ease,
-    box-shadow var(--theme-transition-speed) ease,
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
     transform var(--transition-speed) ease !important;
 }
 
@@ -482,31 +404,6 @@ body {
   }
 }
 
-/* Dark theme navbar */
-[data-bs-theme="dark"] .navbar-main {
-  background-color: rgba(14, 21, 37, 0.8);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
-
-[data-bs-theme="dark"] .navbar-main.navbar-scrolled {
-  background-color: rgba(14, 21, 37, 0.95);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-[data-bs-theme="dark"] .burger-line {
-  background-color: var(--text-primary);
-}
-
-[data-bs-theme="dark"] .custom-navbar-collapse .nav-link {
-  border-bottom-color: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.95);
-}
-
-[data-bs-theme="dark"] .custom-navbar-collapse .nav-link:hover {
-  background-color: rgba(var(--primary-rgb), 0.15);
-  color: var(--primary);
-}
-
 /* Page content */
 .page-content {
   min-height: calc(100vh - 70px);
@@ -652,35 +549,6 @@ body {
   font-size: 0.85rem;
   color: rgba(255, 255, 255, 0.6);
   margin: 0;
-}
-
-/* Light theme overrides for testimonial cards */
-:root:not([data-bs-theme="dark"]) .testimonial-card {
-  background-color: #ffffff;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-:root:not([data-bs-theme="dark"]) .testimonial-text {
-  color: var(--text-body);
-}
-
-:root:not([data-bs-theme="dark"]) .author-name {
-  color: var(--text-primary);
-}
-
-:root:not([data-bs-theme="dark"]) .author-position {
-  color: var(--text-secondary);
-}
-
-:root:not([data-bs-theme="dark"]) .testimonial-author {
-  border-top-color: rgba(0, 0, 0, 0.1);
-}
-
-/* Responsive adjustments for testimonial cards */
-@media (max-width: 991px) {
-  .testimonial-cards {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* Decorative shapes */
@@ -971,36 +839,6 @@ body {
   100% {
     transform: translate(20px, -20px);
   }
-}
-
-/* Dark theme overrides */
-[data-bs-theme="dark"] .testimonial-card {
-  background-color: rgba(26, 32, 44, 0.8);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(10px);
-}
-
-[data-bs-theme="dark"] .platform-interface {
-  background-color: #111827;
-  border-color: rgba(255, 255, 255, 0.05);
-}
-
-[data-bs-theme="dark"] .platform-header {
-  background-color: rgba(0, 0, 0, 0.3);
-  border-bottom-color: rgba(255, 255, 255, 0.05);
-}
-
-[data-bs-theme="dark"] .platform-sidebar {
-  border-right-color: rgba(255, 255, 255, 0.05);
-}
-
-[data-bs-theme="dark"] .widget {
-  background-color: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.05);
-}
-
-[data-bs-theme="dark"] .progress-circle::before {
-  background-color: #111827;
 }
 
 /* Responsive adjustments */
@@ -1921,33 +1759,6 @@ section {
   margin-top: 0 !important;
 }
 
-[data-bs-theme="dark"] .custom-navbar-collapse .dropdown-heading {
-  color: rgba(255, 255, 255, 0.9);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  font-weight: 700;
-  letter-spacing: 0.01em;
-}
-
-[data-bs-theme="light"] .custom-navbar-collapse .dropdown-heading {
-  color: var(--text-primary);
-  font-weight: 700;
-  letter-spacing: 0.01em;
-}
-
-/* Special styles for theme transition animation */
-.theme-transition {
-  transition: none !important;
-}
-
-/* Apply transitions only to CSS properties related to theme */
-.theme-transition * {
-  transition-property: var(--theme-transition-properties);
-  transition-timing-function: var(--theme-transition-easing);
-  transition-duration: var(--theme-transition-speed) !important;
-  /* GPU optimization */
-  will-change: background-color, color;
-}
-
 /* Styles for managing loading and preventing CLS */
 .loading-state {
   visibility: hidden;
@@ -1963,56 +1774,6 @@ section {
 
 html.no-transitions .dashboard-container {
   transition: none !important;
-}
-
-/* Prioritize the most important elements for smooth transition */
-.theme-transition body,
-.theme-transition .navbar-main,
-.theme-transition .main-content,
-.theme-transition section {
-  transition-property: background-color;
-  transition-duration: var(--theme-transition-speed) !important;
-  transition-timing-function: var(--theme-transition-easing) !important;
-  /* Change main containers first */
-  transition-delay: 0s !important;
-}
-
-/* Apply a small delay for synchronization with main containers */
-.theme-transition *:hover {
-  transform: none !important;
-}
-
-/* Exception for dashboard-container to prevent movement during theme change */
-.theme-transition .dashboard-container,
-.theme-transition .preserve-transform {
-  transform: perspective(1000px) rotateY(-8deg) rotateX(5deg) rotate(1deg) !important;
-  transition: background-color var(--theme-transition-speed) var(--theme-transition-easing),
-    box-shadow var(--theme-transition-speed) var(--theme-transition-easing),
-    border-color var(--theme-transition-speed) var(--theme-transition-easing) !important;
-}
-
-/* Ensure correct dashboard background color in both themes */
-[data-bs-theme="light"] .dashboard-container {
-  background-color: #ffffff !important;
-}
-
-[data-bs-theme="dark"] .dashboard-container {
-  background-color: #1a1f2c !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
-}
-
-.theme-transition .slide-up {
-  transform: translateY(0) !important;
-  transition: none !important;
-}
-
-/* Settings for responsive version - maintain no transformation during theme change */
-@media (max-width: 992px) {
-
-  .theme-transition .dashboard-container,
-  .theme-transition .preserve-transform {
-    transform: none !important;
-  }
 }
 
 /* Title underline for admin pages */

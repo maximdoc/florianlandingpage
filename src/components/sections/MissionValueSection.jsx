@@ -1,178 +1,69 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import SectionContainer from '../SectionContainer';
 import Button from '../ui/Button';
-import { getSectionById } from '@/utils/contentUtils';
 import Icon from '../ui/Icon';
-
-// Skeleton Loader Component
-function MissionSkeleton() {
-  return (
-    <SectionContainer
-      className="mission-section-container py-6 position-relative overflow-hidden"
-      backgroundVariant="dark"
-    >
-      <Container className="position-relative" style={{ zIndex: 2 }}>
-        {/* Mission Statement Skeleton */}
-        <Row className="justify-content-center mb-5">
-          <Col lg={10} xl={9} className="mission-statement visible">
-            <div className="skeleton-label mb-4" style={{ width: '120px', height: '24px' }}></div>
-            <div className="skeleton-heading mb-5" style={{ height: '120px' }}></div>
-          </Col>
-        </Row>
-        
-        {/* Promise Section Skeleton */}
-        <Row className="mb-5">
-          <Col lg={12}>
-            <div className="skeleton-label mb-4" style={{ width: '150px', height: '24px' }}></div>
-            <Row className="g-4">
-              {[1, 2, 3].map((item) => (
-                <Col md={4} key={item} className="promise-item visible">
-                  <div className="promise-card h-100">
-                    <div className="skeleton-icon mb-4"></div>
-                    <div className="skeleton-title mb-3"></div>
-                    <div className="skeleton-text mb-1"></div>
-                    <div className="skeleton-text mb-1"></div>
-                    <div className="skeleton-text" style={{ width: '70%' }}></div>
-                  </div>
-                </Col>
-              ))}
-            </Row>
-          </Col>
-        </Row>
-        
-        {/* Value Proposition Skeleton */}
-        <Row className="justify-content-center mt-5">
-          <Col lg={10} xl={9} className="value-prop-container visible">
-            <div className="value-prop-card">
-              <div className="skeleton-label mb-3" style={{ width: '200px', height: '24px' }}></div>
-              <div className="skeleton-text mb-1" style={{ height: '24px' }}></div>
-              <div className="skeleton-text mb-4" style={{ width: '90%', height: '24px' }}></div>
-              <div className="mt-4">
-                <div className="skeleton-button"></div>
-              </div>
-            </div>
-          </Col>
-        </Row>
-      </Container>
-      
-      <style jsx global>{`
-        /* Skeleton loader animation */
-        @keyframes shimmer {
-          0% {
-            background-position: -1000px 0;
-          }
-          100% {
-            background-position: 1000px 0;
-          }
-        }
-        
-        .skeleton-label,
-        .skeleton-heading,
-        .skeleton-icon,
-        .skeleton-title,
-        .skeleton-text,
-        .skeleton-button {
-          background: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.05) 75%);
-          background-size: 1000px 100%;
-          animation: shimmer 2s infinite linear;
-          border-radius: 8px;
-        }
-        
-        .skeleton-icon {
-          width: 48px;
-          height: 48px;
-          border-radius: 12px;
-        }
-        
-        .skeleton-title {
-          width: 70%;
-          height: 24px;
-        }
-        
-        .skeleton-text {
-          width: 100%;
-          height: 16px;
-        }
-        
-        .skeleton-button {
-          width: 120px;
-          height: 40px;
-          border-radius: 20px;
-        }
-      `}</style>
-    </SectionContainer>
-  );
-}
+import content from '@/data/content.json';
 
 export default function MissionValueSection() {
-  const [missionSection, setMissionSection] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
+  const [hasBeenVisible, setHasBeenVisible] = useState(false);
+  const sectionRef = useRef(null);
   
-  // Load section data from API
-  useEffect(() => {
-    async function loadMissionSection() {
-      try {
-        setLoading(true);
-        const sectionData = await getSectionById('home', 'mission');
-        setMissionSection(sectionData);
-      } catch (error) {
-        console.error('Error loading mission section:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    
-    loadMissionSection();
-  }, []);
+  // Get mission section data directly from content.json
+  const homePageData = content.pages.find(page => page.id === 'home');
+  const missionSection = homePageData.sections.find(section => section.id === 'mission');
   
   // Add intersection observer for scroll animations
   useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        setIsVisible(true);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Update visibility state based on intersection
+        const isIntersecting = entries[0].isIntersecting;
+        
+        // Set visible state based on intersection
+        setIsVisible(isIntersecting);
+        
+        // Once the section has been visible, mark it to enable animations
+        if (isIntersecting && !hasBeenVisible) {
+          setHasBeenVisible(true);
+        }
+      }, 
+      { 
+        threshold: 0.15,
+        rootMargin: '0px 0px -10% 0px' 
       }
-    }, { threshold: 0.1, rootMargin: '0px 0px -10% 0px' });
+    );
     
-    const section = document.querySelector('.mission-section-container');
+    const section = sectionRef.current;
     if (section) observer.observe(section);
-    
-    // Ensure visibility after a timeout as fallback
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 500);
     
     return () => {
       if (section) observer.unobserve(section);
-      clearTimeout(timer);
     };
-  }, []);
+  }, [hasBeenVisible]);
   
   // If section data is not found, don't display the component
-  if (loading) {
-    return <MissionSkeleton />;
-  }
-  
   if (!missionSection) {
     return null;
   }
 
   return (
     <SectionContainer
+      ref={sectionRef}
       className="mission-section-container py-6 position-relative overflow-hidden"
       backgroundVariant={missionSection.backgroundVariant || "dark"}
     >
       {/* Decorative elements */}
-      <div className="position-absolute mission-shape-1"></div>
-      <div className="position-absolute mission-shape-2"></div>
+      <div className={`position-absolute mission-shape-1 ${isVisible ? 'animate-in' : 'animate-out'}`}></div>
+      <div className={`position-absolute mission-shape-2 ${isVisible ? 'animate-in' : 'animate-out'}`}></div>
       
       <Container className="position-relative" style={{ zIndex: 2 }}>
         {/* Mission Statement */}
         <Row className="justify-content-center mb-5">
-          <Col lg={10} xl={9} className={`mission-statement ${isVisible ? 'visible' : ''}`}>
+          <Col lg={10} xl={9} className={`mission-statement ${isVisible ? 'animate-in' : 'animate-out'}`}>
             <h2 className="h3 mb-4 mission-label">{missionSection.label || "Our Mission"}</h2>
             <h3 className="display-5 fw-bold mb-5 mission-text">
               {missionSection.mission}
@@ -183,10 +74,13 @@ export default function MissionValueSection() {
         {/* Promise Section */}
         <Row className="mb-5">
           <Col lg={12}>
-            <h3 className="h4 mb-4 promise-label">{missionSection.promiseLabel || "Our Promise"}</h3>
+            <h3 className={`h4 mb-4 promise-label ${isVisible ? 'animate-in' : 'animate-out'}`} style={{ transitionDelay: '120ms' }}>
+              {missionSection.promiseLabel || "Our Promise"}
+            </h3>
             <Row className="g-4">
               {missionSection.promises && missionSection.promises.map((promise, index) => (
-                <Col md={4} key={index} className={`promise-item ${isVisible ? 'visible' : ''}`} style={{ animationDelay: `${0.2 + index * 0.15}s` }}>
+                <Col md={4} key={index} className={`promise-item ${isVisible ? 'animate-in' : 'animate-out'}`} 
+                  style={{ transitionDelay: `${200 + index * 150}ms` }}>
                   <div className="promise-card h-100">
                     <div className="promise-icon-wrapper">
                       <div className="promise-icon">
@@ -205,19 +99,20 @@ export default function MissionValueSection() {
         
         {/* Value Proposition */}
         <Row className="justify-content-center mt-5">
-          <Col lg={10} xl={9} className={`value-prop-container ${isVisible ? 'visible' : ''}`} style={{ animationDelay: "0.6s" }}>
+          <Col lg={10} xl={9} className={`value-prop-container ${isVisible ? 'animate-in' : 'animate-out'}`} 
+            style={{ transitionDelay: `${missionSection.promises?.length ? 200 + missionSection.promises.length * 150 + 100 : 650}ms` }}>
             <div className="value-prop-card">
               <h3 className="h4 mb-3">{missionSection.valuePropLabel || "Single-Line Value Prop"}</h3>
               <p className="value-prop-text">
                 {missionSection.valueProp}
               </p>
               {missionSection.ctaButton && (
-                <div className="mt-4">
+                <div className="mt-4 cta-button-wrapper">
                   <Button 
                     href={missionSection.ctaButton.href} 
                     variant="action"
                   >
-                    Free Consultation
+                    {missionSection.ctaButton.text}
                   </Button>
                 </div>
               )}
@@ -227,19 +122,8 @@ export default function MissionValueSection() {
       </Container>
       
       <style jsx global>{`
-        /* Core variables for theme compatibility */
+        /* Core variables - using light theme values */
         :root {
-          --mission-bg: var(--section-bg-light);
-          --mission-title-color: var(--foreground);
-          --mission-text-color: var(--foreground);
-          --promise-card-bg: rgba(255, 255, 255, 0.03);
-          --promise-card-border: rgba(255, 255, 255, 0.1);
-          --promise-icon-bg: rgba(67, 97, 238, 0.15);
-          --value-prop-card-bg: rgba(30, 41, 59, 0.6);
-          --value-prop-card-border: rgba(255, 255, 255, 0.08);
-        }
-        
-        [data-bs-theme="light"] {
           --mission-bg: var(--section-bg-light);
           --mission-title-color: #0f172a;
           --mission-text-color: #0f172a;
@@ -248,6 +132,7 @@ export default function MissionValueSection() {
           --promise-icon-bg: rgba(67, 97, 238, 0.1);
           --value-prop-card-bg: #ffffff;
           --value-prop-card-border: rgba(0, 0, 0, 0.08);
+          --feature-dot-color: rgba(0, 0, 0, 0.06);
         }
 
         /* Section styling */
@@ -263,10 +148,24 @@ export default function MissionValueSection() {
           width: 350px;
           height: 350px;
           background: var(--primary-rgb, 67, 97, 238);
-          opacity: 0.035;
+          opacity: 0;
           border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
           filter: blur(60px);
           position: absolute;
+          transform: translateX(-30px) scale(0.9);
+          transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                      transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .mission-shape-1.animate-in {
+          opacity: 0.035;
+          transform: translateX(0) scale(1);
+        }
+        
+        .mission-shape-1.animate-out {
+          opacity: 0;
+          transform: translateX(-30px) scale(0.9);
+          transition-duration: 0.8s;
         }
         
         .mission-shape-2 {
@@ -275,47 +174,65 @@ export default function MissionValueSection() {
           width: 300px;
           height: 300px;
           background: var(--primary-rgb, 67, 97, 238);
-          opacity: 0.025;
+          opacity: 0;
           border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
           filter: blur(60px);
           position: absolute;
+          transform: translateX(30px) scale(0.9);
+          transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                      transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+          transition-delay: 0.2s;
+        }
+        
+        .mission-shape-2.animate-in {
+          opacity: 0.025;
+          transform: translateX(0) scale(1);
+        }
+        
+        .mission-shape-2.animate-out {
+          opacity: 0;
+          transform: translateX(30px) scale(0.9);
+          transition-duration: 0.8s;
         }
         
         /* Mission Statement */
         .mission-statement {
           opacity: 0;
-          transform: translateY(20px);
-          transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+          transform: translateY(30px);
+          transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
-        .mission-statement.visible {
+        .mission-statement.animate-in {
           opacity: 1;
           transform: translateY(0);
         }
         
-        /* Force visibility on load with a delay */
-        @media (prefers-reduced-motion: no-preference) {
-          .mission-statement {
-            animation: fadeInUp 1s ease-out 0.3s forwards;
+        .mission-statement.animate-out {
+          opacity: 0;
+          transform: translateY(30px);
+          transition-duration: 0.6s;
+        }
+        
+        /* Smooth scroll behavior for anchors */
+        html {
+          scroll-behavior: smooth;
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+          html {
+            scroll-behavior: auto;
           }
           
-          .promise-item {
-            animation: fadeInUp 1s ease-out 0.5s forwards;
-          }
-          
-          .value-prop-container {
-            animation: fadeInUp 1s ease-out 0.7s forwards;
-          }
-          
-          @keyframes fadeInUp {
-            from {
-              opacity: 0;
-              transform: translateY(20px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
+          .mission-statement,
+          .promise-item,
+          .value-prop-container,
+          .mission-shape-1,
+          .mission-shape-2,
+          .promise-label {
+            transition: none !important;
+            transform: none !important;
+            opacity: 1 !important;
           }
         }
         
@@ -325,28 +242,78 @@ export default function MissionValueSection() {
           letter-spacing: 1px;
           font-weight: 600;
           font-size: 0.9rem;
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 0.5s ease, transform 0.5s ease;
+          transition-delay: 0.05s;
+        }
+        
+        .mission-statement.animate-in .mission-label {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        .mission-statement.animate-out .mission-label {
+          opacity: 0;
+          transform: translateY(20px);
         }
         
         .mission-text {
           color: var(--mission-text-color);
           line-height: 1.4;
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 0.5s ease, transform 0.5s ease;
+          transition-delay: 0.15s;
+        }
+        
+        .mission-statement.animate-in .mission-text {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        .mission-statement.animate-out .mission-text {
+          opacity: 0;
+          transform: translateY(20px);
         }
         
         /* Promise Section */
         .promise-label {
           color: var(--mission-text-color);
           font-weight: 600;
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .promise-label.animate-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        .promise-label.animate-out {
+          opacity: 0;
+          transform: translateY(20px);
+          transition-duration: 0.6s;
         }
         
         .promise-item {
           opacity: 0;
-          transform: translateY(20px);
-          transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+          transform: translateY(30px);
+          transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
-        .promise-item.visible {
+        .promise-item.animate-in {
           opacity: 1;
           transform: translateY(0);
+        }
+        
+        .promise-item.animate-out {
+          opacity: 0;
+          transform: translateY(30px);
+          transition-duration: 0.6s;
         }
         
         .promise-card {
@@ -355,10 +322,13 @@ export default function MissionValueSection() {
           border-radius: 16px;
           padding: 1.75rem;
           box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-          transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s ease;
+          transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                      box-shadow 0.5s ease;
           position: relative;
           overflow: hidden;
           backdrop-filter: blur(10px);
+          transform: translateY(0) scale(1);
+          will-change: transform, box-shadow;
         }
         
         .promise-card::before {
@@ -421,7 +391,7 @@ export default function MissionValueSection() {
         .pattern-right {
           right: 0;
           background-image: radial-gradient(
-            var(--feature-dot-color, rgba(255, 255, 255, 0.15)) 1px,
+            var(--feature-dot-color) 1px,
             transparent 0
           );
           background-size: 12px 12px;
@@ -431,7 +401,7 @@ export default function MissionValueSection() {
           left: 0;
           right: auto;
           background-image: radial-gradient(
-            var(--feature-dot-color, rgba(255, 255, 255, 0.15)) 1px,
+            var(--feature-dot-color) 1px,
             transparent 0
           );
           background-size: 12px 12px;
@@ -499,7 +469,7 @@ export default function MissionValueSection() {
         }
         
         .promise-icon svg {
-          color: white;
+          color: white !important;
           position: relative;
           z-index: 1;
           width: 20px;
@@ -507,14 +477,6 @@ export default function MissionValueSection() {
           transition: color 0.3s ease;
           fill: currentColor;
           will-change: transform;
-        }
-        
-        [data-bs-theme="light"] .promise-icon svg {
-          color: white !important; /* Important to override any inline styles */
-        }
-        
-        [data-bs-theme="dark"] .promise-icon svg {
-          color: white !important; /* Important to override any inline styles */
         }
         
         /* Enhanced hover effect */
@@ -552,13 +514,20 @@ export default function MissionValueSection() {
         /* Value Proposition */
         .value-prop-container {
           opacity: 0;
-          transform: translateY(20px);
-          transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+          transform: translateY(30px);
+          transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
-        .value-prop-container.visible {
+        .value-prop-container.animate-in {
           opacity: 1;
           transform: translateY(0);
+        }
+        
+        .value-prop-container.animate-out {
+          opacity: 0;
+          transform: translateY(30px);
+          transition-duration: 0.6s;
         }
         
         .value-prop-card {
@@ -569,6 +538,36 @@ export default function MissionValueSection() {
           text-align: center;
           box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
           backdrop-filter: blur(10px);
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .value-prop-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(99, 102, 241, 0.5) 0%,
+            rgba(139, 92, 246, 0.5) 100%
+          );
+          opacity: 0;
+          transition: opacity 0.6s ease;
+        }
+        
+        .cta-button-wrapper {
+          opacity: 0;
+          transform: translateY(10px);
+          transition: opacity 0.6s ease, transform 0.6s ease;
+          transition-delay: 0.6s;
+        }
+        
+        .value-prop-container.animate-in .cta-button-wrapper {
+          opacity: 1;
+          transform: translateY(0);
         }
         
         .value-prop-text {

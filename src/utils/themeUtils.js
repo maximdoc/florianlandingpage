@@ -1,9 +1,9 @@
 /**
- * Utility functions for theme handling
+ * Utility functions for SVG handling
  */
 
 /**
- * Force repaint of SVG icons to ensure proper coloring after theme change
+ * Force repaint of SVG icons to ensure proper coloring
  * @param {string} selector - CSS selector for SVGs to repaint (default: 'svg')
  */
 export const refreshIconColors = (selector = 'svg') => {

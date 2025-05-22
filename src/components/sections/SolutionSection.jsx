@@ -1,296 +1,101 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Button from "../ui/Button";
 import SectionContainer from "../SectionContainer";
 import Icon from "../ui/Icon";
-import { getSectionById } from "@/utils/contentUtils";
+import content from "@/data/content.json";
 
 export default function SolutionSection() {
   const [activeStep, setActiveStep] = useState(null);
-  const [isVisible, setIsVisible] = useState(true);
-  const [solutionSection, setSolutionSection] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    async function loadSolutionSection() {
-      try {
-        setLoading(true);
-        const sectionData = await getSectionById("home", "solution");
-        if (sectionData) {
-          setSolutionSection(sectionData);
-        }
-      } catch (error) {
-        console.error("Error loading solution section:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadSolutionSection();
-  }, []);
+  const [isVisible, setIsVisible] = useState(false);
+  const [hasBeenVisible, setHasBeenVisible] = useState(false);
+  const sectionRef = useRef(null);
+  
+  // Get solution section data directly from content.json
+  const homePageData = content.pages.find(page => page.id === 'home');
+  const solutionSection = homePageData.sections.find(section => section.id === 'solution');
 
   // Add intersection observer for scroll animations
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
-          setIsVisible(true);
+        // Update visibility state based on intersection
+        const isIntersecting = entries[0].isIntersecting;
+        
+        // Set visible state based on intersection
+        setIsVisible(isIntersecting);
+        
+        // Once the section has been visible, mark it 
+        if (isIntersecting && !hasBeenVisible) {
+          setHasBeenVisible(true);
         }
       },
-      { threshold: 0.1 }
+      { 
+        threshold: 0.15,
+        rootMargin: '0px 0px -10% 0px'
+      }
     );
 
-    const section = document.querySelector(".solution-section-container");
+    const section = sectionRef.current;
     if (section) observer.observe(section);
 
     return () => {
       if (section) observer.unobserve(section);
     };
-  }, []);
+  }, [hasBeenVisible]);
 
   const handleStepHover = (index) => {
     setActiveStep(index);
   };
 
-  // Map the steps to the required format with proper emojis
-  const howItWorksSteps = [
-    {
-      number: 1,
-      icon: "search",
-      title: "Discover",
-      description: "AI-curated solicitations aligned with your strengths and goals."
-    },
-    {
-      number: 2,
-      icon: "check-circle",
-      title: "Qualify",
-      description: "Detailed win-rate scores and eligibility checks—no wasted effort."
-    },
-    {
-      number: 3,
-      icon: "edit",
-      title: "Craft",
-      description: "Persuasive proposal drafts with data-backed narratives."
-    },
-    {
-      number: 4,
-      icon: "rocket",
-      title: "Submit & Win",
-      description: "Full submission handling, compliance checks, and post-award support."
-    }
-  ];
-
-  if (loading || !solutionSection) {
-    return (
-      <SectionContainer
-        className="solution-section-container"
-        backgroundVariant="dark"
-      >
-        <Container>
-          <Row className="justify-content-center text-center mb-5">
-            <Col lg={10} xl={8}>
-              {/* Skeleton for title */}
-              <div className="skeleton-title mb-3"></div>
-              {/* Skeleton for subtitle */}
-              <div className="skeleton-subtitle"></div>
-            </Col>
-          </Row>
-
-          <Row className="justify-content-center mb-5">
-            <Col lg={10} className="solution-steps-container">
-              {/* Skeleton for steps - generating 4 placeholders */}
-              {[1, 2, 3, 4].map((_, index) => (
-                <div key={index} className="solution-step-card skeleton-card">
-                  <div className="step-icon">
-                    <div className="skeleton-icon-wrapper"></div>
-                  </div>
-                  <div className="step-content">
-                    <div className="skeleton-step-title"></div>
-                    <div className="skeleton-step-description"></div>
-                  </div>
-                </div>
-              ))}
-            </Col>
-          </Row>
-
-          <Row className="justify-content-center">
-            <Col lg={10} className="text-center">
-              <div className="result-card skeleton-result-card">
-                <div className="result-content">
-                  <div className="skeleton-result-title"></div>
-                  <div className="skeleton-result-description"></div>
-                  <div className="skeleton-button"></div>
-                </div>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-
-        <style jsx global>{`
-          /* Base skeleton animation */
-          @keyframes skeleton-loading {
-            0% {
-              background-position: -200px 0;
-            }
-            100% {
-              background-position: calc(200px + 100%) 0;
-            }
-          }
-
-          .skeleton-title,
-          .skeleton-subtitle,
-          .skeleton-step-title,
-          .skeleton-step-description,
-          .skeleton-result-title,
-          .skeleton-result-description,
-          .skeleton-button,
-          .skeleton-icon-wrapper {
-            background: linear-gradient(
-              90deg,
-              rgba(255, 255, 255, 0.05) 25%,
-              rgba(255, 255, 255, 0.1) 50%,
-              rgba(255, 255, 255, 0.05) 75%
-            );
-            background-size: 200px 100%;
-            animation: skeleton-loading 1.5s infinite linear;
-            border-radius: 4px;
-            display: block;
-          }
-
-          [data-bs-theme="light"] .skeleton-title,
-          [data-bs-theme="light"] .skeleton-subtitle,
-          [data-bs-theme="light"] .skeleton-step-title,
-          [data-bs-theme="light"] .skeleton-step-description,
-          [data-bs-theme="light"] .skeleton-result-title,
-          [data-bs-theme="light"] .skeleton-result-description,
-          [data-bs-theme="light"] .skeleton-button,
-          [data-bs-theme="light"] .skeleton-icon-wrapper {
-            background: linear-gradient(
-              90deg,
-              rgba(0, 0, 0, 0.04) 25%,
-              rgba(0, 0, 0, 0.06) 50%,
-              rgba(0, 0, 0, 0.04) 75%
-            );
-            background-size: 200px 100%;
-          }
-
-          .skeleton-title {
-            height: 48px;
-            width: 280px;
-            margin: 0 auto 16px;
-          }
-
-          .skeleton-subtitle {
-            height: 24px;
-            width: 450px;
-            max-width: 80%;
-            margin: 0 auto;
-          }
-
-          .skeleton-card {
-            opacity: 1 !important;
-            transform: none !important;
-          }
-
-          .skeleton-icon-wrapper {
-            width: 56px;
-            height: 56px;
-            border-radius: 16px;
-          }
-
-          .skeleton-step-title {
-            height: 24px;
-            width: 70%;
-            margin-bottom: 12px;
-          }
-
-          .skeleton-step-description {
-            height: 18px;
-            width: 90%;
-            margin-bottom: 8px;
-          }
-
-          .skeleton-step-description:last-child {
-            width: 60%;
-          }
-
-          .skeleton-result-card {
-            opacity: 1 !important;
-            transform: none !important;
-          }
-
-          .skeleton-result-title {
-            height: 32px;
-            width: 200px;
-            margin: 0 auto 16px;
-          }
-
-          .skeleton-result-description {
-            height: 20px;
-            width: 80%;
-            margin: 0 auto 12px;
-          }
-
-          .skeleton-result-description:nth-child(3) {
-            width: 60%;
-            margin-bottom: 24px;
-          }
-
-          .skeleton-button {
-            height: 48px;
-            width: 160px;
-            border-radius: 12px;
-            margin: 16px auto 0;
-          }
-        `}</style>
-      </SectionContainer>
-    );
+  // If section data is not found, don't display the component
+  if (!solutionSection) {
+    return null;
   }
 
   return (
     <SectionContainer
+      ref={sectionRef}
       id="solution"
       className="solution-section-container"
       backgroundVariant={solutionSection.backgroundVariant || "dark"}
     >
       {/* Decorative elements */}
-      <div className="position-absolute shape-3"></div>
-      <div className="position-absolute shape-4"></div>
+      <div className={`position-absolute shape-3 ${isVisible ? 'animate-in' : 'animate-out'}`}></div>
+      <div className={`position-absolute shape-4 ${isVisible ? 'animate-in' : 'animate-out'}`}></div>
 
       <Container className="position-relative" style={{ zIndex: 2 }}>
-        <Row
-          className={`justify-content-center text-center mb-5 ${
-            isVisible ? "visible" : ""
-          }`}
-        >
+        <Row className="justify-content-center text-center mb-5">
           <Col lg={10} xl={8}>
+            <div className={`section-title-wrapper ${isVisible ? 'animate-in' : 'animate-out'}`}>
             <h2
               className="display-5 mb-3 solution-title-animation"
-              dangerouslySetInnerHTML={{ __html: "How It <span class='text-gradient'>Works</span>" }}
+                dangerouslySetInnerHTML={{ __html: solutionSection.title }}
             />
             <p className="lead solution-subtitle-animation">
-              Our proven four-step process simplifies government contracting from discovery to award
+                {solutionSection.subtitle}
             </p>
+            </div>
           </Col>
         </Row>
 
         <Row className="justify-content-center mb-5">
           <Col lg={10} className="solution-steps-container">
-            {howItWorksSteps.map((step, index) => (
+            {solutionSection.steps && solutionSection.steps.map((step, index) => (
               <div
                 key={step.number}
                 className={`solution-step-card ${
                   activeStep === index ? "active" : ""
-                } ${isVisible ? "visible" : ""}`}
-                style={{ animationDelay: `${0.4 + index * 0.15}s` }}
+                } ${isVisible ? 'animate-in' : 'animate-out'}`}
+                style={{ transitionDelay: `${200 + index * 150}ms` }}
                 onMouseEnter={() => handleStepHover(index)}
                 onMouseLeave={() => handleStepHover(null)}
               >
                 <div className="step-icon">
                   <div className="icon-wrapper">
-                    <Icon name={step.icon} />
+                    <Icon name={step.icon || `number-${step.number}`} />
                   </div>
                   <span className="step-number">{step.number}</span>
                 </div>
@@ -312,18 +117,22 @@ export default function SolutionSection() {
           <Col lg={10} className="text-center">
             {solutionSection.result && (
               <div
-                className={`result-card ${isVisible ? "visible" : ""}`}
-                style={{ animationDelay: "0.9s" }}
+                className={`result-card ${isVisible ? 'animate-in' : 'animate-out'}`}
+                style={{ 
+                  transitionDelay: `${solutionSection.steps?.length ? 
+                    200 + solutionSection.steps.length * 150 + 100 : 600}ms` 
+                }}
               >
-                <div className="glow-effect-1"></div>
-                <div className="glow-effect-2"></div>
+                <div className={`glow-effect-1 ${isVisible ? 'animate-in' : 'animate-out'}`}></div>
+                <div className={`glow-effect-2 ${isVisible ? 'animate-in' : 'animate-out'}`}></div>
 
                 <div className="result-content">
-                  <h3 className="result-title">Ready to Start?</h3>
+                  <h3 className="result-title">{solutionSection.result.title}</h3>
                   <p className="result-description">
-                    Get personalized guidance on winning your first government contract
+                    {solutionSection.result.description}
                   </p>
                   {solutionSection.result.ctaButton && (
+                    <div className="cta-button-wrapper">
                     <Button
                       href={solutionSection.result.ctaButton.href}
                       variant="white"
@@ -332,6 +141,7 @@ export default function SolutionSection() {
                     >
                       {solutionSection.result.ctaButton.text}
                     </Button>
+                    </div>
                   )}
                 </div>
               </div>
@@ -341,26 +151,8 @@ export default function SolutionSection() {
       </Container>
 
       <style jsx global>{`
-        /* Core variables for theme compatibility */
+        /* Core variables with light theme values */
         :root {
-          --solution-section-bg: var(--section-bg-light);
-          --card-bg: rgba(255, 255, 255, 0.03);
-          --card-border: rgba(255, 255, 255, 0.1);
-          --card-hover-bg: rgba(255, 255, 255, 0.05);
-          --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-          --card-hover-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-          --text-primary: #fff;
-          --text-secondary: rgba(255, 255, 255, 0.7);
-          --step-card-bg: rgba(30, 41, 59, 0.6);
-          --step-card-border: rgba(255, 255, 255, 0.08);
-          --step-icon-color: #6366f1;
-          --result-card-bg: #6366f1;
-          --result-text-color: #ffffff;
-          --primary-rgb: 99, 102, 241;
-          --feature-dot-color: rgba(255, 255, 255, 0.15);
-        }
-
-        [data-bs-theme="light"] {
           --solution-section-bg: var(--section-bg-light);
           --card-bg: #ffffff;
           --card-border: rgba(0, 0, 0, 0.06);
@@ -374,6 +166,7 @@ export default function SolutionSection() {
           --step-icon-color: #6366f1;
           --result-card-bg: #6366f1;
           --result-text-color: #ffffff;
+          --primary-rgb: 99, 102, 241;
           --feature-dot-color: rgba(67, 97, 238, 0.15);
         }
 
@@ -384,6 +177,27 @@ export default function SolutionSection() {
           overflow: hidden;
           padding: 5rem 0;
         }
+        
+        /* Smooth scroll behavior for anchors */
+        html {
+          scroll-behavior: smooth;
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+          html {
+            scroll-behavior: auto;
+          }
+          
+          .section-title-wrapper,
+          .solution-step-card,
+          .result-card,
+          .shape-3,
+          .shape-4 {
+            transition: none !important;
+            transform: none !important;
+            opacity: 1 !important;
+          }
+        }
 
         /* Animated shapes */
         .shape-3 {
@@ -392,11 +206,25 @@ export default function SolutionSection() {
           width: 450px;
           height: 450px;
           background: var(--primary-rgb, 99, 102, 241);
-          opacity: 0.025;
+          opacity: 0;
           border-radius: 50% 50% 30% 70% / 50% 70% 30% 50%;
           filter: blur(90px);
-          animation: floatShape 18s ease-in-out infinite alternate;
           position: absolute;
+          transform: translateX(-40px) scale(0.9);
+          transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+        }
+        
+        .shape-3.animate-in {
+          opacity: 0.025;
+          transform: translateX(0) scale(1);
+          animation: floatShape 18s ease-in-out infinite alternate;
+        }
+        
+        .shape-3.animate-out {
+          opacity: 0;
+          transform: translateX(-40px) scale(0.9);
+          animation: none;
+          transition-duration: 0.8s;
         }
 
         .shape-4 {
@@ -405,11 +233,26 @@ export default function SolutionSection() {
           width: 350px;
           height: 350px;
           background: var(--primary-rgb, 99, 102, 241);
-          opacity: 0.02;
+          opacity: 0;
           border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
           filter: blur(80px);
-          animation: pulse 8s ease-in-out infinite alternate;
           position: absolute;
+          transform: translateX(40px) scale(0.9);
+          transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+          transition-delay: 0.2s;
+        }
+        
+        .shape-4.animate-in {
+          opacity: 0.02;
+          transform: translateX(0) scale(1);
+          animation: pulse 8s ease-in-out infinite alternate;
+        }
+        
+        .shape-4.animate-out {
+          opacity: 0;
+          transform: translateX(40px) scale(0.9);
+          animation: none;
+          transition-duration: 0.8s;
         }
 
         @keyframes floatShape {
@@ -432,31 +275,59 @@ export default function SolutionSection() {
           }
         }
 
-        /* Title animations */
-        .solution-title-animation,
-        .solution-subtitle-animation,
-        .solution-step-card,
-        .result-card {
+        /* Section title wrapper */
+        .section-title-wrapper {
           opacity: 0;
           transform: translateY(30px);
-          transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+          transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .visible .solution-title-animation {
+        .section-title-wrapper.animate-in {
           opacity: 1;
           transform: translateY(0);
         }
 
-        .visible .solution-subtitle-animation {
-          opacity: 1;
-          transform: translateY(0);
-          transition-delay: 0.2s;
+        .section-title-wrapper.animate-out {
+          opacity: 0;
+          transform: translateY(30px);
+          transition-duration: 0.6s;
         }
 
-        .solution-step-card.visible,
-        .result-card.visible {
+        /* Title animations */
+        .solution-title-animation {
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 0.5s ease, transform 0.5s ease;
+          transition-delay: 0.05s;
+          display: block;
+        }
+        
+        .section-title-wrapper.animate-in .solution-title-animation {
           opacity: 1;
           transform: translateY(0);
+        }
+        
+        .section-title-wrapper.animate-out .solution-title-animation {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        
+        .solution-subtitle-animation {
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 0.5s ease, transform 0.5s ease;
+          transition-delay: 0.15s;
+        }
+
+        .section-title-wrapper.animate-in .solution-subtitle-animation {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        .section-title-wrapper.animate-out .solution-subtitle-animation {
+          opacity: 0;
+          transform: translateY(20px);
         }
 
         /* Text gradient styling */
@@ -484,12 +355,29 @@ export default function SolutionSection() {
           border: 1px solid var(--step-card-border);
           border-radius: 16px;
           padding: 1.5rem;
-          transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
           position: relative;
           box-shadow: var(--card-shadow), 0 0 15px rgba(0, 0, 0, 0.03);
           backdrop-filter: blur(10px);
           overflow: hidden;
           height: 100%;
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                      box-shadow 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+                      border-color 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+          will-change: transform, opacity, box-shadow;
+        }
+        
+        .solution-step-card.animate-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        .solution-step-card.animate-out {
+          opacity: 0;
+          transform: translateY(30px);
+          transition-duration: 0.6s;
         }
 
         /* Dot pattern styling */
@@ -680,11 +568,26 @@ export default function SolutionSection() {
           position: relative;
           overflow: hidden;
           box-shadow: 0 15px 30px rgba(99, 102, 241, 0.25);
-          transition: all 0.4s ease;
           margin-top: 1rem;
           max-width: 750px;
           margin-left: auto;
           margin-right: auto;
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                      box-shadow 0.4s ease;
+        }
+        
+        .result-card.animate-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        .result-card.animate-out {
+          opacity: 0;
+          transform: translateY(30px);
+          transition-duration: 0.6s;
         }
 
         .glow-effect-1,
@@ -693,6 +596,8 @@ export default function SolutionSection() {
           background: rgba(255, 255, 255, 0.1);
           border-radius: 50%;
           filter: blur(40px);
+          opacity: 0;
+          transition: opacity 1s ease-out, transform 1s ease-out;
         }
 
         .glow-effect-1 {
@@ -700,7 +605,20 @@ export default function SolutionSection() {
           right: -10%;
           width: 60%;
           height: 60%;
+          transform: scale(0.8);
+        }
+        
+        .glow-effect-1.animate-in {
+          opacity: 1;
+          transform: scale(1);
           animation: pulse 10s infinite alternate;
+          transition-delay: 0.7s;
+        }
+        
+        .glow-effect-1.animate-out {
+          opacity: 0;
+          transform: scale(0.8);
+          animation: none;
         }
 
         .glow-effect-2 {
@@ -708,7 +626,20 @@ export default function SolutionSection() {
           left: -10%;
           width: 40%;
           height: 40%;
+          transform: scale(0.8);
+        }
+        
+        .glow-effect-2.animate-in {
+          opacity: 1;
+          transform: scale(1);
           animation: pulse 15s infinite alternate-reverse;
+          transition-delay: 0.9s;
+        }
+        
+        .glow-effect-2.animate-out {
+          opacity: 0;
+          transform: scale(0.8);
+          animation: none;
         }
 
         .result-content {
@@ -721,12 +652,57 @@ export default function SolutionSection() {
           margin-bottom: 0.75rem;
           font-size: 1.5rem;
           color: #fff;
+          opacity: 0;
+          transform: translateY(15px);
+          transition: opacity 0.5s ease, transform 0.5s ease;
+          transition-delay: 0.2s;
+        }
+        
+        .result-card.animate-in .result-title {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        .result-card.animate-out .result-title {
+          opacity: 0;
+          transform: translateY(15px);
         }
 
         .result-description {
           font-size: 1.1rem;
           margin-bottom: 1.5rem;
           color: rgba(255, 255, 255, 0.9);
+          opacity: 0;
+          transform: translateY(15px);
+          transition: opacity 0.5s ease, transform 0.5s ease;
+          transition-delay: 0.3s;
+        }
+        
+        .result-card.animate-in .result-description {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        .result-card.animate-out .result-description {
+          opacity: 0;
+          transform: translateY(15px);
+        }
+        
+        .cta-button-wrapper {
+          opacity: 0;
+          transform: translateY(10px);
+          transition: opacity 0.6s ease, transform 0.6s ease;
+          transition-delay: 0.4s;
+        }
+        
+        .result-card.animate-in .cta-button-wrapper {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        .result-card.animate-out .cta-button-wrapper {
+          opacity: 0;
+          transform: translateY(10px);
         }
 
         /* Responsive adjustments */

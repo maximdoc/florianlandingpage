@@ -1,185 +1,62 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import SectionContainer from "../SectionContainer";
 import Image from "next/image";
-import { getSectionById } from "@/utils/contentUtils";
+import content from "@/data/content.json";
 
-export default function TrustSection() {
-  const [trustSection, setTrustSection] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [isVisible, setIsVisible] = useState(false);
+// Custom hook to detect if element is in viewport
+const useIsVisible = (ref) => {
+  const [isIntersecting, setIntersecting] = useState(false);
 
-  useEffect(() => {
-    async function loadTrustSection() {
-      try {
-        setLoading(true);
-        const sectionData = await getSectionById("home", "trust");
-        setTrustSection(sectionData);
-      } catch (error) {
-        console.error("Error loading trust section:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadTrustSection();
-  }, []);
-
-  // Add intersection observer for scroll animations
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setIsVisible(true);
-        }
+      ([entry]) => {
+        setIntersecting(entry.isIntersecting);
       },
       { threshold: 0.1 }
     );
 
-    const section = document.querySelector(".trust-section");
-    if (section) observer.observe(section);
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
 
     return () => {
-      if (section) observer.unobserve(section);
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
     };
-  }, []);
+  }, [ref]);
 
-  if (loading || !trustSection) {
-    return (
-      <SectionContainer
-        id="trust"
-        className="trust-section py-8 position-relative"
-        backgroundVariant="light"
-      >
-        <Container>
-          {/* Skeleton loader */}
-          <Row className="text-center mb-5">
-            <Col lg={8} className="mx-auto">
-              <div className="skeleton-title mb-3"></div>
-              <div className="skeleton-subtitle"></div>
-            </Col>
-          </Row>
+  return isIntersecting;
+};
 
-          {/* Featured In skeleton */}
-          <Row className="mb-5 text-center">
-            <Col lg={12} className="mb-4">
-              <div className="skeleton-section-title mb-4"></div>
-              <div className="d-flex justify-content-center flex-wrap gap-4">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="skeleton-logo"></div>
-                ))}
-              </div>
-            </Col>
-          </Row>
+export default function TrustSection() {
+  // Get trust section data directly from content.json
+  const homePageData = content.pages.find(page => page.id === 'home');
+  const trustSection = homePageData.sections.find(section => section.id === 'trust');
 
-          {/* Partners skeleton */}
-          <Row className="mb-5 text-center">
-            <Col lg={12} className="mb-4">
-              <div className="skeleton-section-title mb-4"></div>
-              <div className="d-flex justify-content-center flex-wrap gap-4">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <div key={i} className="skeleton-logo"></div>
-                ))}
-              </div>
-            </Col>
-          </Row>
+  // Refs for animation tracking
+  const sectionRef = useRef(null);
+  const headerRef = useRef(null);
+  const featuredRef = useRef(null);
+  const partnersRef = useRef(null);
+  const certificationsRef = useRef(null);
 
-          {/* Certifications skeleton */}
-          <Row>
-            <Col lg={12} className="text-center mb-4">
-              <div className="skeleton-section-title mb-4"></div>
-              <div className="d-flex justify-content-center flex-wrap gap-4">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="skeleton-badge"></div>
-                ))}
-              </div>
-            </Col>
-          </Row>
-        </Container>
-
-        <style jsx global>{`
-          /* Base skeleton animation */
-          @keyframes skeleton-loading {
-            0% {
-              background-position: -200px 0;
-            }
-            100% {
-              background-position: calc(200px + 100%) 0;
-            }
-          }
-
-          .skeleton-title,
-          .skeleton-subtitle,
-          .skeleton-section-title,
-          .skeleton-logo,
-          .skeleton-badge {
-            background: linear-gradient(
-              90deg,
-              rgba(0, 0, 0, 0.06) 25%,
-              rgba(0, 0, 0, 0.12) 50%,
-              rgba(0, 0, 0, 0.06) 75%
-            );
-            background-size: 200px 100%;
-            animation: skeleton-loading 1.5s infinite linear;
-            border-radius: 4px;
-            display: block;
-          }
-
-          [data-bs-theme="dark"] .skeleton-title,
-          [data-bs-theme="dark"] .skeleton-subtitle,
-          [data-bs-theme="dark"] .skeleton-section-title,
-          [data-bs-theme="dark"] .skeleton-logo,
-          [data-bs-theme="dark"] .skeleton-badge {
-            background: linear-gradient(
-              90deg,
-              rgba(255, 255, 255, 0.05) 25%,
-              rgba(255, 255, 255, 0.1) 50%,
-              rgba(255, 255, 255, 0.05) 75%
-            );
-            background-size: 200px 100%;
-          }
-
-          .skeleton-title {
-            height: 48px;
-            width: 60%;
-            margin: 0 auto;
-          }
-
-          .skeleton-subtitle {
-            height: 24px;
-            width: 80%;
-            margin: 0 auto;
-          }
-
-          .skeleton-section-title {
-            height: 28px;
-            width: 200px;
-            margin: 0 auto;
-          }
-
-          .skeleton-logo {
-            height: 60px;
-            width: 160px;
-            border-radius: 8px;
-          }
-
-          .skeleton-badge {
-            height: 100px;
-            width: 100px;
-            border-radius: 50%;
-          }
-        `}</style>
-      </SectionContainer>
-    );
-  }
+  // Check if elements are visible
+  const isSectionVisible = useIsVisible(sectionRef);
+  const isHeaderVisible = useIsVisible(headerRef);
+  const isFeaturedVisible = useIsVisible(featuredRef);
+  const isPartnersVisible = useIsVisible(partnersRef);
+  const isCertificationsVisible = useIsVisible(certificationsRef);
 
   return (
     <SectionContainer
       id="trust"
-      className="trust-section py-5 px-3 position-relative"
-      backgroundVariant={trustSection.backgroundVariant || "light"}
+      className="trust-section position-relative"
+      backgroundVariant="light"
+      ref={sectionRef}
     >
       {/* Decorative elements */}
       <div className="position-absolute decorative-shape top-right"></div>
@@ -189,33 +66,41 @@ export default function TrustSection() {
         className="position-relative trust-container"
         style={{ zIndex: 2 }}
       >
-        <Row className={`text-center mb-4 ${isVisible ? "fade-in" : ""}`}>
+        <Row className="text-center mb-md-5 mb-4" ref={headerRef}>
           <Col lg={8} className="mx-auto">
             <h2
-              className="display-5 mb-3"
+              className={`display-5 mb-3 transition-all duration-1000 ${
+                isHeaderVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
               dangerouslySetInnerHTML={{ __html: trustSection.title }}
             />
-            <p className="lead mb-0">{trustSection.subtitle}</p>
+            <p className={`lead mb-0 transition-all duration-1000 delay-100 ${
+                isHeaderVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}>
+              {trustSection.subtitle}
+            </p>
           </Col>
         </Row>
 
         {/* Featured In Section */}
         {trustSection.featuredIn && (
           <Row
-            className={`mb-4 pb-3 text-center featured-section ${
-              isVisible ? "fade-in" : ""
-            }`}
-            style={{ animationDelay: "0.2s" }}
+            className="mb-md-5 mb-4 text-center featured-section"
+            ref={featuredRef}
           >
-            <Col lg={12} className="mb-4">
-              <h3 className="h4 mb-3">
+            <Col lg={12} className="mb-md-3 mb-2">
+              <h3 className={`h4 mb-3 transition-all duration-1000 ${
+                isFeaturedVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}>
                 <span className="section-label">
                   {trustSection.featuredIn.title}
                 </span>
                 <div className="heading-underline"></div>
               </h3>
-              <div className="featured-logos-container">
-                {trustSection.featuredIn.logos.map((logo) => (
+              <div className={`featured-logos-container transition-all duration-1000 delay-200 ${
+                isFeaturedVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}>
+                {trustSection.featuredIn.logos.map((logo, index) => (
                   <a
                     key={logo.id}
                     href={logo.url}
@@ -223,6 +108,10 @@ export default function TrustSection() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={logo.name}
+                    style={{ 
+                      transitionDelay: `${150 + index * 50}ms`,
+                      transition: "all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)"
+                    }}
                   >
                     <div className="logo-wrapper">
                       <div className="logo-placeholder">
@@ -250,20 +139,22 @@ export default function TrustSection() {
         {/* Partners Section */}
         {trustSection.partners && (
           <Row
-            className={`mb-4 pb-3 text-center partners-section ${
-              isVisible ? "fade-in" : ""
-            }`}
-            style={{ animationDelay: "0.4s" }}
+            className="mb-md-5 mb-4 text-center partners-section"
+            ref={partnersRef}
           >
-            <Col lg={12} className="mb-4">
-              <h3 className="h4 mb-3">
+            <Col lg={12} className="mb-md-3 mb-2">
+              <h3 className={`h4 mb-3 transition-all duration-1000 ${
+                isPartnersVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}>
                 <span className="section-label">
                   {trustSection.partners.title}
                 </span>
                 <div className="heading-underline"></div>
               </h3>
-              <div className="partners-logos-container">
-                {trustSection.partners.logos.map((logo) => (
+              <div className={`partners-logos-container transition-all duration-1000 delay-200 ${
+                isPartnersVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}>
+                {trustSection.partners.logos.map((logo, index) => (
                   <a
                     key={logo.id}
                     href={logo.url}
@@ -271,6 +162,10 @@ export default function TrustSection() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={logo.name}
+                    style={{ 
+                      transitionDelay: `${150 + index * 50}ms`,
+                      transition: "all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)"
+                    }}
                   >
                     <div className="logo-wrapper">
                       <div className="logo-placeholder">
@@ -298,21 +193,30 @@ export default function TrustSection() {
         {/* Certifications Section */}
         {trustSection.certifications && (
           <Row
-            className={`text-center mb-4 certifications-section ${
-              isVisible ? "fade-in" : ""
-            }`}
-            style={{ animationDelay: "0.6s" }}
+            className="text-center certifications-section"
+            ref={certificationsRef}
           >
-            <Col lg={12} className="mb-4">
-              <h3 className="h4 mb-3">
+            <Col lg={12} className="mb-md-3 mb-2">
+              <h3 className={`h4 mb-3 transition-all duration-1000 ${
+                isCertificationsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}>
                 <span className="section-label">
                   {trustSection.certifications.title}
                 </span>
                 <div className="heading-underline"></div>
               </h3>
-              <div className="certifications-container">
-                {trustSection.certifications.badges.map((badge) => (
-                  <div key={badge.id} className="certification-badge">
+              <div className={`certifications-container transition-all duration-1000 delay-200 ${
+                isCertificationsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}>
+                {trustSection.certifications.badges.map((badge, index) => (
+                  <div 
+                    key={badge.id} 
+                    className="certification-badge"
+                    style={{ 
+                      transitionDelay: `${150 + index * 100}ms`,
+                      transition: "all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)"
+                    }}
+                  >
                     <div className="badge-wrapper">
                       <div className="badge-placeholder">
                         {/* Show icon or first letter of the badge name as fallback */}
@@ -341,9 +245,9 @@ export default function TrustSection() {
       </Container>
 
       <style jsx global>{`
-        /* Core variables for theme compatibility */
+        /* Core variables */
         :root {
-          --trust-section-bg: var(--section-bg-light);
+          --trust-section-bg: #f8fafc;
           --logo-bg: #ffffff;
           --logo-border: rgba(0, 0, 0, 0.08);
           --logo-hover-shadow: rgba(0, 0, 0, 0.1);
@@ -356,42 +260,65 @@ export default function TrustSection() {
           --card-border-rgb: 0, 0, 0;
           --section-highlight: rgba(99, 102, 241, 0.03);
           --badge-glow: rgba(99, 102, 241, 0.2);
-          --section-padding: 3rem;
         }
 
-        [data-bs-theme="dark"] {
-          --trust-section-bg: var(--section-bg-dark);
-          --logo-bg: rgba(255, 255, 255, 0.02);
-          --logo-border: rgba(255, 255, 255, 0.08);
-          --logo-hover-shadow: rgba(255, 255, 255, 0.05);
-          --badge-bg: rgba(255, 255, 255, 0.03);
-          --badge-border: rgba(255, 255, 255, 0.08);
-          --badge-hover-shadow: rgba(99, 102, 241, 0.15);
-          --text-primary: #ffffff;
-          --text-secondary: rgba(255, 255, 255, 0.7);
-          --card-bg-rgb: 30, 41, 59;
-          --card-border-rgb: 255, 255, 255;
-          --section-highlight: rgba(99, 102, 241, 0.05);
-          --badge-glow: rgba(99, 102, 241, 0.3);
-          --section-padding: 3rem;
+        /* Animation utilities */
+        .transition-all {
+          transition-property: all;
+        }
+
+        .duration-1000 {
+          transition-duration: 1000ms;
+        }
+
+        .delay-100 {
+          transition-delay: 100ms;
+        }
+
+        .delay-200 {
+          transition-delay: 200ms;
+        }
+
+        .delay-300 {
+          transition-delay: 300ms;
+        }
+
+        .opacity-0 {
+          opacity: 0;
+        }
+
+        .opacity-100 {
+          opacity: 1;
+        }
+
+        .translate-y-0 {
+          transform: translateY(0);
+        }
+
+        .translate-y-10 {
+          transform: translateY(40px);
         }
 
         /* Section styling with improved responsiveness */
         .trust-section {
           position: relative;
           overflow: hidden;
-          padding: var(--section-padding) 0;
+          padding-top: 5rem;
+          padding-bottom: 3rem;
+          background-color: #f8fafc;
         }
 
         @media (max-width: 991.98px) {
           .trust-section {
-            --section-padding: 2rem;
+            padding-top: 4rem;
+            padding-bottom: 2.5rem;
           }
         }
 
         @media (max-width: 767.98px) {
           .trust-section {
-            --section-padding: 1.5rem;
+            padding-top: 3.5rem;
+            padding-bottom: 2rem;
           }
         }
 
@@ -408,7 +335,7 @@ export default function TrustSection() {
           right: -10%;
           width: 40%;
           height: 40%;
-          background: var(--primary-rgb, 99, 102, 241);
+          background: rgba(99, 102, 241, 0.5);
           border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
           animation: floatMovement 25s infinite alternate ease-in-out;
         }
@@ -418,7 +345,7 @@ export default function TrustSection() {
           left: -10%;
           width: 35%;
           height: 35%;
-          background: var(--primary-rgb, 99, 102, 241);
+          background: rgba(99, 102, 241, 0.5);
           border-radius: 50% 50% 30% 70% / 50% 70% 30% 50%;
           animation: floatMovement 20s infinite alternate-reverse ease-in-out;
         }
@@ -432,20 +359,6 @@ export default function TrustSection() {
           }
         }
 
-        /* Animation effects */
-        .fade-in {
-          opacity: 0;
-          transform: translateY(20px);
-          animation: fadeInUp 0.6s ease-out forwards;
-        }
-
-        @keyframes fadeInUp {
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
         /* Featured Logos styling with improved spacing */
         .featured-logos-container {
           display: flex;
@@ -453,10 +366,9 @@ export default function TrustSection() {
           justify-content: center;
           align-items: center;
           gap: 1.5rem;
-          margin-top: 1rem;
+          margin-top: 1.5rem;
           position: relative;
           z-index: 1;
-          padding: 0.5rem 0;
         }
 
         .featured-logo {
@@ -489,10 +401,9 @@ export default function TrustSection() {
           justify-content: center;
           align-items: center;
           gap: 1.25rem;
-          margin-top: 1rem;
+          margin-top: 1.5rem;
           position: relative;
           z-index: 1;
-          padding: 0.5rem 0;
         }
 
         .partner-logo {
@@ -517,23 +428,19 @@ export default function TrustSection() {
           gap: 1.5rem;
           width: 100%;
           max-width: 900px;
-          margin: 1rem auto;
+          margin: 1.5rem auto 0;
         }
 
         .certification-badge {
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: 1.25rem 1rem;
+          padding: 1rem 0.75rem;
           width: 220px;
           transition: all 0.3s ease;
           background-color: transparent;
           border-radius: 12px;
           border: none;
-        }
-
-        [data-bs-theme="light"] .certification-badge {
-          box-shadow: none;
         }
 
         .certification-badge:hover {
@@ -564,7 +471,7 @@ export default function TrustSection() {
           left: -2px;
           right: -2px;
           bottom: -2px;
-          background: linear-gradient(135deg, var(--badge-glow), transparent);
+          background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), transparent);
           border-radius: 50%;
           z-index: -1;
           opacity: 0;
@@ -579,7 +486,7 @@ export default function TrustSection() {
           opacity: 1;
         }
 
-        /* Ensure section labels are visible in both themes */
+        /* Ensure section labels are visible */
         .section-label {
           display: inline-block;
           position: relative;
@@ -590,7 +497,7 @@ export default function TrustSection() {
           font-size: 1rem;
         }
 
-        [data-bs-theme="light"] .heading-underline::after {
+        .heading-underline::after {
           background: linear-gradient(
             90deg,
             transparent,
@@ -604,6 +511,7 @@ export default function TrustSection() {
           .featured-logos-container,
           .partners-logos-container {
             gap: 1rem;
+            margin-top: 1.25rem;
           }
 
           .logo-wrapper {
@@ -614,6 +522,12 @@ export default function TrustSection() {
 
           .certification-badge {
             width: 180px;
+            padding: 0.75rem 0.5rem;
+          }
+          
+          .certifications-container {
+            gap: 1.25rem;
+            margin-top: 1.25rem;
           }
         }
 
@@ -621,6 +535,7 @@ export default function TrustSection() {
           .featured-logos-container,
           .partners-logos-container {
             gap: 0.75rem;
+            margin-top: 1rem;
           }
 
           .logo-wrapper {
@@ -631,6 +546,16 @@ export default function TrustSection() {
 
           .certification-badge {
             width: 160px;
+            padding: 0.5rem 0.25rem;
+          }
+          
+          .certifications-container {
+            gap: 1rem;
+            margin-top: 1rem;
+          }
+          
+          .heading-underline {
+            margin: 0.5rem auto 1rem;
           }
         }
 
@@ -644,6 +569,11 @@ export default function TrustSection() {
           .certification-badge {
             width: 140px;
           }
+          
+          .heading-underline {
+            width: 50px;
+            margin: 0.5rem auto 0.75rem;
+          }
         }
 
         /* Section highlight backgrounds with reduced padding */
@@ -651,19 +581,10 @@ export default function TrustSection() {
         .partners-section,
         .certifications-section {
           position: relative;
-          padding: 1.5rem 1.5rem;
           border-radius: 12px;
           overflow: hidden;
           background-color: transparent;
           box-shadow: none;
-        }
-
-        @media (max-width: 767.98px) {
-          .featured-section,
-          .partners-section,
-          .certifications-section {
-            padding: 1rem 1rem;
-          }
         }
 
         /* Section heading styling */
@@ -673,7 +594,7 @@ export default function TrustSection() {
           margin: 0.5rem auto 1.5rem;
           background: linear-gradient(
             to right,
-            rgba(var(--primary-rgb), 0.8),
+            rgba(99, 102, 241, 0.8),
             rgba(139, 92, 246, 0.8)
           );
           border-radius: 3px;
@@ -711,7 +632,7 @@ export default function TrustSection() {
           background-color: transparent;
           border: 1px solid var(--logo-border);
           border-radius: 12px;
-          padding: 1.25rem 1.5rem;
+          padding: 1rem 1.25rem;
           transition: all 0.3s ease;
           display: flex;
           align-items: center;
@@ -726,7 +647,7 @@ export default function TrustSection() {
         .logo-wrapper:hover {
           box-shadow: none;
           transform: translateY(-5px);
-          border-color: rgba(var(--primary-rgb), 0.3);
+          border-color: rgba(99, 102, 241, 0.3);
         }
 
         /* Update section background highlight for better visibility in light theme */
@@ -748,52 +669,16 @@ export default function TrustSection() {
           display: block;
         }
 
-        /* Adjust heading underline for better visibility in light theme */
-        .heading-underline {
-          width: 60px;
-          height: 3px;
-          margin: 0.5rem auto 1.5rem;
-          background: linear-gradient(
-            to right,
-            rgba(var(--primary-rgb), 0.8),
-            rgba(139, 92, 246, 0.8)
-          );
-          border-radius: 3px;
-          position: relative;
-          overflow: hidden;
-        }
-
-        /* Enhance certification card styling for light theme */
-        .certification-badge {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          padding: 1.25rem 1rem;
-          width: 220px;
-          transition: all 0.3s ease;
-          background-color: transparent;
-          border-radius: 12px;
-          border: none;
-        }
-
-        [data-bs-theme="light"] .certification-badge {
-          box-shadow: none;
-        }
-
-        .certification-badge:hover {
-          transform: translateY(-5px);
-        }
-
         /* Badge placeholder for development */
         .badge-placeholder {
           width: 60px;
           height: 60px;
-          background: rgba(var(--primary-rgb, 99, 102, 241), 0.1);
+          background: rgba(99, 102, 241, 0.1);
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: var(--primary, #6366f1);
+          color: #6366f1;
           font-weight: 700;
           font-size: 1.5rem;
         }
@@ -819,18 +704,12 @@ export default function TrustSection() {
           line-height: 1.4;
         }
 
-        /* Section highlight backgrounds */
-        .featured-section,
-        .partners-section,
-        .certifications-section {
-          position: relative;
-          padding: 2rem 0;
-          border-radius: 16px;
-          overflow: hidden;
+        .certification-badge {
+          box-shadow: none;
         }
 
-        [data-bs-theme="light"] .badge-placeholder {
-          box-shadow: inset 0 0 0 1px rgba(var(--primary-rgb), 0.2);
+        .badge-placeholder {
+          box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.2);
         }
 
         /* Custom container styles for better responsiveness */
@@ -846,17 +725,10 @@ export default function TrustSection() {
           .trust-container {
             --container-padding: 12px;
           }
-        }
-
-        @media (max-width: 575.98px) {
-          .trust-container {
-            --container-padding: 10px;
-          }
-        }
-
-        @media (max-width: 767.98px) {
+          
           h3.h4 {
             font-size: 1.1rem;
+            margin-top: 1rem;
           }
 
           .section-label {
@@ -866,10 +738,20 @@ export default function TrustSection() {
           .badge-wrapper {
             width: 80px;
             height: 80px;
+            margin-bottom: 0.5rem;
           }
         }
 
         @media (max-width: 575.98px) {
+          .trust-container {
+            --container-padding: 10px;
+          }
+          
+          h3.h4 {
+            font-size: 1rem;
+            margin-top: 0.75rem;
+          }
+          
           .badge-placeholder {
             width: 45px;
             height: 45px;
@@ -878,6 +760,7 @@ export default function TrustSection() {
 
           .badge-name {
             font-size: 0.85rem;
+            margin-bottom: 0.25rem;
           }
 
           .badge-description {
@@ -887,6 +770,7 @@ export default function TrustSection() {
           .badge-wrapper {
             width: 70px;
             height: 70px;
+            margin-bottom: 0.375rem;
           }
         }
       `}</style>

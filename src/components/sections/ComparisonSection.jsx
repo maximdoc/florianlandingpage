@@ -1,264 +1,76 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import SectionContainer from "../SectionContainer";
-import { getSectionById } from "@/utils/contentUtils";
+import content from "@/data/content.json";
 
 export default function ComparisonSection() {
   const [activeCard, setActiveCard] = useState(null);
-  const [comparisonSection, setComparisonSection] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
+  const [hasBeenVisible, setHasBeenVisible] = useState(false);
+  const sectionRef = useRef(null);
 
+  // Get comparison section data directly from content.json
+  const homePageData = content.pages.find(page => page.id === 'home');
+  const comparisonSection = homePageData.sections.find(section => section.id === 'comparison');
+  
+  // Add intersection observer for scroll animations
   useEffect(() => {
-    async function loadComparisonSection() {
-      try {
-        setLoading(true);
-        const sectionData = await getSectionById("home", "comparison");
-        setComparisonSection(sectionData);
-      } catch (error) {
-        console.error("Error loading comparison section:", error);
-      } finally {
-        setLoading(false);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Update visibility state based on intersection
+        const isIntersecting = entries[0].isIntersecting;
+        
+        // Set visible state based on intersection
+        setIsVisible(isIntersecting);
+        
+        // Once the section has been visible, mark it
+        if (isIntersecting && !hasBeenVisible) {
+          setHasBeenVisible(true);
+        }
+      },
+      { 
+        threshold: 0.15,
+        rootMargin: '0px 0px -10% 0px'
       }
-    }
-
-    loadComparisonSection();
-  }, []);
-
-  if (loading || !comparisonSection) {
-    return (
-      <SectionContainer
-        id="comparison"
-        className="comparison-section py-8 position-relative overflow-hidden"
-        backgroundVariant="dark"
-      >
-        {/* Decorative elements */}
-        <div className="position-absolute decorative-shape top-shape"></div>
-        <div className="position-absolute decorative-shape bottom-shape"></div>
-
-        <Container className="position-relative" style={{ zIndex: 2 }}>
-          <Row className="text-center mb-5">
-            <Col lg={8} className="mx-auto">
-              {/* Skeleton for title */}
-              <div className="skeleton-title mb-3"></div>
-              {/* Skeleton for subtitle */}
-              <div className="skeleton-subtitle mb-2"></div>
-              <div
-                className="skeleton-subtitle mb-4"
-                style={{ width: "85%" }}
-              ></div>
-            </Col>
-          </Row>
-
-          <div className="comparison-container">
-            {/* BEFORE CARD SKELETON */}
-            <div className="comparison-card before-card skeleton-card">
-              <div className="card-header">
-                <div className="skeleton-card-title before"></div>
-              </div>
-
-              <ul className="comparison-list">
-                {[1, 2, 3, 4, 5].map((item) => (
-                  <li
-                    key={item}
-                    className="comparison-item negative skeleton-item"
-                  >
-                    <div className="skeleton-icon"></div>
-                    <div className="skeleton-text"></div>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="result-box negative">
-                <div className="skeleton-result-text"></div>
-              </div>
-
-              <div className="card-dot-pattern pattern-left"></div>
-            </div>
-
-            {/* AFTER CARD SKELETON */}
-            <div className="comparison-card after-card skeleton-card">
-              <div className="card-header">
-                <div className="skeleton-card-title after"></div>
-              </div>
-
-              <ul className="comparison-list">
-                {[1, 2, 3, 4, 5].map((item) => (
-                  <li
-                    key={item}
-                    className="comparison-item positive skeleton-item"
-                  >
-                    <div className="skeleton-icon"></div>
-                    <div className="skeleton-text"></div>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="result-box positive">
-                <div className="skeleton-result-text"></div>
-              </div>
-
-              <div className="card-dot-pattern pattern-right"></div>
-            </div>
-          </div>
-
-          <Row>
-            <Col lg={10} className="mx-auto text-center">
-              <div className="bottom-line-box skeleton-bottom-line">
-                <div className="glow-effect"></div>
-                <div className="skeleton-bottom-title"></div>
-                <div className="skeleton-bottom-text"></div>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-
-        <style jsx global>{`
-          /* Base skeleton animation */
-          @keyframes skeleton-loading {
-            0% {
-              background-position: -200px 0;
-            }
-            100% {
-              background-position: calc(200px + 100%) 0;
-            }
-          }
-
-          /* Common skeleton styles */
-          .skeleton-title,
-          .skeleton-subtitle,
-          .skeleton-card-title,
-          .skeleton-icon,
-          .skeleton-text,
-          .skeleton-result-text,
-          .skeleton-bottom-title,
-          .skeleton-bottom-text {
-            background: linear-gradient(
-              90deg,
-              rgba(255, 255, 255, 0.05) 25%,
-              rgba(255, 255, 255, 0.1) 50%,
-              rgba(255, 255, 255, 0.05) 75%
-            );
-            background-size: 200px 100%;
-            animation: skeleton-loading 1.5s infinite linear;
-            border-radius: 4px;
-            display: block;
-          }
-
-          [data-bs-theme="light"] .skeleton-title,
-          [data-bs-theme="light"] .skeleton-subtitle,
-          [data-bs-theme="light"] .skeleton-card-title,
-          [data-bs-theme="light"] .skeleton-icon,
-          [data-bs-theme="light"] .skeleton-text,
-          [data-bs-theme="light"] .skeleton-result-text,
-          [data-bs-theme="light"] .skeleton-bottom-title,
-          [data-bs-theme="light"] .skeleton-bottom-text {
-            background: linear-gradient(
-              90deg,
-              rgba(0, 0, 0, 0.04) 25%,
-              rgba(0, 0, 0, 0.06) 50%,
-              rgba(0, 0, 0, 0.04) 75%
-            );
-            background-size: 200px 100%;
-          }
-
-          /* Specific skeleton sizes */
-          .skeleton-title {
-            height: 48px;
-            width: 70%;
-            margin: 0 auto;
-          }
-
-          .skeleton-subtitle {
-            height: 20px;
-            width: 100%;
-            margin: 0 auto;
-          }
-
-          .skeleton-card {
-            opacity: 1 !important;
-            transform: none !important;
-          }
-
-          .skeleton-card-title {
-            height: 28px;
-            width: 40%;
-          }
-
-          .skeleton-card-title.before {
-            background-color: rgba(231, 76, 60, 0.1);
-          }
-
-          .skeleton-card-title.after {
-            background-color: rgba(46, 204, 113, 0.1);
-          }
-
-          .skeleton-item {
-            display: flex;
-            align-items: center;
-          }
-
-          .skeleton-icon {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            flex-shrink: 0;
-            margin-right: 12px;
-          }
-
-          .skeleton-text {
-            height: 16px;
-            width: 85%;
-          }
-
-          .skeleton-result-text {
-            height: 20px;
-            width: 80%;
-            margin: 0 auto;
-          }
-
-          .skeleton-bottom-line {
-            opacity: 1 !important;
-            transform: none !important;
-          }
-
-          .skeleton-bottom-title {
-            height: 32px;
-            width: 60%;
-            margin: 0 auto 16px;
-          }
-
-          .skeleton-bottom-text {
-            height: 16px;
-            width: 80%;
-            margin: 0 auto;
-          }
-        `}</style>
-      </SectionContainer>
     );
-  }
+
+    const section = sectionRef.current;
+    if (section) observer.observe(section);
+
+    return () => {
+      if (section) observer.unobserve(section);
+    };
+  }, [hasBeenVisible]);
+
+  const handleStepHover = (index) => {
+    setActiveCard(index);
+  };
 
   return (
     <SectionContainer
+      ref={sectionRef}
       id="comparison"
       className="comparison-section py-8 position-relative overflow-hidden"
       backgroundVariant={comparisonSection.backgroundVariant || "dark"}
     >
       {/* Decorative elements */}
-      <div className="position-absolute decorative-shape top-shape"></div>
-      <div className="position-absolute decorative-shape bottom-shape"></div>
+      <div className={`position-absolute decorative-shape top-shape ${isVisible ? 'animate-in' : 'animate-out'}`}></div>
+      <div className={`position-absolute decorative-shape bottom-shape ${isVisible ? 'animate-in' : 'animate-out'}`}></div>
 
       <Container className="position-relative" style={{ zIndex: 2 }}>
         <Row className="text-center mb-5">
           <Col lg={8} className="mx-auto">
+            <div className={`title-container ${isVisible ? 'animate-in' : 'animate-out'}`}>
             <h2
-              className="display-5 mb-3 fade-in"
+                className="display-5 mb-3 section-title"
               dangerouslySetInnerHTML={{ __html: comparisonSection.title }}
             />
-            <p className="lead text-body-secondary mb-5">
+              <p className="lead text-body-secondary mb-5 section-subtitle">
               {comparisonSection.subtitle}
             </p>
+            </div>
           </Col>
         </Row>
 
@@ -267,9 +79,10 @@ export default function ComparisonSection() {
           <div
             className={`comparison-card before-card ${
               activeCard === "before" ? "active" : ""
-            }`}
+            } ${isVisible ? 'animate-in' : 'animate-out'}`}
             onMouseEnter={() => setActiveCard("before")}
             onMouseLeave={() => setActiveCard(null)}
+            style={{ transitionDelay: "200ms" }}
           >
             <div className="card-header">
               <h3 className="card-title before">Before</h3>
@@ -277,8 +90,12 @@ export default function ComparisonSection() {
 
             <ul className="comparison-list">
               {comparisonSection.beforeItems &&
-                comparisonSection.beforeItems.map((item) => (
-                  <li key={item.id} className="comparison-item negative">
+                comparisonSection.beforeItems.map((item, index) => (
+                  <li 
+                    key={item.id} 
+                    className="comparison-item negative item-animated"
+                    style={{ transitionDelay: `${300 + index * 80}ms` }}
+                  >
                     <div className="icon-wrapper">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -306,9 +123,10 @@ export default function ComparisonSection() {
           <div
             className={`comparison-card after-card ${
               activeCard === "after" ? "active" : ""
-            }`}
+            } ${isVisible ? 'animate-in' : 'animate-out'}`}
             onMouseEnter={() => setActiveCard("after")}
             onMouseLeave={() => setActiveCard(null)}
+            style={{ transitionDelay: "350ms" }}
           >
             <div className="card-header">
               <h3 className="card-title after">
@@ -318,8 +136,12 @@ export default function ComparisonSection() {
 
             <ul className="comparison-list">
               {comparisonSection.afterItems &&
-                comparisonSection.afterItems.map((item) => (
-                  <li key={item.id} className="comparison-item positive">
+                comparisonSection.afterItems.map((item, index) => (
+                  <li 
+                    key={item.id} 
+                    className="comparison-item positive item-animated"
+                    style={{ transitionDelay: `${450 + index * 80}ms` }}
+                  >
                     <div className="icon-wrapper">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -349,8 +171,14 @@ export default function ComparisonSection() {
         <Row>
           <Col lg={10} className="mx-auto text-center">
             {comparisonSection.bottomLine && (
-              <div className="bottom-line-box">
-                <div className="glow-effect"></div>
+              <div className={`bottom-line-box ${isVisible ? 'animate-in' : 'animate-out'}`} 
+                   style={{ transitionDelay: `${
+                    Math.max(
+                      (comparisonSection.beforeItems?.length || 0),
+                      (comparisonSection.afterItems?.length || 0)
+                    ) * 80 + 500}ms` }}
+              >
+                <div className={`glow-effect ${isVisible ? 'animate-in' : 'animate-out'}`}></div>
                 <h3
                   className="bottom-line-title"
                   dangerouslySetInnerHTML={{
@@ -367,24 +195,8 @@ export default function ComparisonSection() {
       </Container>
 
       <style jsx global>{`
-        /* Variables for theme compatibility */
+        /* Variables with light theme values */
         :root {
-          --before-color: #e74c3c;
-          --before-bg: rgba(231, 76, 60, 0.05);
-          --before-border: rgba(231, 76, 60, 0.3);
-          --after-color: #2ecc71;
-          --after-bg: rgba(46, 204, 113, 0.05);
-          --after-border: rgba(46, 204, 113, 0.3);
-          --card-bg: rgba(255, 255, 255, 0.02);
-          --card-border: rgba(255, 255, 255, 0.08);
-          --card-hover-shadow: rgba(0, 0, 0, 0.15);
-          --icon-bg: rgba(255, 255, 255, 0.1);
-          --result-text: rgba(255, 255, 255, 0.9);
-          --bottom-line-bg: rgba(30, 41, 59, 0.8);
-          --feature-dot-color: rgba(255, 255, 255, 0.15);
-        }
-
-        [data-bs-theme="light"] {
           --before-color: #e74c3c;
           --before-bg: rgba(231, 76, 60, 0.05);
           --before-border: rgba(231, 76, 60, 0.3);
@@ -399,22 +211,50 @@ export default function ComparisonSection() {
           --bottom-line-bg: rgba(255, 255, 255, 0.9);
           --feature-dot-color: rgba(67, 97, 238, 0.15);
         }
+        
+        /* Smooth scroll behavior for anchors */
+        html {
+          scroll-behavior: smooth;
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+          html {
+            scroll-behavior: auto;
+          }
+          
+          .title-container,
+          .comparison-card,
+          .bottom-line-box,
+          .decorative-shape,
+          .item-animated {
+            transition: none !important;
+            transform: none !important;
+            opacity: 1 !important;
+          }
+        }
 
         /* Section styling */
         .comparison-section {
           position: relative;
-          background: var(--section-bg);
-          padding: 5rem 0;
-        }
-
-        [data-bs-theme="light"] .comparison-section {
           background: #f8fafc;
+          padding: 5rem 0;
         }
 
         .decorative-shape {
           position: absolute;
           z-index: 0;
           filter: blur(80px);
+          opacity: 0;
+          transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+        }
+        
+        .decorative-shape.animate-in {
+          opacity: 0.03;
+        }
+        
+        .decorative-shape.animate-out {
+          opacity: 0;
+          transition-duration: 0.8s;
         }
 
         .top-shape {
@@ -423,9 +263,18 @@ export default function ComparisonSection() {
           width: 500px;
           height: 500px;
           background: var(--primary-light);
-          opacity: 0.03;
           border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+          transform: translateX(30px) scale(0.9);
+        }
+        
+        .top-shape.animate-in {
+          transform: translateX(0) scale(1);
           animation: floatAnimation 15s ease-in-out infinite alternate;
+        }
+        
+        .top-shape.animate-out {
+          transform: translateX(30px) scale(0.9);
+          animation: none;
         }
 
         .bottom-shape {
@@ -434,9 +283,19 @@ export default function ComparisonSection() {
           width: 400px;
           height: 400px;
           background: var(--primary-light);
-          opacity: 0.03;
           border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+          transform: translateX(-30px) scale(0.9);
+          transition-delay: 0.2s;
+        }
+        
+        .bottom-shape.animate-in {
+          transform: translateX(0) scale(1);
           animation: floatAnimation 12s ease-in-out infinite alternate-reverse;
+        }
+        
+        .bottom-shape.animate-out {
+          transform: translateX(-30px) scale(0.9);
+          animation: none;
         }
 
         @keyframes floatAnimation {
@@ -446,6 +305,59 @@ export default function ComparisonSection() {
           100% {
             transform: translate(30px, 30px) rotate(5deg);
           }
+        }
+        
+        /* Title container animation */
+        .title-container {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .title-container.animate-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        .title-container.animate-out {
+          opacity: 0;
+          transform: translateY(30px);
+          transition-duration: 0.6s;
+        }
+        
+        .section-title {
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 0.5s ease, transform 0.5s ease;
+          transition-delay: 0.05s;
+        }
+        
+        .title-container.animate-in .section-title {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        .title-container.animate-out .section-title {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        
+        .section-subtitle {
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 0.5s ease, transform 0.5s ease;
+          transition-delay: 0.15s;
+        }
+        
+        .title-container.animate-in .section-subtitle {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        .title-container.animate-out .section-subtitle {
+          opacity: 0;
+          transform: translateY(20px);
         }
 
         /* Comparison container styling */
@@ -464,13 +376,29 @@ export default function ComparisonSection() {
           border: 1px solid var(--card-border);
           overflow: hidden;
           box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-          transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
           display: flex;
           flex-direction: column;
           height: 100%;
           position: relative;
           transform-style: preserve-3d;
           z-index: 10;
+          opacity: 0;
+          transform: translateY(40px);
+          transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                      box-shadow 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+                      border-color 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        
+        .comparison-card.animate-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        .comparison-card.animate-out {
+          opacity: 0;
+          transform: translateY(40px);
+          transition-duration: 0.6s;
         }
 
         /* Dot pattern styling */
@@ -565,11 +493,35 @@ export default function ComparisonSection() {
           align-items: center;
           padding: 0.75rem 0;
           font-size: 0.95rem;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
-
-        [data-bs-theme="light"] .comparison-item {
-          border-bottom-color: rgba(0, 0, 0, 0.05);
+        
+        .item-animated {
+          opacity: 0;
+          transform: translateX(-15px);
+          transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .comparison-card.animate-in .item-animated {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        
+        .comparison-card.animate-out .item-animated {
+          opacity: 0;
+          transform: translateX(-15px);
+        }
+        
+        .comparison-card.after-card .item-animated {
+          transform: translateX(15px);
+        }
+        
+        .comparison-card.after-card.animate-in .item-animated {
+          transform: translateX(0);
+        }
+        
+        .comparison-card.after-card.animate-out .item-animated {
+          transform: translateX(15px);
         }
 
         .comparison-item:last-child {
@@ -654,6 +606,25 @@ export default function ComparisonSection() {
           position: relative;
           overflow: hidden;
           z-index: 1;
+          opacity: 0;
+          transform: translateY(40px);
+          transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                      box-shadow 0.5s ease;
+          background: var(--card-bg);
+          border: 1px solid var(--card-border);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .bottom-line-box.animate-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        .bottom-line-box.animate-out {
+          opacity: 0;
+          transform: translateY(40px);
+          transition-duration: 0.6s;
         }
 
         .bottom-line-title {
@@ -662,7 +633,7 @@ export default function ComparisonSection() {
           margin-bottom: 1.25rem;
           position: relative;
           z-index: 1;
-          color: #ffffff !important;
+          color: #000000;
           display: inline-block;
         }
 
@@ -683,7 +654,7 @@ export default function ComparisonSection() {
           line-height: 1.6;
           position: relative;
           z-index: 1;
-          color: rgba(255, 255, 255, 0.85) !important;
+          color: var(--text-secondary);
         }
 
         .glow-effect {
@@ -695,23 +666,21 @@ export default function ComparisonSection() {
           background: rgba(255, 255, 255, 0.1);
           border-radius: 50%;
           filter: blur(60px);
-          opacity: 0.6;
+          opacity: 0;
           z-index: 0;
+          transform: scale(0.8);
+          transition: opacity 1s ease-out, transform 1s ease-out;
+          transition-delay: 0.4s;
         }
-
-        [data-bs-theme="light"] .bottom-line-box {
-          color: #ffffff !important;
-          background: var(--feature-card-bg);
-          border: 1px solid var(--feature-card-border);
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        
+        .glow-effect.animate-in {
+          opacity: 0.6;
+          transform: scale(1);
         }
-
-        [data-bs-theme="light"] .bottom-line-title {
-          color: #000000 !important;
-        }
-
-        [data-bs-theme="light"] .bottom-line-text {
-          color: var(--feature-description-color) !important;
+        
+        .glow-effect.animate-out {
+          opacity: 0;
+          transform: scale(0.8);
         }
 
         /* Responsive adjustments */
@@ -725,8 +694,8 @@ export default function ComparisonSection() {
             gap: 2rem;
           }
 
-          .comparison-card {
-            transform: none !important;
+          .comparison-card.animate-in:hover {
+            transform: translateY(-5px) scale(1.01);
           }
 
           .bottom-line-box {

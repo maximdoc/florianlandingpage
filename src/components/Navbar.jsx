@@ -2,13 +2,12 @@
 
 import { Navbar as BootstrapNavbar, Nav, Container } from 'react-bootstrap';
 import Link from 'next/link';
-import ThemeToggle from './ThemeToggle';
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { useGlobalContent } from '@/hooks/useContent';
+import content from '@/data/content.json';
 
 export default function Navbar() {
-  // Use the custom hook for global content
-  const { globalContent, loading } = useGlobalContent();
+  // Directly use content from JSON file
+  const globalContent = content.global;
   
   // Combine related state to reduce state updates
   const [navState, setNavState] = useState({
@@ -24,10 +23,10 @@ export default function Navbar() {
   // Extract values from state for readability
   const { expanded, navbarHeight } = navState;
   
-  // Extract header data with default fallbacks
-  const logoText = globalContent?.header?.logo || "SlingRFP";
-  const navigationItems = globalContent?.header?.navigationItems || [];
-  const ctaButton = globalContent?.header?.ctaButton || { text: "Get Started", href: "#strategy-call" };
+  // Extract header data from content file
+  const logoText = globalContent.header.logo;
+  const navigationItems = globalContent.header.navigationItems;
+  const ctaButton = globalContent.header.ctaButton;
 
   // Get navbar height for positioning the dropdown correctly
   useEffect(() => {
@@ -180,125 +179,6 @@ export default function Navbar() {
     });
   }, [navigationItems, activeSection]);
 
-  // Show loading skeleton during content loading
-  if (loading) {
-    return (
-      <BootstrapNavbar className="navbar-main py-2 py-lg-3 skeleton-navbar">
-        <Container>
-          <div className="d-flex justify-content-between align-items-center w-100">
-            <Link href="/" className="navbar-brand fw-bold">
-              <div className="skeleton-loader brand-skeleton"></div>
-            </Link>
-            
-            <div className="d-flex align-items-center">
-              {/* Desktop nav items */}
-              <div className="d-none d-lg-flex align-items-center">
-                {[1, 2, 3, 4].map(i => (
-                  <div key={i} className="skeleton-loader nav-item-skeleton mx-3"></div>
-                ))}
-                
-                {/* Theme toggle skeleton */}
-                <div className="skeleton-loader theme-toggle-skeleton mx-3 rounded-circle"></div>
-                
-                {/* CTA button skeleton */}
-                <div className="skeleton-loader cta-button-skeleton ms-2"></div>
-              </div>
-              
-              {/* Mobile hamburger skeleton */}
-              <div className="d-lg-none skeleton-loader hamburger-skeleton">
-                <span className="burger-line-skeleton"></span>
-                <span className="burger-line-skeleton"></span>
-                <span className="burger-line-skeleton"></span>
-              </div>
-            </div>
-          </div>
-        </Container>
-        
-        <style jsx global>{`
-          .skeleton-navbar {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-          }
-          
-          .skeleton-loader {
-            background: linear-gradient(90deg, 
-              var(--skeleton-start-color, #f0f0f0) 25%, 
-              var(--skeleton-mid-color, #e0e0e0) 50%, 
-              var(--skeleton-start-color, #f0f0f0) 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-            border-radius: 4px;
-            position: relative;
-            overflow: hidden;
-          }
-          
-          /* Color variables for theme awareness */
-          html[data-bs-theme="light"] {
-            --skeleton-start-color: #f0f0f0;
-            --skeleton-mid-color: #e0e0e0;
-          }
-          
-          html[data-bs-theme="dark"] {
-            --skeleton-start-color: #333;
-            --skeleton-mid-color: #444;
-          }
-          
-          .brand-skeleton {
-            width: 120px;
-            height: 30px;
-          }
-          
-          .nav-item-skeleton {
-            width: 70px;
-            height: 20px;
-            opacity: 0.8;
-          }
-          
-          .theme-toggle-skeleton {
-            width: 36px;
-            height: 36px;
-          }
-          
-          .cta-button-skeleton {
-            width: 100px;
-            height: 38px;
-            border-radius: 6px;
-          }
-          
-          .hamburger-skeleton {
-            width: 32px;
-            height: 32px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 8px 4px;
-          }
-          
-          .burger-line-skeleton {
-            display: block;
-            width: 24px;
-            height: 2px;
-            background-color: var(--skeleton-mid-color, #e0e0e0);
-            margin: 2px 0;
-          }
-          
-          @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-          }
-          
-          /* Responsive adjustments for skeleton */
-          @media (max-width: 991.98px) {
-            .nav-item-skeleton {
-              display: none;
-            }
-          }
-        `}</style>
-      </BootstrapNavbar>
-    );
-  }
-
   return (
     <BootstrapNavbar 
       expand="lg" 
@@ -312,11 +192,6 @@ export default function Navbar() {
         </Link>
         
         <div className="d-flex align-items-center">
-          {/* Move ThemeToggle outside the collapsed menu for mobile */}
-          <div className="d-lg-none me-2">
-            <ThemeToggle />
-          </div>
-          
           <button 
             className={`hamburger-menu d-lg-none ${expanded ? 'active' : ''}`}
             onClick={toggleExpanded}
@@ -337,11 +212,6 @@ export default function Navbar() {
               className="d-flex align-items-center mt-3 mt-lg-0 px-3 px-lg-0"
               ref={el => navLinksRef.current[navigationItems.length] = el}
             >
-              {/* Hide ThemeToggle on mobile - we moved it above */}
-              <div className="d-none d-lg-block">
-                <ThemeToggle />
-              </div>
-              
               {/* Add Get Started CTA button - solid primary blue */}
               <div className="ms-lg-3 mobile-cta-wrapper">
                 <a 

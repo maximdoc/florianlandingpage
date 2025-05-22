@@ -1,28 +1,56 @@
-/* Section Background Alternation 
-   This file implements alternating light/dark backgrounds for all sections
-   while respecting the current theme (light or dark mode) */
+/* This file implements alternating light/dark backgrounds for all sections
+while respecting the current theme (light mode only) */
 
 /* Light theme variables */
-[data-bs-theme="light"] {
+:root {
   --section-bg-light: #FFFFFF;
   --section-bg-dark: #F9FAFB;  /* Client's Soft Off-White for darker sections */
-  --section-border: rgba(0, 0, 0, 0.03);
 }
 
-/* Dark theme variables */
-[data-bs-theme="dark"] {
-  --section-bg-light: #1E293B; /* Client's Dark Slate */
-  --section-bg-dark: #0F172A; /* Darker shade of Dark Slate */
-  --section-border: rgba(255, 255, 255, 0.05);
+/* Basic section styling with alternating backgrounds */
+.section {
+  position: relative;
+  overflow: hidden; /* Prevent decorative elements from causing horizontal scroll */
 }
 
-/* Apply alternating backgrounds to all section components */
-.section-container:nth-of-type(odd) {
+/* Light background sections */
+.section:nth-of-type(odd) {
   background-color: var(--section-bg-light);
 }
 
-.section-container:nth-of-type(even) {
+/* Dark background sections */
+.section:nth-of-type(even) {
   background-color: var(--section-bg-dark);
+}
+
+/* Override for hero section */
+.hero-section {
+  background-color: var(--section-bg-light);
+}
+
+/* Override for footer */
+.footer {
+  background-color: var(--section-bg-dark);
+}
+
+/* Special section overrides */
+.problem-section {
+  background-color: var(--problem-section-bg, var(--section-bg-dark));
+}
+
+.solution-section {
+  background-color: var(--solution-section-bg, var(--section-bg-dark));
+}
+
+.testimonials-section {
+  background-color: var(--section-bg-light);
+}
+
+/* Ensure decorative elements have appropriate opacity */
+.decorative-blob,
+.bg-shape {
+  opacity: 0.5;
+  filter: blur(40px);
 }
 
 /* Visual separator between sections */
@@ -42,7 +70,7 @@
   right: 0;
   bottom: 0;
   height: 1px;
-  background: var(--section-border);
+  background: rgba(0, 0, 0, 0.03);
   z-index: 0;
 }
 
@@ -68,17 +96,6 @@
 /* Ensure any specific section styling prioritizes its custom background if defined */
 .cta-section-container {
   background-color: var(--section-bg-light);
-}
-
-/* For sections with decorative elements, ensure they have proper contrast with backgrounds */
-[data-bs-theme="light"] .decorative-blob,
-[data-bs-theme="light"] .bg-shape {
-  opacity: 0.5;
-}
-
-[data-bs-theme="dark"] .decorative-blob,
-[data-bs-theme="dark"] .bg-shape {
-  opacity: 0.2;
 }
 
 /* Explicitly set full width for all sections */

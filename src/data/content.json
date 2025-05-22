@@ -116,7 +116,12 @@
           },
           "userStats": {
             "count": "5,000+",
-            "text": "professionals trust our platform daily"
+            "text": "professionals trust our platform daily",
+            "avatars": [
+              "/images/people-one-light.png",
+              "/images/people-two-light.png",
+              "/images/people-three-light.png"
+            ]
           },
           "dashboardImage": "/images/optimized/dashboard-second.webp",
           "backgroundVariant": "light"
@@ -155,38 +160,37 @@
         {
           "id": "solution",
           "type": "solution",
-          "title": "The <span class=\"text-gradient\">SlingRFP</span> Solution",
-          "subtitle": "Our comprehensive approach transforms your business from having no government presence to securing repeat awards without hiring a dedicated capture team.",
+          "title": "How It <span class=\"text-gradient\">Works</span>",
+          "subtitle": "Our proven four-step process simplifies government contracting from discovery to award",
           "steps": [
             {
               "number": 1,
-              "title": "Profile Builder",
-              "description": "We assemble every credential, past performance doc, and certificate you need."
+              "icon": "search",
+              "title": "Discover",
+              "description": "AI-curated solicitations aligned with your strengths and goals."
             },
             {
               "number": 2,
-              "title": "Gap Tracker",
-              "description": "Continuous scans reveal missing qualifications; our team closes them fast."
+              "icon": "check-circle",
+              "title": "Qualify",
+              "description": "Detailed win-rate scores and eligibility checks—no wasted effort."
             },
             {
               "number": 3,
-              "title": "Opportunity Match",
-              "description": "AI surfaces solicitations you're truly eligible for."
+              "icon": "edit",
+              "title": "Craft",
+              "description": "Persuasive proposal drafts with data-backed narratives."
             },
             {
               "number": 4,
-              "title": "Proposal Studio",
-              "description": "LLM‑powered writers craft and submit compliant bids."
-            },
-            {
-              "number": 5,
-              "title": "Win‑Analytics Loop",
-              "description": "Post‑award debriefs retrain the models, boosting future win odds."
+              "icon": "rocket",
+              "title": "Submit & Win",
+              "description": "Full submission handling, compliance checks, and post-award support."
             }
           ],
           "result": {
-            "title": "Result",
-            "description": "You move from <em>no presence</em> to <em>repeat awards</em> without hiring a capture team.",
+            "title": "Ready to Start?",
+            "description": "Get personalized guidance on winning your first government contract",
             "ctaButton": {
               "text": "Book Your Free Strategy Call",
               "href": "#strategy-call"
@@ -359,8 +363,7 @@
               "quote": "SlingRFP stood up our entire vendor profile—including a Women‑Owned Small Business cert—then won us a $1.8M facilities contract.",
               "author": "Tracy Mills",
               "position": "COO, CleanEdge Services",
-              "avatarDark": "/images/people-one.png",
-              "avatarLight": "/images/people-one-light.png",
+              "avatar": "/images/people-one-light.png",
               "rating": 5
             },
             {
@@ -368,8 +371,7 @@
               "quote": "They handle everything: sourcing, gaps, writing, negotiations. We just deliver the work.",
               "author": "Raj Patel",
               "position": "CTO, OptiCloud IT",
-              "avatarDark": "/images/people-two.png",
-              "avatarLight": "/images/people-two-light.png",
+              "avatar": "/images/people-two-light.png",
               "rating": 5
             },
             {
@@ -377,8 +379,7 @@
               "quote": "Their AI-powered approach found opportunities we would have missed entirely. Revenue up 40% in our first year.",
               "author": "Sarah Johnson",
               "position": "Founder, TechSolutions Inc.",
-              "avatarDark": "/images/people-three.png",
-              "avatarLight": "/images/people-three-light.png",
+              "avatar": "/images/people-three-light.png",
               "rating": 5
             },
             {
@@ -386,8 +387,7 @@
               "quote": "The proposal generation saved us hundreds of hours. Our win rate jumped from 4% to 15% in six months.",
               "author": "Michael Chen",
               "position": "VP Operations, Nexus Systems",
-              "avatarDark": "/images/people-fourth.png",
-              "avatarLight": "/images/people-fourth-light.png",
+              "avatar": "/images/people-fourth-light.png",
               "rating": 5
             }
           ],
@@ -462,19 +462,19 @@
               {
                 "id": 1,
                 "name": "Service-Disabled Veteran-Owned",
-                "image": "/images/people-three.png",
+                "image": "/images/people-one-light.png",
                 "description": "Service-Disabled Veteran-Owned Small Business"
               },
               {
                 "id": 2,
                 "name": "Woman-Owned",
-                "image": "/images/people-three.png",
+                "image": "/images/people-one-light.png",
                 "description": "Woman-Owned Small Business"
               },
               {
                 "id": 3,
                 "name": "8(a) Eligible",
-                "image": "/images/people-three.png",
+                "image": "/images/people-one-light.png",
                 "description": "SBA 8(a) Business Development Program"
               }
             ]

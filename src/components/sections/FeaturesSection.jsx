@@ -1,287 +1,68 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Button from "../ui/Button";
 import SectionContainer from "../SectionContainer";
 import Icon from "../ui/Icon";
-import { getSectionById } from "@/utils/contentUtils";
+import content from "@/data/content.json";
+
+// Custom hook to detect if element is in viewport
+const useIsVisible = (ref) => {
+  const [isIntersecting, setIntersecting] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIntersecting(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, [ref]);
+
+  return isIntersecting;
+};
 
 export default function FeaturesSection() {
   const [hoveredFeature, setHoveredFeature] = useState(null);
-  const [featuresSection, setFeaturesSection] = useState(null);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function loadFeaturesSection() {
-      try {
-        setLoading(true);
-        const sectionData = await getSectionById("home", "features");
-        setFeaturesSection(sectionData);
-      } catch (error) {
-        console.error("Error loading features section:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
+  // Refs for animation
+  const sectionRef = useRef(null);
+  const titleRef = useRef(null);
+  const featuresRef = useRef(null);
+  const ctaRef = useRef(null);
 
-    loadFeaturesSection();
-  }, []);
+  // Check if elements are visible
+  const isSectionVisible = useIsVisible(sectionRef);
+  const isTitleVisible = useIsVisible(titleRef);
+  const areFeaturesVisible = useIsVisible(featuresRef);
+  const isCtaVisible = useIsVisible(ctaRef);
 
-  if (loading || !featuresSection) {
-    return (
-      <SectionContainer
-        id="features"
-        className="features-section py-8 position-relative overflow-hidden"
-        backgroundVariant="light"
-      >
-        <div className="position-absolute decorative-blob blob-1"></div>
-        <div className="position-absolute decorative-blob blob-2"></div>
-
-        {/* Decorative dot patterns */}
-        <div
-          className="position-absolute dots-grid dots-grid-top-left"
-          style={{
-            top: "15%",
-            left: "7%",
-            width: "170px",
-            height: "170px",
-            zIndex: -1,
-          }}
-        ></div>
-
-        <div
-          className="position-absolute dots-grid dots-grid-bottom-right"
-          style={{
-            bottom: "12%",
-            right: "5%",
-            width: "200px",
-            height: "200px",
-            zIndex: -1,
-          }}
-        ></div>
-
-        <div
-          className="position-absolute dots-grid dots-grid-center-left"
-          style={{
-            top: "50%",
-            left: "15%",
-            width: "130px",
-            height: "130px",
-            zIndex: -1,
-            transform: "translateY(-50%) rotate(-8deg)",
-            backgroundSize: "14px 14px",
-          }}
-        ></div>
-
-        <Container className="position-relative" style={{ zIndex: 2 }}>
-          <Row className="text-center mb-4">
-            <Col lg={8} className="mx-auto">
-              {/* Skeleton for section title */}
-              <div className="skeleton-section-title mb-3"></div>
-              {/* Skeleton for subtitle */}
-              <div className="skeleton-section-subtitle mb-1"></div>
-              <div
-                className="skeleton-section-subtitle"
-                style={{ width: "85%" }}
-              ></div>
-            </Col>
-          </Row>
-
-          <Row className="features-grid g-3 mb-5 mx-0">
-            {/* Create 6 skeleton cards */}
-            {Array(6)
-              .fill(0)
-              .map((_, index) => (
-                <Col
-                  lg={index === 5 ? 12 : 6}
-                  key={index}
-                  className={`mb-3 ${index === 5 ? "text-center" : ""}`}
-                  style={{ padding: "0 0.75rem" }}
-                >
-                  <div
-                    className={`feature-card skeleton-feature-card ${
-                      index === 5
-                        ? "feature-card-center mx-auto"
-                        : index % 2 === 0
-                        ? "feature-card-left"
-                        : "feature-card-right"
-                    }`}
-                    style={index === 5 ? { maxWidth: "100%" } : {}}
-                  >
-                    <div className="feature-card-inner">
-                      <div
-                        className={`feature-dot-pattern ${
-                          index % 2 === 0 ? "pattern-right" : "pattern-left"
-                        }`}
-                      ></div>
-
-                      {index % 2 === 0 ? (
-                        <>
-                          <div className="feature-icon-container">
-                            <div className="skeleton-icon-wrapper"></div>
-                          </div>
-                          <div className="feature-content">
-                            <div className="skeleton-feature-title"></div>
-                            <div className="skeleton-feature-description"></div>
-                            <div
-                              className="skeleton-feature-description"
-                              style={{ width: "70%" }}
-                            ></div>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <div className="feature-content order-2 order-md-1">
-                            <div className="skeleton-feature-title"></div>
-                            <div className="skeleton-feature-description"></div>
-                            <div
-                              className="skeleton-feature-description"
-                              style={{ width: "70%" }}
-                            ></div>
-                          </div>
-                          <div className="feature-icon-container order-1 order-md-2">
-                            <div className="skeleton-icon-wrapper"></div>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                </Col>
-              ))}
-          </Row>
-
-          <Row className="mx-0">
-            <Col
-              lg={10}
-              xl={7}
-              className="mx-auto text-center"
-              style={{ padding: "0 0.75rem" }}
-            >
-              <div className="cta-section w-100 skeleton-cta-section">
-                <div className="cta-glow"></div>
-                <div className="cta-content">
-                  <div className="skeleton-cta-title"></div>
-                  <div className="skeleton-cta-button"></div>
-                </div>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-
-        <style jsx global>{`
-          /* Base skeleton animation */
-          @keyframes skeleton-loading {
-            0% {
-              background-position: -200px 0;
-            }
-            100% {
-              background-position: calc(200px + 100%) 0;
-            }
-          }
-
-          .skeleton-section-title,
-          .skeleton-section-subtitle,
-          .skeleton-feature-title,
-          .skeleton-feature-description,
-          .skeleton-icon-wrapper,
-          .skeleton-cta-title,
-          .skeleton-cta-button {
-            background: linear-gradient(
-              90deg,
-              rgba(0, 0, 0, 0.04) 25%,
-              rgba(0, 0, 0, 0.06) 50%,
-              rgba(0, 0, 0, 0.04) 75%
-            );
-            background-size: 200px 100%;
-            animation: skeleton-loading 1.5s infinite linear;
-            border-radius: 4px;
-            display: block;
-          }
-
-          [data-bs-theme="dark"] .skeleton-section-title,
-          [data-bs-theme="dark"] .skeleton-section-subtitle,
-          [data-bs-theme="dark"] .skeleton-feature-title,
-          [data-bs-theme="dark"] .skeleton-feature-description,
-          [data-bs-theme="dark"] .skeleton-icon-wrapper,
-          [data-bs-theme="dark"] .skeleton-cta-title,
-          [data-bs-theme="dark"] .skeleton-cta-button {
-            background: linear-gradient(
-              90deg,
-              rgba(255, 255, 255, 0.05) 25%,
-              rgba(255, 255, 255, 0.1) 50%,
-              rgba(255, 255, 255, 0.05) 75%
-            );
-            background-size: 200px 100%;
-          }
-
-          .skeleton-section-title {
-            height: 48px;
-            width: 70%;
-            margin: 0 auto 16px;
-          }
-
-          .skeleton-section-subtitle {
-            height: 20px;
-            width: 100%;
-            margin: 0 auto 8px;
-          }
-
-          .skeleton-feature-card {
-            opacity: 1 !important;
-            transform: none !important;
-          }
-
-          .skeleton-icon-wrapper {
-            width: 56px;
-            height: 56px;
-            border-radius: 16px;
-          }
-
-          .skeleton-feature-title {
-            height: 24px;
-            width: 70%;
-            margin-bottom: 12px;
-          }
-
-          .skeleton-feature-description {
-            height: 16px;
-            width: 90%;
-            margin-bottom: 8px;
-          }
-
-          .skeleton-cta-section {
-            opacity: 1 !important;
-            transform: none !important;
-          }
-
-          .skeleton-cta-title {
-            height: 30px;
-            width: 70%;
-            margin: 0 auto 20px;
-          }
-
-          .skeleton-cta-button {
-            height: 48px;
-            width: 160px;
-            border-radius: 24px;
-            margin: 0 auto;
-          }
-        `}</style>
-      </SectionContainer>
-    );
-  }
+  // Get features section data directly from content.json
+  const homePageData = content.pages.find(page => page.id === 'home');
+  const featuresSection = homePageData.sections.find(section => section.id === 'features');
 
   return (
     <SectionContainer
       id="features"
       className="features-section py-8 position-relative overflow-hidden"
       backgroundVariant={featuresSection.backgroundVariant || "light"}
+      ref={sectionRef}
     >
       <div className="position-absolute decorative-blob blob-1"></div>
       <div className="position-absolute decorative-blob blob-2"></div>
 
-      {/* New balanced decorative dot patterns */}
+      {/* Decorative dot patterns */}
       <div
         className="position-absolute dots-grid"
         style={{
@@ -334,24 +115,30 @@ export default function FeaturesSection() {
       ></div>
 
       <Container className="position-relative" style={{ zIndex: 2 }}>
-        <Row className="text-center mb-4">
+        <Row className="text-center mb-4" ref={titleRef}>
           <Col lg={8} className="mx-auto">
             <h2
-              className="display-5 mb-3 fade-in"
+              className={`display-5 mb-3 transition-all duration-1000 transform ${
+                isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
               dangerouslySetInnerHTML={{ __html: featuresSection.title }}
             />
-            <p className="lead text-body-secondary mb-4">
+            <p 
+              className={`lead text-body-secondary mb-4 transition-all duration-1000 delay-100 transform ${
+                isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
+            >
               {featuresSection.subtitle}
             </p>
           </Col>
         </Row>
 
-        <Row className="features-grid g-3 mb-5 mx-0">
+        <Row className="features-grid g-3 mb-5 mx-0" ref={featuresRef}>
           {featuresSection.tiles &&
             featuresSection.tiles.map((feature, index) => (
               <Col
                 lg={feature.id === 7 ? 12 : 6}
-                key={feature.id}
+                key={feature.id || index}
                 className={`mb-3 ${feature.id === 7 ? "text-center" : ""}`}
                 style={{ padding: "0 0.75rem" }}
               >
@@ -364,10 +151,17 @@ export default function FeaturesSection() {
                       : index % 2 === 0
                       ? "feature-card-left"
                       : "feature-card-right"
+                  } transition-all duration-1000 transform ${
+                    areFeaturesVisible 
+                      ? "opacity-100 translate-y-0" 
+                      : "opacity-0 translate-y-10"
                   }`}
+                  style={{
+                    transitionDelay: `${150 + index * 100}ms`,
+                    ...( feature.id === 7 ? { maxWidth: "100%" } : {})
+                  }}
                   onMouseEnter={() => setHoveredFeature(feature.id)}
                   onMouseLeave={() => setHoveredFeature(null)}
-                  style={feature.id === 7 ? { maxWidth: "100%" } : {}}
                 >
                   <div className="feature-card-inner">
                     <div
@@ -415,11 +209,16 @@ export default function FeaturesSection() {
           <Col
             lg={10}
             xl={7}
-            className="mx-auto text-center slide-up"
-            style={{ animationDelay: "0.3s", padding: "0 0.75rem" }}
+            className="mx-auto text-center"
+            style={{ padding: "0 0.75rem" }}
+            ref={ctaRef}
           >
             {featuresSection.ctaSection && (
-              <div className="cta-section w-100">
+              <div 
+                className={`cta-section w-100 transition-all duration-1000 transform ${
+                  isCtaVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                }`}
+              >
                 <div className="cta-content">
                   <h3
                     dangerouslySetInnerHTML={{
@@ -431,7 +230,7 @@ export default function FeaturesSection() {
                       href={featuresSection.ctaSection.ctaButton.href}
                       variant="primary"
                     >
-                      Find Opportunities
+                      {featuresSection.ctaSection.ctaButton.text || "Find Opportunities"}
                     </Button>
                   )}
                 </div>
@@ -442,46 +241,44 @@ export default function FeaturesSection() {
       </Container>
 
       <style jsx global>{`
-        /* Variables for theme compatibility */
-        :root {
-          --feature-card-bg: rgba(255, 255, 255, 0.02);
-          --feature-card-border: rgba(255, 255, 255, 0.08);
-          --feature-card-hover-bg: rgba(255, 255, 255, 0.05);
-          --feature-icon-bg: rgba(67, 97, 238, 0.1);
-          --feature-icon-color: var(--primary);
-          --feature-title-color: rgba(255, 255, 255, 0.95);
-          --feature-description-color: rgba(255, 255, 255, 0.7);
-          --feature-dot-color: rgba(255, 255, 255, 0.15);
-          --cta-bg: var(--primary);
-          --cta-text: #ffffff;
-          --cta-button-bg: #ffffff;
-          --cta-button-text: var(--primary);
+        /* Animation utilities */
+        .transition-all {
+          transition-property: all;
         }
 
-        [data-bs-theme="light"] {
-          --feature-card-bg: rgba(255, 255, 255, 1);
-          --feature-card-border: rgba(0, 0, 0, 0.08);
-          --feature-card-hover-bg: rgba(255, 255, 255, 1);
-          --feature-icon-bg: rgba(67, 97, 238, 0.08);
-          --feature-icon-color: var(--primary);
-          --feature-title-color: #0f172a;
-          --feature-description-color: #4b5563;
-          --feature-dot-color: rgba(67, 97, 238, 0.15);
-          --cta-bg: var(--primary);
-          --cta-text: #ffffff;
-          --cta-button-bg: #ffffff;
-          --cta-button-text: var(--primary);
+        .transform {
+          transform-origin: center;
+        }
+
+        .duration-1000 {
+          transition-duration: 1000ms;
+        }
+
+        .delay-100 {
+          transition-delay: 100ms;
+        }
+
+        .opacity-0 {
+          opacity: 0;
+        }
+
+        .opacity-100 {
+          opacity: 1;
+        }
+
+        .translate-y-0 {
+          transform: translateY(0);
+        }
+
+        .translate-y-10 {
+          transform: translateY(40px);
         }
 
         /* Section styling */
         .features-section {
           position: relative;
-          background: var(--dark-bg, #111827);
-          padding: 5rem 0;
-        }
-
-        [data-bs-theme="light"] .features-section {
           background: #f8fafc;
+          padding: 5rem 0;
         }
 
         .decorative-blob {
@@ -520,11 +317,10 @@ export default function FeaturesSection() {
 
         /* Feature card styling */
         .feature-card {
-          box-shadow: var(--card-shadow),
-            0 0 20px rgba(var(--primary-rgb), 0.03);
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
           backdrop-filter: blur(10px);
-          background: var(--card-bg);
-          border: 1px solid var(--card-border);
+          background: rgba(255, 255, 255, 1);
+          border: 1px solid rgba(0, 0, 0, 0.08);
           border-radius: 12px;
           transition: all 0.3s ease;
           position: relative;
@@ -582,7 +378,7 @@ export default function FeaturesSection() {
         .pattern-right {
           right: 0;
           background-image: radial-gradient(
-            var(--feature-dot-color) 1px,
+            rgba(67, 97, 238, 0.15) 1px,
             transparent 1px
           );
           background-size: 16px 16px;
@@ -591,7 +387,7 @@ export default function FeaturesSection() {
         .pattern-left {
           left: 0;
           background-image: radial-gradient(
-            var(--feature-dot-color) 1px,
+            rgba(67, 97, 238, 0.15) 1px,
             transparent 1px
           );
           background-size: 16px 16px;
@@ -686,19 +482,19 @@ export default function FeaturesSection() {
           font-weight: 700;
           font-size: 1.2rem;
           margin-bottom: 0.75rem;
-          color: var(--feature-title-color);
+          color: #0f172a;
         }
 
         .feature-description {
           font-size: 0.95rem;
-          color: var(--feature-description-color);
+          color: #4b5563;
           margin-bottom: 0;
           line-height: 1.6;
         }
 
         /* CTA section styling */
         .cta-section {
-          background: var(--cta-bg);
+          background: var(--primary);
           border-radius: 16px;
           padding: 2.5rem;
           position: relative;
@@ -744,13 +540,9 @@ export default function FeaturesSection() {
           font-size: 1.5rem;
         }
 
-        [data-bs-theme="light"] .cta-section h3 {
-          color: #ffffff !important;
-        }
-
         .cta-section .btn {
-          background: var(--cta-button-bg);
-          color: var(--cta-button-text);
+          background: #ffffff;
+          color: var(--primary);
           border: none;
         }
 
@@ -801,13 +593,20 @@ export default function FeaturesSection() {
         @media (max-width: 768px) {
           .feature-card-inner {
             flex-direction: column;
-            align-items: flex-start;
-            text-align: left;
+            align-items: center;
+            text-align: center;
           }
 
           .feature-icon-container {
             margin-right: 0;
             margin-bottom: 1rem;
+          }
+
+          .feature-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
           }
 
           .feature-icon-wrapper {
@@ -843,6 +642,34 @@ export default function FeaturesSection() {
           }
         }
 
+        /* Add a specific media query for tablets to maintain original layout */
+        @media (min-width: 769px) and (max-width: 992px) {
+          .feature-card-inner {
+            flex-direction: row;
+            align-items: center;
+            text-align: left;
+          }
+          
+          .feature-content {
+            text-align: left;
+            align-items: flex-start;
+          }
+          
+          /* Ensure correct alignment for alternating cards */
+          .feature-card-right .feature-content {
+            text-align: left;
+          }
+          
+          /* Keep icon to the right on right-aligned cards */
+          .order-md-1 {
+            order: 1;
+          }
+          
+          .order-md-2 {
+            order: 2;
+          }
+        }
+
         @media (min-width: 835px) {
           .feature-card-center {
             max-width: 600px !important;
@@ -852,36 +679,11 @@ export default function FeaturesSection() {
         /* Dots grid styles */
         .dots-grid {
           background-image: radial-gradient(
-            var(--feature-dot-color) 1.8px,
+            rgba(67, 97, 238, 0.15) 1.8px,
             transparent 1.8px
           );
           background-size: 18px 18px;
-          opacity: 0.25;
-        }
-
-        .dots-grid-top-left {
-          transform: rotate(-8deg);
-        }
-
-        .dots-grid-bottom-right {
-          transform: rotate(7deg);
-        }
-
-        [data-bs-theme="light"] .dots-grid {
           opacity: 0.35;
-          background-image: radial-gradient(
-            var(--primary) 2.5px,
-            transparent 2.5px
-          );
-          filter: brightness(0.8);
-        }
-
-        [data-bs-theme="dark"] .dots-grid {
-          opacity: 0.25;
-          background-image: radial-gradient(
-            rgba(255, 255, 255, 0.9) 1.8px,
-            transparent 1.8px
-          );
         }
 
         /* Display only some dots on medium devices */

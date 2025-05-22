@@ -1,249 +1,67 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col } from "react-bootstrap";
 import Image from "next/image";
-import Link from "next/link";
 import Button from "../ui/Button";
 import SectionContainer from '../SectionContainer';
-import { getPageBySlug, getSectionById } from '@/utils/contentUtils';
+import content from '@/data/content.json';
 
 export default function HeroSection() {
-  const [theme, setTheme] = useState('dark');
   const [isLoaded, setIsLoaded] = useState(false);
-  const [heroSection, setHeroSection] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [animationStage, setAnimationStage] = useState(0);
+  const animationTimerRef = useRef(null);
   
-  // Load section data from API
-  useEffect(() => {
-    async function loadHeroSection() {
-      try {
-        setLoading(true);
-        const sectionData = await getSectionById('home', 'hero');
-        setHeroSection(sectionData);
-      } catch (error) {
-        console.error('Error loading hero section:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    
-    loadHeroSection();
-  }, []);
-  
-  // Listen for theme changes
-  useEffect(() => {
-    // Get initial theme
-    const htmlElement = document.documentElement;
-    setTheme(htmlElement.getAttribute('data-bs-theme') || 'dark');
+  // Get hero section data directly from content.json
+  const homePageData = content.pages.find(page => page.id === 'home');
+  const heroSection = homePageData.sections.find(section => section.id === 'hero');
 
-    // Create observer to watch for theme attribute changes
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (
-          mutation.type === 'attributes' &&
-          mutation.attributeName === 'data-bs-theme'
-        ) {
-          setTheme(htmlElement.getAttribute('data-bs-theme') || 'dark');
-        }
-      });
-    });
-
-    // Start observing
-    observer.observe(htmlElement, { attributes: true });
-    
-    // Set loaded state after a small delay
-    // to give the browser time to apply styles
-    const timer = setTimeout(() => {
+  // Handle animation sequence
+  useEffect(() => {
+    // Progressive animation sequence
+    const startAnimation = () => {
+      // First set general loaded state
       setIsLoaded(true);
-    }, 100);
+      
+      // Then sequence through animation stages
+      animationTimerRef.current = setTimeout(() => {
+        setAnimationStage(1); // Title and subtitle
+        
+        animationTimerRef.current = setTimeout(() => {
+          setAnimationStage(2); // Features and buttons
+          
+          animationTimerRef.current = setTimeout(() => {
+            setAnimationStage(3); // User stats
+            
+            animationTimerRef.current = setTimeout(() => {
+              setAnimationStage(4); // Dashboard
+            }, 150);
+          }, 150);
+        }, 150);
+      }, 300);
+    };
+    
+    // Delay to ensure DOM is properly loaded
+    const timer = setTimeout(() => {
+      startAnimation();
+    }, 300);
 
     // Cleanup
     return () => {
-      observer.disconnect();
       clearTimeout(timer);
+      if (animationTimerRef.current) {
+        clearTimeout(animationTimerRef.current);
+      }
     };
   }, []);
   
-  if (loading || !heroSection) {
-    return (
-      <SectionContainer 
-        className="hero-section" 
-        backgroundVariant="dark" 
-        style={{ 
-          padding: "5rem 0",
-          minHeight: "600px" // Set a minimum height to prevent layout shift
-        }}
-      >
-        {/* Background elements */}
-        <div
-          className="position-absolute background-blob"
-          style={{
-            top: "5%",
-            right: "10%",
-            width: "150px",
-            height: "150px",
-            background: "var(--primary-light)",
-            borderRadius: "40% 60% 70% 30% / 40% 50% 60% 50%",
-            zIndex: -5,
-            filter: "blur(40px)",
-            opacity: 0.2,
-            animation: "float 8s ease-in-out infinite",
-            overflow: "hidden",
-          }}
-        ></div>
+  // Handle image loaded event
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
 
-        <div
-          className="position-absolute background-blob"
-          style={{
-            bottom: "15%",
-            left: "5%",
-            width: "120px",
-            height: "120px",
-            background: "var(--primary-light)",
-            borderRadius: "60% 40% 30% 70% / 60% 30% 70% 40%",
-            zIndex: -5,
-            filter: "blur(35px)",
-            opacity: 0.2,
-            animation: "float 6s ease-in-out infinite reverse",
-            overflow: "hidden",
-          }}
-        ></div>
-
-        <Container>
-          <Row className="align-items-center">
-            <Col lg={6} className="mb-5 mb-lg-0">
-              {/* Skeleton for Hero Title */}
-              <div className="skeleton-hero-title mb-4"></div>
-              
-              {/* Skeleton for subtitle */}
-              <div className="skeleton-hero-subtitle mb-2"></div>
-              <div className="skeleton-hero-subtitle mb-2" style={{ width: "85%" }}></div>
-              <div className="skeleton-hero-subtitle mb-4" style={{ width: "70%" }}></div>
-              
-              {/* Skeleton for buttons */}
-              <div className="d-flex flex-wrap gap-3 mb-4">
-                <div className="skeleton-button"></div>
-                <div className="skeleton-button"></div>
-              </div>
-              
-              {/* Skeleton for metrics */}
-              <div className="d-flex flex-wrap gap-4 mt-4">
-                <div className="skeleton-metric"></div>
-                <div className="skeleton-metric"></div>
-                <div className="skeleton-metric"></div>
-              </div>
-            </Col>
-            
-            <Col lg={6} className="text-center">
-              {/* Skeleton for hero image */}
-              <div className="skeleton-hero-image"></div>
-            </Col>
-          </Row>
-        </Container>
-       
-        <style jsx global>{`
-          /* Base skeleton animation */
-          @keyframes skeleton-loading {
-            0% {
-              background-position: -200px 0;
-            }
-            100% {
-              background-position: calc(200px + 100%) 0;
-            }
-          }
-         
-          .skeleton-hero-title,
-          .skeleton-hero-subtitle,
-          .skeleton-button,
-          .skeleton-metric,
-          .skeleton-hero-image {
-            background: linear-gradient(
-              90deg,
-              rgba(255, 255, 255, 0.05) 25%, 
-              rgba(255, 255, 255, 0.1) 50%, 
-              rgba(255, 255, 255, 0.05) 75%
-            );
-            background-size: 200px 100%;
-            animation: skeleton-loading 1.5s infinite linear;
-            border-radius: 4px;
-            display: block;
-          }
-          
-          [data-bs-theme="light"] .skeleton-hero-title,
-          [data-bs-theme="light"] .skeleton-hero-subtitle,
-          [data-bs-theme="light"] .skeleton-button,
-          [data-bs-theme="light"] .skeleton-metric,
-          [data-bs-theme="light"] .skeleton-hero-image {
-            background: linear-gradient(
-              90deg,
-              rgba(0, 0, 0, 0.04) 25%, 
-              rgba(0, 0, 0, 0.06) 50%, 
-              rgba(0, 0, 0, 0.04) 75%
-            );
-            background-size: 200px 100%;
-          }
-       
-          .skeleton-hero-title {
-            height: 60px;
-            width: 90%;
-            margin-bottom: 24px;
-          }
-          
-          .skeleton-hero-subtitle {
-            height: 20px;
-            width: 100%;
-            margin-bottom: 12px;
-          }
-          
-          .skeleton-button {
-            height: 48px;
-            width: 160px;
-            border-radius: 12px;
-          }
-          
-          .skeleton-metric {
-            height: 60px;
-            width: 80px;
-          }
-          
-          .skeleton-hero-image {
-            height: 330px;
-            width: 100%;
-            border-radius: 12px;
-            margin: 0 auto;
-          }
-          
-          /* Add more responsive skeleton sizes */
-          @media (max-width: 576px) {
-            .skeleton-hero-title {
-              height: 45px;
-              margin-bottom: 16px;
-            }
-            
-            .skeleton-hero-subtitle {
-              height: 18px;
-              margin-bottom: 8px;
-            }
-            
-            .skeleton-button {
-              height: 40px;
-              width: 130px;
-            }
-            
-            .skeleton-hero-image {
-              height: 240px;
-            }
-          }
-        `}</style>
-      </SectionContainer>
-    );
-  }
-
-  // Cache the user images based on theme
-  const userOneImage = theme === 'light' ? "/images/people-one-light.png" : "/images/optimized/people-one.webp";
-  const userTwoImage = theme === 'light' ? "/images/people-two-light.png" : "/images/optimized/people-two.webp";
-  const userThreeImage = theme === 'light' ? "/images/people-three-light.png" : "/images/optimized/people-three.webp";
+  // Get dashboard image from content
   const dashboardSrc = heroSection.dashboardImage || "/images/optimized/dashboard-second.webp";
 
   return (
@@ -260,8 +78,9 @@ export default function HeroSection() {
           borderRadius: "40% 60% 70% 30% / 40% 50% 60% 50%",
           zIndex: -5,
           filter: "blur(40px)",
-          opacity: 0.2,
-          animation: "float 8s ease-in-out infinite",
+          opacity: isLoaded ? 0.2 : 0,
+          animation: isLoaded ? "float 8s ease-in-out infinite" : "none",
+          transition: "opacity 0.8s ease-in-out",
         }}
       ></div>
 
@@ -276,8 +95,9 @@ export default function HeroSection() {
           borderRadius: "60% 40% 30% 70% / 60% 30% 70% 40%",
           zIndex: -5,
           filter: "blur(35px)",
-          opacity: 0.2,
-          animation: "float 6s ease-in-out infinite reverse",
+          opacity: isLoaded ? 0.2 : 0,
+          animation: isLoaded ? "float 6s ease-in-out infinite reverse" : "none",
+          transition: "opacity 0.8s ease-in-out",
         }}
       ></div>
 
@@ -290,9 +110,13 @@ export default function HeroSection() {
           width: "150px",
           height: "150px",
           zIndex: -4,
+          opacity: isLoaded ? 1 : 0,
+          transition: "opacity 1s ease-in-out",
+          transitionDelay: "0.3s",
         }}
       ></div>
       
+      {/* More dot grid decorations with similar transitions omitted for brevity */}
       <div
         className="position-absolute dots-grid dots-grid-bottom-left"
         style={{
@@ -301,6 +125,9 @@ export default function HeroSection() {
           width: "180px",
           height: "180px",
           zIndex: -4,
+          opacity: isLoaded ? 1 : 0,
+          transition: "opacity 1s ease-in-out",
+          transitionDelay: "0.4s",
         }}
       ></div>
       
@@ -312,6 +139,9 @@ export default function HeroSection() {
           width: "120px",
           height: "120px",
           zIndex: -4,
+          opacity: isLoaded ? 1 : 0,
+          transition: "opacity 1s ease-in-out",
+          transitionDelay: "0.5s",
         }}
       ></div>
       
@@ -323,6 +153,9 @@ export default function HeroSection() {
           width: "100px",
           height: "100px",
           zIndex: -4,
+          opacity: isLoaded ? 1 : 0,
+          transition: "opacity 1s ease-in-out",
+          transitionDelay: "0.6s",
         }}
       ></div>
       
@@ -334,6 +167,9 @@ export default function HeroSection() {
           width: "160px",
           height: "160px",
           zIndex: -4,
+          opacity: isLoaded ? 1 : 0,
+          transition: "opacity 1s ease-in-out",
+          transitionDelay: "0.7s",
         }}
       ></div>
 
@@ -346,21 +182,6 @@ export default function HeroSection() {
             transform: translateY(-20px) rotate(5deg);
           }
           100% {
-            transform: translateY(0) rotate(0deg);
-          }
-        }
-        
-        @-webkit-keyframes float {
-          0% {
-            -webkit-transform: translateY(0) rotate(0deg);
-                    transform: translateY(0) rotate(0deg);
-          }
-          50% {
-            -webkit-transform: translateY(-20px) rotate(5deg);
-                    transform: translateY(-20px) rotate(5deg);
-          }
-          100% {
-            -webkit-transform: translateY(0) rotate(0deg);
                     transform: translateY(0) rotate(0deg);
           }
         }
@@ -374,19 +195,10 @@ export default function HeroSection() {
           }
         }
         
-        @-webkit-keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-        
         @keyframes slideUp {
           from {
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(30px);
           }
           to {
             opacity: 1;
@@ -394,27 +206,14 @@ export default function HeroSection() {
           }
         }
         
-        @-webkit-keyframes slideUp {
-          from {
+        .animate-fade-in {
             opacity: 0;
-            -webkit-transform: translateY(20px);
-                    transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            -webkit-transform: translateY(0);
-                    transform: translateY(0);
-          }
+          animation: fadeIn 0.8s ease-out forwards;
         }
         
-        .fade-in {
-          -webkit-animation: fadeIn 0.6s ease-in-out forwards;
-                  animation: fadeIn 0.6s ease-in-out forwards;
-        }
-        
-        .slide-up {
-          -webkit-animation: slideUp 0.6s ease-in-out forwards;
-                  animation: slideUp 0.6s ease-in-out forwards;
+        .animate-slide-up {
+          opacity: 0;
+          animation: slideUp 0.8s ease-out forwards;
         }
       `}</style>
       
@@ -423,13 +222,16 @@ export default function HeroSection() {
         .hero-section {
           position: relative;
           width: 100%;
+          overflow: hidden;
         }
         
         /* Dot grid patterns */
         .dots-grid {
           background-image: radial-gradient(var(--primary) 1.5px, transparent 1.5px);
           background-size: 18px 18px;
-          opacity: 0.2;
+          opacity: 0.35;
+          background-image: radial-gradient(var(--primary) 2.5px, transparent 2.5px);
+          filter: brightness(0.8); /* Makes dots darker for better visibility */
         }
         
         .dots-grid-top-right {
@@ -455,18 +257,6 @@ export default function HeroSection() {
           background-size: 14px 14px;
         }
         
-        /* Light vs dark theme styles */
-        [data-bs-theme="light"] .dots-grid {
-          opacity: 0.35;
-          background-image: radial-gradient(var(--primary) 2.5px, transparent 2.5px);
-          filter: brightness(0.8); /* Makes dots darker for better visibility */
-        }
-        
-        [data-bs-theme="dark"] .dots-grid {
-          opacity: 0.25;
-          background-image: radial-gradient(rgba(255, 255, 255, 0.9) 1.8px, transparent 1.8px);
-        }
-        
         /* Background blob styling */
         .background-blob {
           max-width: 150px;
@@ -478,12 +268,19 @@ export default function HeroSection() {
         .dashboard-container {
           transform: perspective(1000px) rotateY(-8deg) rotateX(5deg) rotate(1deg);
           transform-origin: center center;
-          transition: transform 0.5s ease;
+          transition: all 0.7s ease;
           will-change: transform;
           max-width: 100%;
           width: 100%;
           height: auto;
           position: relative;
+          background-color: #ffffff !important;
+          border: 1px solid rgba(0, 0, 0, 0.1);
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+        
+        .dashboard-container:hover {
+          transform: perspective(1000px) rotateY(-5deg) rotateX(3deg) rotate(0deg);
         }
         
         .dashboard-mockup {
@@ -491,11 +288,65 @@ export default function HeroSection() {
           width: 100%;
           height: auto;
           position: relative;
+          transition: all 0.5s ease;
         }
         
         .dashboard-animation-container {
           position: relative;
-          transition: transform 0.5s ease-in-out;
+          transition: all 0.8s ease-in-out;
+        }
+        
+        .loading-state .dashboard-container {
+          transform: perspective(1000px) rotateY(-3deg) rotateX(2deg) rotate(0deg) scale(0.95);
+          opacity: 0.5;
+        }
+        
+        /* Animations based on stages */
+        .hero-content-stage-1 {
+          opacity: 0;
+          transform: translateY(15px);
+        }
+        
+        .hero-content-stage-1.active {
+          opacity: 1;
+          transform: translateY(0);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .hero-content-stage-2 {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        
+        .hero-content-stage-2.active {
+          opacity: 1;
+          transform: translateY(0);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+          transition-delay: 0.15s;
+        }
+        
+        .hero-content-stage-3 {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        
+        .hero-content-stage-3.active {
+          opacity: 1;
+          transform: translateY(0);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+          transition-delay: 0.3s;
+        }
+        
+        .hero-content-stage-4 {
+          opacity: 0;
+          transform: translateY(25px) scale(0.98);
+        }
+        
+        .hero-content-stage-4.active {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+          transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+          transition-delay: 0.2s;
         }
         
         /* User avatar styling */
@@ -508,44 +359,40 @@ export default function HeroSection() {
           display: block;
           box-shadow: 0 2px 4px rgba(0,0,0,0.1);
           z-index: 1;
+          border: 2px solid #ffffff;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+          transform: translateZ(0);
+          will-change: transform;
         }
         
         .user-avatar::after {
           content: '';
           position: absolute;
-          top: -2px;
-          left: -2px;
-          right: -2px;
-          bottom: -2px;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
           border-radius: 50%;
-          background: linear-gradient(135deg, var(--primary) 0%, rgba(0,0,0,0) 60%);
+          background: linear-gradient(135deg, #6366f1 0%, rgba(0,0,0,0) 60%);
           opacity: 0.7;
-          z-index: -1;
+          z-index: 2;
           pointer-events: none;
         }
         
-        [data-bs-theme="light"] .user-avatar {
-          border-color: #ffffff !important;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), 0 0 0 2px rgba(0, 0, 0, 0.05);
+        .user-counter {
+          border: 2px solid #ffffff;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+          transform: translateZ(0);
         }
         
-        [data-bs-theme="dark"] .user-avatar {
-          border-color: #111827 !important;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 0 0 2px rgba(255, 255, 255, 0.1);
-        }
-        
-        [data-bs-theme="light"] .user-counter {
-          border-color: #ffffff !important;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), 0 0 0 2px rgba(0, 0, 0, 0.05);
-        }
-        
-        [data-bs-theme="dark"] .user-counter {
-          border-color: #111827 !important;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 0 0 2px rgba(255, 255, 255, 0.1);
+        .user-avatars-container {
+          display: flex;
+          align-items: center;
         }
         
         .user-avatars-container > div {
           margin-right: -8px;
+          transform: translateZ(0);
         }
         
         .user-avatars-container > div:nth-child(1) {
@@ -597,45 +444,35 @@ export default function HeroSection() {
           height: 16px;
         }
         
-        /* Dark theme specific styles */
-        [data-bs-theme="dark"] .feature-item p {
-          color: rgba(255, 255, 255, 0.9);
-        }
-        
-        [data-bs-theme="dark"] .hero-lead {
-          color: rgba(255, 255, 255, 0.8) !important;
-        }
-        
-        [data-bs-theme="dark"] .text-secondary {
-          color: rgba(255, 255, 255, 0.7) !important;
-        }
-        
-        [data-bs-theme="dark"] .text-dark {
-          color: #ffffff !important;
-        }
-        
-        [data-bs-theme="dark"] .dashboard-container {
-          background-color: #1a1f2c !important;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        [data-bs-theme="dark"] .mobile-stats-container .card {
-          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-        }
-        
-        [data-bs-theme="dark"] .mobile-stats-container p {
-          color: rgba(255, 255, 255, 0.9);
-        }
-        
-        /* Light theme specific styles */
-        [data-bs-theme="light"] .text-dark {
+        .text-dark {
           color: #0f172a !important;
         }
         
-        [data-bs-theme="light"] .dashboard-container {
-          background-color: #ffffff !important;
-          border: 1px solid rgba(0, 0, 0, 0.1);
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        /* Animation shimmer effect */
+        .shimmer-effect {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.05) 50%,
+            rgba(255, 255, 255, 0) 100%
+          );
+          animation: shimmer 2s infinite;
+          z-index: 5;
+          pointer-events: none;
+        }
+        
+        @keyframes shimmer {
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(100%);
+          }
         }
         
         /* Responsive adjustments */
@@ -730,12 +567,14 @@ export default function HeroSection() {
         <Row className="align-items-center gy-4 gy-lg-5">
           {/* Left column: headline, tagline, features, CTAs */}
           <Col lg={6} className="mb-3 mb-lg-0">
-            <div className="mb-4 fade-in">
+            <div className="mb-4">
+              <div className={`hero-content-stage-1 ${animationStage >= 1 ? 'active' : ''}`}>
               <h1 className="display-4 fw-bold mb-3 hero-title" dangerouslySetInnerHTML={{ __html: heroSection.title }} />
-
               <p className="lead mb-4 text-secondary hero-lead" dangerouslySetInnerHTML={{ __html: heroSection.subtitle }} />
+              </div>
 
-              <div className="d-flex flex-column gap-3 mb-4 slide-up feature-items">
+              <div className={`hero-content-stage-2 ${animationStage >= 2 ? 'active' : ''}`}>
+                <div className="d-flex flex-column gap-3 mb-4 feature-items">
                 {heroSection.features && heroSection.features.map((feature, index) => (
                   <div key={index} className="d-flex align-items-start feature-item">
                     <div className="me-3 feature-icon-circle">
@@ -773,48 +612,32 @@ export default function HeroSection() {
                   )}
                 </div>
               )}
+              </div>
 
               {heroSection.userStats && (
                 <div
-                  className="d-flex align-items-center slide-up flex-wrap"
-                  style={{ animationDelay: "0.2s" }}
+                  className={`d-flex align-items-center flex-wrap hero-content-stage-3 ${animationStage >= 3 ? 'active' : ''}`}
                 >
                   <div className="d-flex me-3 mb-2 mb-sm-0 user-avatars-container">
-                    <div>
-                      <div className="user-avatar border-2">
-                        <Image
-                          src={userOneImage}
-                          alt="User 1"
-                          width={44}
-                          height={44}
-                          style={{ objectFit: "cover" }}
-                        />
+                    {heroSection.userStats.avatars && heroSection.userStats.avatars.map((avatar, index) => (
+                      <div key={index}>
+                        <div className="user-avatar">
+                          <Image
+                            src={avatar}
+                            alt={`User ${index + 1}`}
+                            width={44}
+                            height={44}
+                            style={{ 
+                              objectFit: "cover",
+                              width: "100%",
+                              height: "100%"
+                            }}
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <div>
-                      <div className="user-avatar border-2">
-                        <Image
-                          src={userTwoImage}
-                          alt="User 2"
-                          width={44}
-                          height={44}
-                          style={{ objectFit: "cover" }}
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <div className="user-avatar border-2">
-                        <Image
-                          src={userThreeImage}
-                          alt="User 3"
-                          width={44}
-                          height={44}
-                          style={{ objectFit: "cover" }}
-                        />
-                      </div>
-                    </div>
+                    ))}
                     <div
-                      className="position-relative d-flex align-items-center justify-content-center rounded-circle bg-primary text-white border-2 fs-xs fw-bold user-counter"
+                      className="position-relative d-flex align-items-center justify-content-center rounded-circle bg-primary text-white fs-xs fw-bold user-counter"
                       style={{ 
                         width: "44px", 
                         height: "44px",
@@ -834,15 +657,10 @@ export default function HeroSection() {
           <Col lg={6} className="position-relative">
             {/* Right column: looping animation/illustration */}
             <div
-              className={`position-relative slide-up dashboard-animation-container ${!isLoaded ? 'loading-state' : ''}`}
-              style={{ 
-                animationDelay: "0.3s", 
-                zIndex: 1,
-                opacity: isLoaded ? 1 : 0,
-                transition: "opacity 0.3s ease-in-out"
-              }}
+              className={`position-relative hero-content-stage-4 ${animationStage >= 4 ? 'active' : ''} ${!imageLoaded ? 'loading-state' : ''}`}
             >
               <div className="p-2 rounded-4 shadow-lg dashboard-container">
+                {!imageLoaded && <div className="shimmer-effect"></div>}
                 <div className="dashboard-mockup rounded-3 overflow-hidden">
                   <Image
                     src={dashboardSrc}
@@ -858,6 +676,7 @@ export default function HeroSection() {
                     priority={true}
                     placeholder="blur"
                     blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN88P/BfwAJMAOQn+GUHAAAAABJRU5ErkJggg=="
+                    onLoad={handleImageLoad}
                   />
                 </div>
               </div>

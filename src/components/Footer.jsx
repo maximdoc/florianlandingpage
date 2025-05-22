@@ -3,96 +3,24 @@
 import { Container, Row, Col } from 'react-bootstrap';
 import Link from 'next/link';
 import { useEffect, useState, useMemo } from 'react';
-import { getGlobalSettings } from '@/utils/contentUtils';
 import Button from './ui/Button';
+import content from '@/data/content.json';
 
 export default function Footer() {
-  // Combined state for all footer data
-  const [footerState, setFooterState] = useState({
-    theme: 'dark',
-    navbarHeight: 0,
-    loading: true,
-    footerData: {
-      socialLinks: [],
-      navigationLinks: [],
-      supportLinks: [],
-      legalLinks: [],
-      contactEmail: "support@example.com",
-      copyright: ""
-    },
-    globalSettings: {
-      title: "PRODUCT",
-      description: "Transform your business with efficient solutions"
-    }
-  });
-
-  // Get footer data from API
-  useEffect(() => {
-    async function loadFooterData() {
-      try {
-        const globalSettings = await getGlobalSettings();
-        const footerData = globalSettings?.footer || {};
-        const title = globalSettings?.title?.split(' ')[0] || "PRODUCT";
-        
-        setFooterState(prev => ({
-          ...prev,
-          loading: false,
-          footerData: {
-            socialLinks: footerData?.socialLinks || [],
-            navigationLinks: footerData?.navigationLinks || [],
-            supportLinks: footerData?.supportLinks || [],
-            legalLinks: footerData?.legalLinks || [],
-            contactEmail: footerData?.contactEmail || "support@example.com",
-            copyright: footerData?.copyright || `© ${new Date().getFullYear()} ${title}. All rights reserved.`
-          },
-          globalSettings: {
-            title,
-            description: globalSettings?.description || "Transform your business with efficient solutions"
-          }
-        }));
-      } catch (error) {
-        console.error('Error loading footer data:', error);
-        setFooterState(prev => ({ ...prev, loading: false }));
-      }
-    }
-    
-    loadFooterData();
-  }, []);
-
-  // Track current theme
-  useEffect(() => {
-    const htmlElement = document.documentElement;
-    setFooterState(prev => ({
-      ...prev,
-      theme: htmlElement.getAttribute('data-bs-theme') || 'dark'
-    }));
-
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (
-          mutation.type === 'attributes' &&
-          mutation.attributeName === 'data-bs-theme'
-        ) {
-          setFooterState(prev => ({
-            ...prev,
-            theme: htmlElement.getAttribute('data-bs-theme') || 'dark'
-          }));
-        }
-      });
-    });
-
-    observer.observe(htmlElement, { attributes: true });
-    return () => observer.disconnect();
-  }, []);
+  // Extract footer data directly from content.json
+  const { footer } = content.global;
+  const { title, description } = content.global;
+  const productName = title.split(' ')[0] || "PRODUCT";
+  const copyright = footer.copyright || `© ${new Date().getFullYear()} ${productName}. All rights reserved.`;
+  
+  // State for navbar height
+  const [navbarHeight, setNavbarHeight] = useState(0);
 
   // Get navbar height for correct scrolling
   useEffect(() => {
     const navbar = document.querySelector('.navbar-main');
     if (navbar) {
-      setFooterState(prev => ({
-        ...prev,
-        navbarHeight: navbar.offsetHeight
-      }));
+      setNavbarHeight(navbar.offsetHeight);
     }
   }, []);
 
@@ -106,7 +34,7 @@ export default function Footer() {
         // Account for navbar height when scrolling
         const offsetTop = targetElement.getBoundingClientRect().top + 
           window.pageYOffset - 
-          footerState.navbarHeight - 20;
+          navbarHeight - 20;
         
         // Use requestAnimationFrame for safe execution
         requestAnimationFrame(() => {
@@ -139,14 +67,9 @@ export default function Footer() {
     }
   };
 
-  // Destructure for easier access
-  const { theme, loading, navbarHeight } = footerState;
-  const { socialLinks, navigationLinks, supportLinks, contactEmail, copyright } = footerState.footerData;
-  const { title, description } = footerState.globalSettings;
-
   // Memoize social links to reduce re-renders
   const socialLinksElements = useMemo(() => {
-    return socialLinks.map((link, index) => (
+    return footer.socialLinks.map((link, index) => (
       <a 
         key={index} 
         href={link.url} 
@@ -158,11 +81,11 @@ export default function Footer() {
         {renderSocialIcon(link.icon)}
       </a>
     ));
-  }, [socialLinks]);
+  }, [footer.socialLinks]);
 
   // Memoize navigation links to reduce re-renders
   const navigationLinksElements = useMemo(() => {
-    return navigationLinks.map((item, index) => (
+    return footer.navigationLinks.map((item, index) => (
       <li key={index}>
         <a 
           href={item.href} 
@@ -173,11 +96,11 @@ export default function Footer() {
         </a>
       </li>
     ));
-  }, [navigationLinks]);
+  }, [footer.navigationLinks]);
 
   // Memoize support links to reduce re-renders
   const supportLinksElements = useMemo(() => {
-    return supportLinks.map((item, index) => (
+    return footer.supportLinks.map((item, index) => (
       <li key={index}>
         <a 
           href={item.href} 
@@ -188,14 +111,10 @@ export default function Footer() {
         </a>
       </li>
     ));
-  }, [supportLinks]);
-
-  if (loading) {
-    return null; // Don't render anything while loading
-  }
+  }, [footer.supportLinks]);
 
   return (
-    <footer className={`site-footer ${theme === 'light' ? 'footer-light' : 'footer-dark'}`}>
+    <footer className="site-footer footer-light">
       {/* Footer Banner CTA */}
       <div className="footer-banner">
         <div className="banner-background-shapes">
@@ -207,18 +126,18 @@ export default function Footer() {
           <Row className="justify-content-between align-items-center py-2">
             <Col md={7} lg={7}>
               <div className="banner-content">
-                <h3 className="banner-title">Ready to streamline your government contracting?</h3>
-                <p className="banner-text">Get personalized guidance on how to optimize your bidding strategy and win more contracts.</p>
+                <h3 className="banner-title">{footer.banner?.title || "Ready to streamline your government contracting?"}</h3>
+                <p className="banner-text">{footer.banner?.text || "Get personalized guidance on how to optimize your bidding strategy and win more contracts."}</p>
               </div>
             </Col>
             <Col md={5} lg={5} className="text-md-end mt-4 mt-md-0">
               <Button 
-                href="#strategy-call" 
+                href={footer.banner?.buttonHref || "#strategy-call"} 
                 variant="action"
                 onClick={smoothScrollToAnchor}
                 className="banner-button"
               >
-                Book Consultation
+                {footer.banner?.buttonText || "Book Consultation"}
               </Button>
             </Col>
           </Row>
@@ -231,7 +150,7 @@ export default function Footer() {
             <Col lg={4} md={6}>
               <div className="footer-brand">
                 <Link href="/" className="footer-logo">
-                  {title}
+                  {productName}
                 </Link>
                 <p className="footer-description">
                   {description}
@@ -268,7 +187,7 @@ export default function Footer() {
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-envelope-fill" viewBox="0 0 16 16">
                       <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
                     </svg>
-                    <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+                    <a href={`mailto:${footer.contactEmail}`}>{footer.contactEmail}</a>
                   </p>
                 </div>
               </div>
@@ -284,8 +203,9 @@ export default function Footer() {
               {copyright}
             </p>
             <div className="legal-links">
-              <a href="/privacy" className="legal-link">Privacy Policy</a>
-              <a href="/terms" className="legal-link">Terms of Service</a>
+              {footer.legalLinks && footer.legalLinks.map((link, index) => (
+                <a key={index} href={link.href} className="legal-link">{link.text}</a>
+              ))}
             </div>
           </div>
         </Container>
@@ -297,16 +217,6 @@ export default function Footer() {
           position: relative;
           font-size: 0.95rem;
           transition: all 0.3s ease;
-        }
-        
-        /* Dark theme styles */
-        .footer-dark {
-          background-color: #0f172a;
-          color: rgba(255, 255, 255, 0.75);
-        }
-        
-        /* Light theme styles */
-        .footer-light {
           background-color: #f1f5f9;
           color: #1e293b;
           box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.08);
@@ -322,13 +232,6 @@ export default function Footer() {
         .footer-bottom {
           padding: 1.5rem 0;
           position: relative;
-        }
-        
-        .footer-dark .footer-bottom {
-          border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .footer-light .footer-bottom {
           border-top: 1px solid rgba(0, 0, 0, 0.06);
         }
         
@@ -357,19 +260,12 @@ export default function Footer() {
           filter: brightness(1.1);
         }
         
-        .footer-dark .footer-description {
-          color: rgba(255, 255, 255, 0.7);
-        }
-        
-        .footer-light .footer-description {
-          color: #475569;
-        }
-        
         .footer-description {
           font-size: 0.95rem;
           margin-bottom: 1.5rem;
           line-height: 1.6;
           max-width: 320px;
+          color: #475569;
         }
         
         /* Social links */
@@ -377,16 +273,6 @@ export default function Footer() {
           display: flex;
           gap: 0.8rem;
           margin-bottom: 1rem;
-        }
-        
-        .footer-dark .social-link {
-          background-color: rgba(255, 255, 255, 0.08);
-          color: rgba(255, 255, 255, 0.85);
-        }
-        
-        .footer-light .social-link {
-          background-color: rgba(0, 0, 0, 0.04);
-          color: #475569;
         }
         
         .social-link {
@@ -397,6 +283,8 @@ export default function Footer() {
           height: 36px;
           border-radius: 8px;
           transition: all 0.3s ease;
+          background-color: rgba(0, 0, 0, 0.04);
+          color: #475569;
         }
         
         .social-link:hover {
@@ -407,20 +295,13 @@ export default function Footer() {
         }
         
         /* Footer headings */
-        .footer-dark .footer-heading {
-          color: white;
-        }
-        
-        .footer-light .footer-heading {
-          color: #0f172a;
-        }
-        
         .footer-heading {
           font-size: 1.1rem;
           font-weight: 600;
           margin-bottom: 1.2rem;
           position: relative;
           letter-spacing: 0.01em;
+          color: #0f172a;
         }
         
         .footer-heading::after {
@@ -449,32 +330,18 @@ export default function Footer() {
           margin-bottom: 0.75rem;
         }
         
-        .footer-dark .footer-link {
-          color: rgba(255, 255, 255, 0.7);
-        }
-        
-        .footer-light .footer-link {
-          color: #475569;
-        }
-        
         .footer-link {
           text-decoration: none;
           transition: all 0.2s ease;
           position: relative;
-            display: inline-block;
+          display: inline-block;
           padding: 2px 0;
-        }
-        
-        .footer-dark .footer-link:hover {
-          color: white;
-        }
-        
-        .footer-light .footer-link:hover {
-          color: #6366f1;
+          color: #475569;
         }
         
         .footer-link:hover {
           transform: translateX(3px);
+          color: #6366f1;
         }
         
         .footer-link::after {
@@ -504,25 +371,14 @@ export default function Footer() {
           margin-bottom: 0.75rem;
         }
         
-        .footer-dark .contact-email a {
-          color: rgba(255, 255, 255, 0.7);
-        }
-        
-        .footer-light .contact-email a {
-          color: #475569;
-        }
-        
         .contact-email a {
           text-decoration: none;
           transition: all 0.2s ease;
           position: relative;
+          color: #475569;
         }
         
-        .footer-dark .contact-email a:hover {
-          color: white;
-        }
-        
-        .footer-light .contact-email a:hover {
+        .contact-email a:hover {
           color: #6366f1;
         }
         
@@ -547,17 +403,10 @@ export default function Footer() {
         }
         
         /* Copyright and legal links */
-        .footer-dark .copyright {
-          color: rgba(255, 255, 255, 0.6);
-        }
-        
-        .footer-light .copyright {
-          color: #64748b;
-        }
-        
         .copyright {
           font-size: 0.85rem;
           margin-bottom: 0;
+          color: #64748b;
         }
         
         .legal-links {
@@ -566,26 +415,15 @@ export default function Footer() {
           gap: 1.5rem;
         }
         
-        .footer-dark .legal-link {
-          color: rgba(255, 255, 255, 0.6);
-        }
-        
-        .footer-light .legal-link {
-          color: #64748b;
-        }
-        
         .legal-link {
           font-size: 0.85rem;
           text-decoration: none;
           transition: all 0.2s ease;
           position: relative;
+          color: #64748b;
         }
         
-        .footer-dark .legal-link:hover {
-          color: white;
-        }
-        
-        .footer-light .legal-link:hover {
+        .legal-link:hover {
           color: #6366f1;
         }
         
@@ -646,7 +484,7 @@ export default function Footer() {
         
         /* Footer Banner CTA */
         .footer-banner {
-          background-color: var(--section-bg-light);
+          background-color: #f8fafc;
           padding: 4rem 0;
           position: relative;
           z-index: 2;
@@ -666,7 +504,7 @@ export default function Footer() {
         .banner-shape {
           position: absolute;
           border-radius: 50%;
-          background: var(--primary);
+          background: #6366f1;
           opacity: 0.05;
           filter: blur(40px);
         }
@@ -685,7 +523,7 @@ export default function Footer() {
           bottom: -80px;
           left: 15%;
           animation: float-slow 9s ease-in-out infinite alternate-reverse;
-          background: var(--secondary);
+          background: #8b5cf6;
         }
         
         .banner-shape.shape-3 {
@@ -714,7 +552,7 @@ export default function Footer() {
         }
         
         .banner-title {
-          color: var(--text-primary);
+          color: #0f172a;
           font-size: 2rem;
           font-weight: 700;
           margin-bottom: 1rem;
@@ -729,12 +567,12 @@ export default function Footer() {
           left: 0;
           width: 60px;
           height: 3px;
-          background: linear-gradient(90deg, var(--secondary), transparent);
+          background: linear-gradient(90deg, #8b5cf6, transparent);
           border-radius: 3px;
         }
         
         .banner-text {
-          color: var(--text-secondary);
+          color: #64748b;
           font-size: 1.15rem;
           line-height: 1.5;
           margin-bottom: 0;
@@ -748,11 +586,14 @@ export default function Footer() {
           border-radius: 8px;
           box-shadow: 0 8px 20px rgba(255, 111, 97, 0.3);
           transition: all 0.3s ease;
+          background-color: #ff6f61;
+          color: #ffffff;
         }
         
         .banner-button:hover {
           transform: translateY(-3px);
           box-shadow: 0 12px 25px rgba(255, 111, 97, 0.4);
+          background-color: #ff5c4d;
         }
         
         @media (max-width: 991px) {

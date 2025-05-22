@@ -7,7 +7,6 @@ import "../styles/section-backgrounds.css";
 import ThemeProvider from "../components/ThemeProvider";
 import BootstrapClient from "../components/BootstrapClient";
 import BodyAttributeHandler from "../components/BodyAttributeHandler";
-import ContentInitializer from "../components/ContentInitializer";
 
 // Load fonts with subsets to optimize loading
 const geistSans = Geist({
@@ -35,22 +34,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Simplified, optimized theme detection script
-  const themeDetectionScript = `
-    (function() {
-      try {
-        const theme = localStorage.getItem('theme') || 
-          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-bs-theme', theme === 'system' 
-          ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-          : theme
-        );
-      } catch (e) {}
-    })();
-  `;
-
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <head>
         {/* Preload critical assets */}
         <link 
@@ -58,9 +43,6 @@ export default function RootLayout({
           href="https://fonts.gstatic.com" 
           crossOrigin="anonymous" 
         />
-        
-        {/* Inline critical theme script to avoid flash of incorrect theme */}
-        <script dangerouslySetInnerHTML={{ __html: themeDetectionScript }} />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
         <ThemeProvider>
@@ -68,7 +50,6 @@ export default function RootLayout({
           <BodyAttributeHandler>
             {children}
           </BodyAttributeHandler>
-          <ContentInitializer />
         </ThemeProvider>
       </body>
     </html>

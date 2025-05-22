@@ -4,60 +4,56 @@ import { useState, useRef, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import Image from 'next/image';
 import SectionContainer from '../SectionContainer';
-import { getSectionById } from '@/utils/contentUtils';
+import content from '@/data/content.json';
+
+// Custom hook to detect if element is in viewport
+const useIsVisible = (ref) => {
+  const [isIntersecting, setIntersecting] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIntersecting(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, [ref]);
+
+  return isIntersecting;
+};
 
 export default function TestimonialsSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
-  const [theme, setTheme] = useState('dark');
-  const [testimonialsSection, setTestimonialsSection] = useState(null);
-  const [loading, setLoading] = useState(true);
   const sliderRef = useRef(null);
   
-  // Load section data from API
-  useEffect(() => {
-    async function loadTestimonialsSection() {
-      try {
-        setLoading(true);
-        const sectionData = await getSectionById('home', 'testimonials');
-        setTestimonialsSection(sectionData);
-      } catch (error) {
-        console.error('Error loading testimonials section:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    
-    loadTestimonialsSection();
-  }, []);
-  
-  // Listen for theme changes
-  useEffect(() => {
-    // Get initial theme
-    const htmlElement = document.documentElement;
-    setTheme(htmlElement.getAttribute('data-bs-theme') || 'dark');
+  // Refs for animations
+  const sectionRef = useRef(null);
+  const headerRef = useRef(null);
+  const carouselRef = useRef(null);
 
-    // Create observer to watch for theme attribute changes
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (
-          mutation.type === 'attributes' &&
-          mutation.attributeName === 'data-bs-theme'
-        ) {
-          setTheme(htmlElement.getAttribute('data-bs-theme') || 'dark');
-        }
-      });
-    });
-
-    // Start observing
-    observer.observe(htmlElement, { attributes: true });
+  // Check if elements are visible
+  const isSectionVisible = useIsVisible(sectionRef);
+  const isHeaderVisible = useIsVisible(headerRef);
+  const isCarouselVisible = useIsVisible(carouselRef);
   
-    // Cleanup
-    return () => observer.disconnect();
-  }, []);
+  // Get testimonials section data directly from content.json
+  const homePageData = content.pages.find(page => page.id === 'home');
+  const testimonialsSection = homePageData.sections.find(section => section.id === 'testimonials');
+  const testimonials = testimonialsSection.testimonials || [];
   
-  // Handle swipe functionality - MOVED UP before conditional returns
+  // Handle swipe functionality
   useEffect(() => {
     if (!sliderRef.current) return;
     
@@ -73,7 +69,6 @@ export default function TestimonialsSection() {
       if (touchStart - touchEnd > 50) {
         // Swipe left - go to next slide
         setActiveIndex(prevIndex => {
-          const testimonials = testimonialsSection?.testimonials || [];
           return prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1;
         });
       }
@@ -81,7 +76,6 @@ export default function TestimonialsSection() {
       if (touchEnd - touchStart > 50) {
         // Swipe right - go to previous slide
         setActiveIndex(prevIndex => {
-          const testimonials = testimonialsSection?.testimonials || [];
           return prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1;
         });
       }
@@ -99,208 +93,7 @@ export default function TestimonialsSection() {
         slider.removeEventListener('touchend', handleTouchEnd);
       };
     }
-  }, [touchStart, touchEnd, testimonialsSection]);
-  
-  if (loading || !testimonialsSection) {
-    return (
-      <SectionContainer 
-        id="testimonials" 
-        className="testimonials-section py-6 position-relative overflow-hidden" 
-        backgroundVariant="dark"
-      > 
-        <Container className="position-relative">
-          <Row className="mb-5 text-center">
-            <Col lg={8} className="mx-auto">
-              {/* Skeleton for section label */}
-              <div className="skeleton-section-label mb-2"></div>
-              {/* Skeleton for title */}
-              <div className="skeleton-title mb-3"></div>
-              {/* Skeleton for subtitle */}
-              <div className="skeleton-subtitle"></div>
-              <div className="skeleton-subtitle" style={{ width: "85%" }}></div>
-            </Col>
-          </Row>
-          
-          <div className="testimonial-carousel position-relative">
-            <div className="testimonial-slider">
-              {[0, 1, 2].map((index) => (
-                <div 
-                  key={index}
-                  className={`testimonial-card skeleton-card ${index === 0 ? 'active' : index === 1 ? 'next' : 'prev'}`}
-                >
-                  {/* Skeleton for stars */}
-                  <div className="skeleton-stars"></div>
-                  
-                  {/* Skeleton for testimonial content */}
-                  <div className="testimonial-content">
-                    <div className="skeleton-text-line"></div>
-                    <div className="skeleton-text-line"></div>
-                    <div className="skeleton-text-line"></div>
-                    <div className="skeleton-text-line" style={{ width: "70%" }}></div>
-                  </div>
-                  
-                  {/* Skeleton for author */}
-                  <div className="testimonial-author">
-                    <div className="skeleton-avatar"></div>
-                    <div>
-                      <div className="skeleton-author-name"></div>
-                      <div className="skeleton-author-position"></div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            
-            <div className="dots-container">
-              {[0, 1, 2].map((index) => (
-                <div 
-                  key={index} 
-                  className={`dot skeleton-dot ${index === 0 ? 'active' : ''}`}
-                ></div>
-              ))}
-            </div>
-            
-            {/* Skeleton navigation arrows */}
-            <div className="nav-arrow prev-arrow d-none d-md-flex skeleton-arrow">
-              <div className="skeleton-arrow-inner"></div>
-            </div>
-            
-            <div className="nav-arrow next-arrow d-none d-md-flex skeleton-arrow">
-              <div className="skeleton-arrow-inner"></div>
-            </div>
-          </div>
-        </Container>
-       
-        <style jsx global>{`
-          /* Base skeleton animation */
-          @keyframes skeleton-loading {
-            0% {
-              background-position: -200px 0;
-            }
-            100% {
-              background-position: calc(200px + 100%) 0;
-            }
-          }
-          
-          /* Common skeleton styles */
-          .skeleton-section-label,
-          .skeleton-title,
-          .skeleton-subtitle,
-          .skeleton-stars,
-          .skeleton-text-line,
-          .skeleton-avatar,
-          .skeleton-author-name,
-          .skeleton-author-position,
-          .skeleton-arrow-inner {
-            background: linear-gradient(
-              90deg,
-              rgba(255, 255, 255, 0.05) 25%, 
-              rgba(255, 255, 255, 0.1) 50%, 
-              rgba(255, 255, 255, 0.05) 75%
-            );
-            background-size: 200px 100%;
-            animation: skeleton-loading 1.5s infinite linear;
-            border-radius: 4px;
-            display: block;
-          }
-          
-          [data-bs-theme="light"] .skeleton-section-label,
-          [data-bs-theme="light"] .skeleton-title,
-          [data-bs-theme="light"] .skeleton-subtitle,
-          [data-bs-theme="light"] .skeleton-stars,
-          [data-bs-theme="light"] .skeleton-text-line,
-          [data-bs-theme="light"] .skeleton-avatar,
-          [data-bs-theme="light"] .skeleton-author-name,
-          [data-bs-theme="light"] .skeleton-author-position,
-          [data-bs-theme="light"] .skeleton-arrow-inner {
-            background: linear-gradient(
-              90deg,
-              rgba(0, 0, 0, 0.04) 25%, 
-              rgba(0, 0, 0, 0.06) 50%, 
-              rgba(0, 0, 0, 0.04) 75%
-            );
-            background-size: 200px 100%;
-          }
-          
-          /* Specific skeleton sizes */
-          .skeleton-section-label {
-            height: 16px;
-            width: 100px;
-            margin: 0 auto 16px;
-          }
-          
-          .skeleton-title {
-            height: 48px;
-            width: 70%;
-            margin: 0 auto 16px;
-          }
-          
-          .skeleton-subtitle {
-            height: 20px;
-            width: 100%;
-            margin: 0 auto 8px;
-          }
-          
-          /* Testimonial card styling */
-          .skeleton-card {
-            opacity: 1 !important;
-          }
-          
-          .skeleton-stars {
-            height: 20px;
-            width: 110px;
-            margin-bottom: 16px;
-          }
-          
-          .skeleton-text-line {
-            height: 16px;
-            width: 100%;
-            margin-bottom: 12px;
-          }
-          
-          .skeleton-avatar {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            margin-right: 16px;
-          }
-          
-          .skeleton-author-name {
-            height: 18px;
-            width: 120px;
-            margin-bottom: 8px;
-          }
-          
-          .skeleton-author-position {
-            height: 14px;
-            width: 160px;
-          }
-          
-          .skeleton-dot {
-            opacity: 0.5;
-          }
-          
-          .skeleton-dot.active {
-            opacity: 1;
-          }
-          
-          .skeleton-arrow {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-          
-          .skeleton-arrow-inner {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-          }
-        `}</style>
-      </SectionContainer>
-    );
-  }
-  
-  const testimonials = testimonialsSection.testimonials || [];
+  }, [touchStart, touchEnd, testimonials]);
 
   const handlePrev = () => {
     setActiveIndex(prevIndex => 
@@ -328,24 +121,45 @@ export default function TestimonialsSection() {
     <SectionContainer 
       id="testimonials" 
       className="testimonials-section py-6 position-relative overflow-hidden" 
-      backgroundVariant={testimonialsSection.backgroundVariant || "dark"}
+      backgroundVariant={testimonialsSection.backgroundVariant || "light"}
+      ref={sectionRef}
     >
       <div className="position-absolute bg-shape shape-1"></div>
       <div className="position-absolute bg-shape shape-2"></div>
       <div className="position-absolute bg-shape shape-3"></div>
       
       <Container className="position-relative">
-        <Row className="mb-5 text-center">
+        <Row className="mb-5 text-center" ref={headerRef}>
           <Col lg={8} className="mx-auto">
-            <div className="section-label text-uppercase mb-2">{testimonialsSection.sectionLabel}</div>
-            <h2 className="section-title mb-3" dangerouslySetInnerHTML={{ __html: testimonialsSection.title }} />
-            <p className="section-subtitle">
+            <div 
+              className={`section-label text-uppercase mb-2 transition-all duration-1000 ${
+                isHeaderVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
+            >
+              {testimonialsSection.sectionLabel}
+            </div>
+            <h2 
+              className={`section-title mb-3 transition-all duration-1000 delay-100 ${
+                isHeaderVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`} 
+              dangerouslySetInnerHTML={{ __html: testimonialsSection.title }} 
+            />
+            <p 
+              className={`section-subtitle transition-all duration-1000 delay-200 ${
+                isHeaderVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
+            >
               {testimonialsSection.subtitle}
             </p>
           </Col>
         </Row>
         
-        <div className="testimonial-carousel position-relative">
+        <div 
+          className={`testimonial-carousel position-relative transition-all duration-1000 delay-300 ${
+            isCarouselVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          }`}
+          ref={carouselRef}
+        >
           <div className="testimonial-slider" ref={sliderRef}>
             {testimonials.length > 0 && testimonials.map((testimonial, index) => {
               // Calculate position classes
@@ -363,9 +177,6 @@ export default function TestimonialsSection() {
               } else {
                 positionClass = 'hidden';
               }
-              
-              // Choose avatar based on current theme
-              const avatarSrc = theme === 'light' ? testimonial.avatarLight : testimonial.avatarDark;
               
               return (
                 <div 
@@ -385,7 +196,7 @@ export default function TestimonialsSection() {
                     <div className="testimonial-author">
                     <div className="avatar-wrapper">
                           <Image 
-                        src={avatarSrc} 
+                        src={testimonial.avatar} 
                             alt={testimonial.author} 
                         width={56} 
                         height={56}
@@ -436,52 +247,48 @@ export default function TestimonialsSection() {
       </Container>
       
       <style jsx global>{`
-        /* Variables for theme compatibility */
-        :root {
-          --testimonial-bg: rgba(255, 255, 255, 0.04);
-          --testimonial-border: rgba(255, 255, 255, 0.08);
-          --testimonial-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-          --testimonial-active-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
-          --testimonial-text: rgba(255, 255, 255, 0.9);
-          --star-color: #FFD700;
-          --author-name-color: #ffffff;
-          --author-position-color: rgba(255, 255, 255, 0.7);
-          --nav-arrow-bg: rgba(255, 255, 255, 0.08);
-          --nav-arrow-color: #ffffff;
-          --nav-arrow-hover-bg: rgba(255, 255, 255, 0.15);
-          --nav-arrow-hover-color: #ffffff;
-          --dot-inactive: rgba(255, 255, 255, 0.3);
-          --dot-active: #ffffff;
-          --section-label-color: rgba(255, 255, 255, 0.6);
+        /* Animation utilities */
+        .transition-all {
+          transition-property: all;
         }
-        
-        [data-bs-theme="light"] {
-          --testimonial-bg: #ffffff;
-          --testimonial-border: rgba(0, 0, 0, 0.06);
-          --testimonial-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-          --testimonial-active-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-          --testimonial-text: rgba(0, 0, 0, 0.8);
-          --star-color: #FFD700;
-          --author-name-color: #0f172a;
-          --author-position-color: rgba(0, 0, 0, 0.6);
-          --nav-arrow-bg: rgba(0, 0, 0, 0.05);
-          --nav-arrow-color: #0f172a;
-          --nav-arrow-hover-bg: rgba(0, 0, 0, 0.1);
-          --nav-arrow-hover-color: #0f172a;
-          --dot-inactive: rgba(0, 0, 0, 0.2);
-          --dot-active: #0f172a;
-          --section-label-color: rgba(0, 0, 0, 0.5);
+
+        .duration-1000 {
+          transition-duration: 1000ms;
+        }
+
+        .delay-100 {
+          transition-delay: 100ms;
+        }
+
+        .delay-200 {
+          transition-delay: 200ms;
+        }
+
+        .delay-300 {
+          transition-delay: 300ms;
+        }
+
+        .opacity-0 {
+          opacity: 0;
+        }
+
+        .opacity-100 {
+          opacity: 1;
+        }
+
+        .translate-y-0 {
+          transform: translateY(0);
+        }
+
+        .translate-y-10 {
+          transform: translateY(40px);
         }
         
         /* Section styling */
         .testimonials-section {
           position: relative;
-          background: var(--section-bg);
-          padding: 5rem 0;
-        }
-        
-        [data-bs-theme="light"] .testimonials-section {
           background: #f8fafc;
+          padding: 5rem 0;
         }
         
         /* Background shapes */
@@ -522,19 +329,19 @@ export default function TestimonialsSection() {
           font-size: 0.8rem;
           font-weight: 600;
           letter-spacing: 2px;
-          color: var(--section-label-color);
+          color: rgba(0, 0, 0, 0.5);
         }
         
         .section-title {
           font-size: 2.6rem;
           font-weight: 700;
           margin-bottom: 1rem;
-          color: var(--text-primary);
+          color: #0f172a;
         }
         
         .section-subtitle {
           font-size: 1.1rem;
-          color: var(--text-secondary);
+          color: rgba(0, 0, 0, 0.7);
           max-width: 700px;
           margin: 0 auto;
         }
@@ -549,7 +356,7 @@ export default function TestimonialsSection() {
         
         .testimonial-slider {
           position: relative;
-          height: 420px;
+          height: 450px; /* Fixed height for slider container */
           margin-bottom: 2rem;
         }
         
@@ -559,14 +366,15 @@ export default function TestimonialsSection() {
           top: 0;
           left: 0;
           right: 0;
-          background: var(--testimonial-bg);
-          border: 1px solid var(--testimonial-border);
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.06);
           border-radius: 16px;
           padding: 2.5rem;
           width: 100%;
+          height: 380px; /* Fixed height for all cards */
           max-width: 650px;
           margin: 0 auto;
-          box-shadow: var(--testimonial-shadow);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
           transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1),
                       opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1),
                       box-shadow 0.5s ease-out;
@@ -579,17 +387,18 @@ export default function TestimonialsSection() {
           transform-style: preserve-3d;
           backface-visibility: hidden;
           perspective: 1000px;
+          display: flex;
+          flex-direction: column;
         }
         
         .testimonial-card.active {
           opacity: 1;
           transform: scale(1) translateX(0) translateZ(0);
-          box-shadow: var(--testimonial-active-shadow);
+          box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
           z-index: 5;
           pointer-events: auto;
-          border: 1px solid rgba(255, 255, 255, 0.15);
-          box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-          background: rgba(18, 24, 41, 0.9);
+          border: 1px solid rgba(0, 0, 0, 0.1);
+          background: rgba(255, 255, 255, 0.98);
         }
         
         .testimonial-card.prev,
@@ -597,10 +406,10 @@ export default function TestimonialsSection() {
           opacity: 0.15;
           transform: scale(0.85) translateX(-30%) translateZ(0);
           z-index: 4;
-          background: rgba(5, 10, 25, 0.95);
-          backdrop-filter: blur(15px) brightness(0.3);
+          background: rgba(220, 225, 230, 0.4);
+          backdrop-filter: blur(15px) brightness(0.5);
           pointer-events: none;
-          border: 1px solid rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(0, 0, 0, 0.03);
         }
         
         .testimonial-card.next {
@@ -612,10 +421,10 @@ export default function TestimonialsSection() {
           opacity: 0.05;
           transform: scale(0.7) translateX(-55%) translateZ(0);
           z-index: 3;
-          background: rgba(5, 10, 25, 0.98);
-          backdrop-filter: blur(20px) brightness(0.1);
+          background: rgba(200, 205, 210, 0.3);
+          backdrop-filter: blur(20px) brightness(0.3);
           pointer-events: none;
-          border: 1px solid rgba(255, 255, 255, 0.02);
+          border: 1px solid rgba(0, 0, 0, 0.01);
         }
         
         .testimonial-card.next-2 {
@@ -628,27 +437,6 @@ export default function TestimonialsSection() {
           z-index: 1;
         }
         
-        /* For light theme */
-        [data-bs-theme="light"] .testimonial-card.active {
-          border: 1px solid rgba(0, 0, 0, 0.1);
-          box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
-          background: rgba(255, 255, 255, 0.98);
-        }
-        
-        [data-bs-theme="light"] .testimonial-card.prev,
-        [data-bs-theme="light"] .testimonial-card.next {
-          background: rgba(220, 225, 230, 0.4);
-          backdrop-filter: blur(15px) brightness(0.5);
-          border: 1px solid rgba(0, 0, 0, 0.03);
-        }
-        
-        [data-bs-theme="light"] .testimonial-card.prev-2,
-        [data-bs-theme="light"] .testimonial-card.next-2 {
-          background: rgba(200, 205, 210, 0.3);
-          backdrop-filter: blur(20px) brightness(0.3);
-          border: 1px solid rgba(0, 0, 0, 0.01);
-        }
-        
         /* Stars styling */
         .stars-container {
           display: flex;
@@ -656,23 +444,35 @@ export default function TestimonialsSection() {
         }
         
         .star {
-          color: var(--star-color);
+          color: #FFD700;
           margin-right: 4px;
         }
         
         /* Testimonial content */
+        .testimonial-content {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+        }
+        
         .testimonial-text {
           font-size: 1.25rem;
           line-height: 1.7;
-          color: var(--testimonial-text);
+          color: rgba(0, 0, 0, 0.8);
           margin-bottom: 2rem;
           font-weight: 400;
+          flex-grow: 1;
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-line-clamp: 5;
+          -webkit-box-orient: vertical;
         }
         
         /* Author info */
         .testimonial-author {
           display: flex;
           align-items: center;
+          margin-top: auto;
         }
         
         .avatar-wrapper {
@@ -682,12 +482,8 @@ export default function TestimonialsSection() {
           overflow: hidden;
           margin-right: 1rem;
           box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-          border: 2px solid rgba(255, 255, 255, 0.2);
+          border: 2px solid rgba(0, 0, 0, 0.1);
           flex-shrink: 0;
-        }
-        
-        [data-bs-theme="light"] .avatar-wrapper {
-          border-color: rgba(0, 0, 0, 0.1);
         }
         
         .avatar-image {
@@ -705,12 +501,12 @@ export default function TestimonialsSection() {
           font-size: 1.1rem;
           font-weight: 600;
           margin: 0;
-          color: var(--author-name-color);
+          color: #0f172a;
         }
         
         .author-position {
           font-size: 0.9rem;
-          color: var(--author-position-color);
+          color: rgba(0, 0, 0, 0.6);
           margin: 0;
         }
         
@@ -725,8 +521,8 @@ export default function TestimonialsSection() {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: var(--nav-arrow-bg);
-          color: var(--nav-arrow-color);
+          background: rgba(0, 0, 0, 0.05);
+          color: #0f172a;
           border: none;
           cursor: pointer;
           z-index: 10;
@@ -744,8 +540,8 @@ export default function TestimonialsSection() {
         }
         
         .nav-arrow:hover {
-          background: var(--nav-arrow-hover-bg);
-          color: var(--nav-arrow-hover-color);
+          background: rgba(0, 0, 0, 0.1);
+          color: #0f172a;
           opacity: 1;
           transform: translateY(-50%) scale(1.05);
         }
@@ -766,14 +562,14 @@ export default function TestimonialsSection() {
           border-radius: 50%;
           border: none;
           padding: 0;
-          background-color: var(--dot-inactive);
+          background-color: rgba(0, 0, 0, 0.2);
           cursor: pointer;
           transition: all 0.3s ease;
           margin: 0 4px;
         }
         
         .dot.active {
-          background-color: var(--dot-active);
+          background-color: #0f172a;
           transform: scale(1.3);
         }
         
@@ -784,7 +580,7 @@ export default function TestimonialsSection() {
           }
           
           .testimonial-slider {
-            height: 420px;
+            height: 450px;
           }
           
           .section-title {
@@ -809,11 +605,12 @@ export default function TestimonialsSection() {
         /* Специальные настройки для средних и больших экранов */
         @media (min-width: 992px) and (max-width: 1200px) {
           .testimonial-slider {
-            height: 460px;
+            height: 450px;
           }
           
           .testimonial-card {
             max-width: 620px;
+            height: 380px;
           }
           
           .testimonial-card.active {
@@ -854,23 +651,19 @@ export default function TestimonialsSection() {
         /* Специальные настройки для планшетов */
         @media (min-width: 768px) and (max-width: 992px) {
           .testimonial-slider {
-            height: 480px;
+            height: 450px;
           }
           
           .testimonial-card {
             max-width: 580px;
+            height: 350px;
           }
           
           .testimonial-card.active {
             transform: scale(1) translateX(0);
             z-index: 5;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-            background: rgba(18, 24, 41, 0.95);
-          }
-          
-          [data-bs-theme="light"] .testimonial-card.active {
-            background: rgba(255, 255, 255, 0.98);
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.18);
+            background: rgba(255, 255, 255, 0.98);
           }
           
           .testimonial-card.prev,
@@ -890,27 +683,19 @@ export default function TestimonialsSection() {
             display: none;
           }
           
+          /* Hide navigation arrows on tablet */
           .nav-arrow {
-            width: 44px;
-            height: 44px;
-            opacity: 0.9;
-          }
-          
-          .prev-arrow {
-            left: -50px;
-          }
-          
-          .next-arrow {
-            right: -50px;
+            display: none !important;
           }
           
           .testimonial-text {
             font-size: 1.1rem;
             line-height: 1.6;
+            -webkit-line-clamp: 4;
           }
           
           .dots-container {
-            margin-top: -0.5rem;
+            margin-top: -3rem;
           }
         }
         
@@ -920,9 +705,9 @@ export default function TestimonialsSection() {
           }
           
           .testimonial-slider {
-            height: auto;
-            min-height: 350px;
-            margin-bottom: 1rem;
+            height: 400px;
+            min-height: 400px;
+            margin-bottom: -1.5rem;
             /* Enable touch events */
             touch-action: pan-y;
             user-select: none;
@@ -943,8 +728,8 @@ export default function TestimonialsSection() {
             left: 0;
             right: 0;
             bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15.4 16.6L10.8 12L15.4 7.4L14 6L8 12L14 18L15.4 16.6Z' fill='rgba(255,255,255,0.1)'/%3E%3C/svg%3E") left center no-repeat, 
-                      url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.6 16.6L13.2 12L8.6 7.4L10 6L16 12L10 18L8.6 16.6Z' fill='rgba(255,255,255,0.1)'/%3E%3C/svg%3E") right center no-repeat;
+            background: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15.4 16.6L10.8 12L15.4 7.4L14 6L8 12L14 18L15.4 16.6Z' fill='rgba(0,0,0,0.1)'/%3E%3C/svg%3E") left center no-repeat, 
+                      url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.6 16.6L13.2 12L8.6 7.4L10 6L16 12L10 18L8.6 16.6Z' fill='rgba(0,0,0,0.1)'/%3E%3C/svg%3E") right center no-repeat;
             background-size: 36px;
             pointer-events: none;
             opacity: 0;
@@ -958,10 +743,12 @@ export default function TestimonialsSection() {
           .testimonial-card {
             position: relative;
             max-width: 100%;
+            width: 100%;
+            height: 330px;
             padding: 1.5rem;
             margin: 0 auto;
             box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             transform: none;
           }
           
@@ -971,21 +758,16 @@ export default function TestimonialsSection() {
             left: 0;
             right: 0;
             margin: 0 auto;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(18, 24, 41, 0.98);
-          }
-          
-          [data-bs-theme="light"] .testimonial-card.active {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
             border: 1px solid rgba(0, 0, 0, 0.1);
             background: rgba(255, 255, 255, 0.98);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
           }
           
           .testimonial-text {
             font-size: 1rem;
             line-height: 1.5;
             margin-bottom: 1.5rem;
+            -webkit-line-clamp: 3;
           }
           
           .testimonial-card.prev,
@@ -998,8 +780,7 @@ export default function TestimonialsSection() {
           .section-title {
             font-size: 1.8rem;
           }
-          
-          /* Полностью скрываем стрелки на мобильных */
+        
           .nav-arrow {
             display: none !important;
           }
@@ -1028,7 +809,8 @@ export default function TestimonialsSection() {
           }
           
           .dots-container {
-            margin-top: 0.5rem;
+            margin-top: 0;
+            margin-bottom: 1rem;
           }
 
           .testimonial-carousel {
@@ -1038,21 +820,24 @@ export default function TestimonialsSection() {
         
         @media (max-width: 576px) {
           .testimonials-section {
-            padding: 2.5rem 0 3.5rem;
+            padding: 2.5rem 0 2.5rem;
           }
           
           .testimonial-slider {
-            min-height: 320px;
+            min-height: 380px;
+            height: 380px;
           }
           
           .testimonial-card {
             padding: 1.25rem;
             border-radius: 12px;
+            height: 300px;
           }
           
           .testimonial-text {
             font-size: 0.95rem;
             margin-bottom: 1.25rem;
+            -webkit-line-clamp: 3;
           }
           
           .avatar-wrapper {
@@ -1079,7 +864,8 @@ export default function TestimonialsSection() {
           }
 
           .dots-container {
-            margin-top: 0;
+            margin-top: -0.5rem;
+            margin-bottom: 0;
           }
 
           .section-title {

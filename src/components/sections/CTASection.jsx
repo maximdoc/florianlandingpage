@@ -1,37 +1,54 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Container, Row, Col, Form } from 'react-bootstrap';
 import Button from '../ui/Button';
 import SectionContainer from '../SectionContainer';
 import Icon from '../ui/Icon';
-import { getSectionById } from '@/utils/contentUtils';
+import content from '@/data/content.json';
+
+// Custom hook to detect if element is in viewport
+const useIsVisible = (ref) => {
+  const [isIntersecting, setIntersecting] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIntersecting(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, [ref]);
+
+  return isIntersecting;
+};
 
 export default function CTASection() {
-  const [ctaSection, setCtaSection] = useState(null);
-  const [loading, setLoading] = useState(true);
-  
-  // Load section data from API
-  useEffect(() => {
-    async function loadCtaSection() {
-      try {
-        setLoading(true);
-        const sectionData = await getSectionById('home', 'cta');
-        setCtaSection(sectionData);
-      } catch (error) {
-        console.error('Error loading CTA section:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    
-    loadCtaSection();
-  }, []);
-  
-  // If data is loading, show loading indicator
-  if (loading) {
-    return <div className="p-5 text-center">Loading...</div>;
-  }
+  // Get CTA section data directly from content.json
+  const homePageData = content.pages.find(page => page.id === 'home');
+  const ctaSection = homePageData.sections.find(section => section.id === 'cta');
+
+  // Refs for animation tracking
+  const sectionRef = useRef(null);
+  const contentColRef = useRef(null);
+  const formColRef = useRef(null);
+  const benefitsRef = useRef(null);
+
+  // Check if elements are visible
+  const isSectionVisible = useIsVisible(sectionRef);
+  const isContentVisible = useIsVisible(contentColRef);
+  const isFormVisible = useIsVisible(formColRef);
+  const isBenefitsVisible = useIsVisible(benefitsRef);
 
   // If section data not found, don't display component
   if (!ctaSection) {
@@ -42,22 +59,45 @@ export default function CTASection() {
     <SectionContainer 
       id="strategy-call" 
       className="cta-section-container py-6" 
-      backgroundVariant={ctaSection.backgroundVariant || "dark"}
+      backgroundVariant="light"
+      ref={sectionRef}
     >
       <Container>
         <div className="cta-card-enhanced">
           <Row className="g-0">
-            <Col lg={6} className="cta-content-col">
+            <Col lg={6} className="cta-content-col" ref={contentColRef}>
               <div className="content-wrapper">
-                <h2 className="display-5 fw-bold mb-4" dangerouslySetInnerHTML={{ __html: ctaSection.title }} />
+                <h2 
+                  className={`display-5 fw-bold mb-4 transition-all duration-1000 ${
+                    isContentVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                  }`} 
+                  dangerouslySetInnerHTML={{ __html: ctaSection.title }} 
+                />
                 
-                <p className="lead mb-4">
+                <p 
+                  className={`lead mb-4 transition-all duration-1000 delay-100 ${
+                    isContentVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                  }`}
+                >
                   {ctaSection.subtitle}
                 </p>
                 
-                <div className="benefits-grid">
+                <div 
+                  className={`benefits-grid transition-all duration-1000 delay-200 ${
+                    isBenefitsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                  }`} 
+                  ref={benefitsRef}
+                >
                   {ctaSection.benefits && ctaSection.benefits.map((benefit, index) => (
-                    <div className="benefit-item" key={index}>
+                    <div 
+                      className="benefit-item transition-all duration-1000" 
+                      key={index}
+                      style={{ 
+                        transitionDelay: `${250 + index * 100}ms`,
+                        opacity: isBenefitsVisible ? 1 : 0,
+                        transform: isBenefitsVisible ? 'translateY(0)' : 'translateY(20px)'
+                      }}
+                    >
                       <div className="benefit-icon">
                         <Icon name="check" width={14} height={14} />
                       </div>
@@ -72,13 +112,32 @@ export default function CTASection() {
               <div className="decorative-shape shape-2"></div>
             </Col>
             
-            <Col lg={6} className="cta-form-col">
-              <div className="form-wrapper">
-                <h3 className="form-title mb-4">{ctaSection.formTitle}</h3>
+            <Col lg={6} className="cta-form-col" ref={formColRef}>
+              <div 
+                className={`form-wrapper transition-all duration-1000 ${
+                  isFormVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                }`}
+              >
+                <h3 
+                  className={`form-title mb-4 transition-all duration-1000 ${
+                    isFormVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                  }`}
+                >
+                  {ctaSection.formTitle}
+                </h3>
                 
                 <Form>
                   {ctaSection.formFields && ctaSection.formFields.map((field, index) => (
-                    <Form.Group className="mb-3" key={index}>
+                    <Form.Group 
+                      className="mb-3" 
+                      key={index}
+                      style={{ 
+                        transitionDelay: `${150 + index * 100}ms`,
+                        opacity: isFormVisible ? 1 : 0,
+                        transform: isFormVisible ? 'translateY(0)' : 'translateY(20px)',
+                        transition: 'all 1000ms'
+                      }}
+                    >
                       <Form.Label>{field.label}</Form.Label>
                       <Form.Control 
                         type={field.type} 
@@ -89,7 +148,15 @@ export default function CTASection() {
                   ))}
                   
                   {ctaSection.submitButton && (
-                    <div className="d-grid">
+                    <div 
+                      className="d-grid"
+                      style={{ 
+                        transitionDelay: `${150 + ((ctaSection.formFields?.length || 0) + 1) * 100}ms`,
+                        opacity: isFormVisible ? 1 : 0,
+                        transform: isFormVisible ? 'translateY(0)' : 'translateY(20px)',
+                        transition: 'all 1000ms'
+                      }}
+                    >
                       <Button 
                         type="submit" 
                         variant="action"
@@ -101,7 +168,15 @@ export default function CTASection() {
                     </div>
                   )}
                   
-                  <div className="form-disclaimer mt-3 text-center">
+                  <div 
+                    className="form-disclaimer mt-3 text-center"
+                    style={{ 
+                      transitionDelay: `${150 + ((ctaSection.formFields?.length || 0) + 1) * 100}ms`,
+                      opacity: isFormVisible ? 1 : 0,
+                      transform: isFormVisible ? 'translateY(0)' : 'translateY(20px)',
+                      transition: 'all 1000ms'
+                    }}
+                  >
                     {ctaSection.disclaimer}
                   </div>
                 </Form>
@@ -112,48 +187,52 @@ export default function CTASection() {
       </Container>
       
       <style jsx global>{`
-        :root {
-          --cta-bg: var(--primary);
-          --cta-card-bg: #ffffff;
-          --cta-form-bg: #f8f9ff;
-          --cta-text: var(--text-primary);
-          --benefit-icon-bg: rgba(var(--primary-rgb), 0.1);
-          --benefit-icon-color: var(--primary);
-          --form-accent: var(--primary);
-          --form-text: var(--text-primary);
-          --form-bg: #ffffff;
-          --form-label: var(--text-secondary);
-          --form-shadow: rgba(0, 0, 0, 0.05);
-          --shape-color-1: rgba(var(--primary-rgb), 0.1);
-          --shape-color-2: rgba(var(--primary-rgb), 0.05);
-          --cta-card-border: rgba(var(--primary-rgb), 0.15);
-          --cta-card-shadow: 0 20px 60px rgba(var(--primary-rgb), 0.12), 0 1px 3px rgba(0, 0, 0, 0.05);
+        /* Animation utilities */
+        .transition-all {
+          transition-property: all;
         }
-        
-        [data-bs-theme="dark"] {
-          --cta-card-bg: var(--card-bg);
-          --cta-form-bg: rgba(255, 255, 255, 0.02);
-          --benefit-icon-bg: rgba(var(--primary-rgb), 0.2);
-          --form-shadow: rgba(0, 0, 0, 0.2);
-          --shape-color-1: rgba(var(--primary-rgb), 0.15);
-          --shape-color-2: rgba(var(--primary-rgb), 0.1);
-          --form-bg: rgba(30, 41, 59, 0.2);
-          --cta-card-border: rgba(255, 255, 255, 0.05);
-          --cta-card-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+
+        .duration-1000 {
+          transition-duration: 1000ms;
+        }
+
+        .delay-100 {
+          transition-delay: 100ms;
+        }
+
+        .delay-200 {
+          transition-delay: 200ms;
+        }
+
+        .opacity-0 {
+          opacity: 0;
+        }
+
+        .opacity-100 {
+          opacity: 1;
+        }
+
+        .translate-y-0 {
+          transform: translateY(0);
+        }
+
+        .translate-y-10 {
+          transform: translateY(40px);
         }
         
         .cta-section-container {
           position: relative;
           overflow: hidden;
           padding: 5rem 0;
+          background-color: #f8fafc;
         }
         
         .cta-card-enhanced {
           border-radius: 1.5rem;
           overflow: hidden;
-          box-shadow: var(--cta-card-shadow);
-          background: var(--cta-card-bg);
-          border: 1px solid var(--cta-card-border);
+          box-shadow: 0 20px 60px rgba(99, 102, 241, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05);
+          background: #ffffff;
+          border: 1px solid rgba(99, 102, 241, 0.15);
           position: relative;
           z-index: 1;
         }
@@ -164,7 +243,7 @@ export default function CTASection() {
           display: flex;
           align-items: center;
           padding: 4rem 3rem;
-          color: var(--cta-text);
+          color: #1e293b;
           z-index: 1;
         }
         
@@ -184,6 +263,10 @@ export default function CTASection() {
           
           .display-5 {
             font-size: calc(1.425rem + 2.1vw);
+          }
+          
+          .form-title {
+            font-size: 1.5rem;
           }
         }
         
@@ -215,6 +298,20 @@ export default function CTASection() {
           .form-wrapper {
             padding: 0 !important;
           }
+          
+          .form-title {
+            font-size: 1.35rem;
+            margin-bottom: 1.25rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+          }
+        }
+        
+        @media (max-width: 575.98px) {
+          .form-title {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+          }
         }
         
         .content-wrapper {
@@ -228,6 +325,7 @@ export default function CTASection() {
           grid-template-columns: repeat(2, 1fr);
           gap: 1.5rem;
           margin-top: 2rem;
+          will-change: transform, opacity;
         }
         
         .benefit-item {
@@ -235,6 +333,7 @@ export default function CTASection() {
           align-items: center;
           font-size: 0.95rem;
           margin-bottom: 0.75rem;
+          will-change: transform, opacity;
         }
         
         .benefit-icon {
@@ -300,15 +399,7 @@ export default function CTASection() {
         .benefit-item span {
           font-weight: 500;
           font-size: 0.95rem;
-          color: var(--cta-text);
-        }
-        
-        [data-bs-theme="light"] .benefit-item span {
-          color: #1E293B !important;
-        }
-        
-        [data-bs-theme="dark"] .benefit-item span {
-          color: rgba(255, 255, 255, 0.9) !important;
+          color: #1E293B;
         }
         
         .decorative-shape {
@@ -324,7 +415,7 @@ export default function CTASection() {
           height: 400px;
           bottom: -200px;
           right: -200px;
-          background: var(--shape-color-1);
+          background: rgba(99, 102, 241, 0.1);
           animation: floatSlow 15s ease-in-out infinite alternate;
         }
         
@@ -333,7 +424,7 @@ export default function CTASection() {
           height: 300px;
           top: -150px;
           left: -150px;
-          background: var(--shape-color-2);
+          background: rgba(99, 102, 241, 0.05);
           animation: floatSlow 20s ease-in-out infinite alternate-reverse;
         }
         
@@ -344,7 +435,7 @@ export default function CTASection() {
         
         /* Form column styling */
         .cta-form-col {
-          background: var(--cta-form-bg);
+          background: #f8f9ff;
           backdrop-filter: blur(10px);
           padding: 4rem 3rem;
           position: relative;
@@ -357,43 +448,47 @@ export default function CTASection() {
         .form-wrapper {
           width: 100%;
           max-width: 400px;
+          will-change: transform, opacity;
         }
         
         .form-title {
           font-weight: 700;
-          color: var(--cta-text);
+          color: #1e293b;
           font-size: 1.75rem;
+          will-change: transform, opacity;
+          line-height: 1.3;
         }
         
         .form-control-enhanced {
-          background: var(--form-bg);
-          border: 1px solid rgba(var(--primary-rgb), 0.1);
-          color: var(--form-text);
+          background: #ffffff;
+          border: 1px solid rgba(99, 102, 241, 0.1);
+          color: #1e293b;
           padding: 0.75rem 1rem;
           height: auto;
           border-radius: 0.75rem;
-          box-shadow: 0 2px 4px var(--form-shadow);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
           transition: all 0.3s ease;
         }
         
         .form-control-enhanced:focus {
-          border-color: var(--form-accent);
-          box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+          border-color: #6366f1;
+          box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
         }
         
         .form-control-enhanced::placeholder {
-          color: rgba(var(--text-secondary-rgb), 0.5);
+          color: rgba(100, 116, 139, 0.5);
         }
         
         .form-label {
           font-weight: 500;
-          color: var(--form-label);
+          color: #64748b;
           margin-bottom: 0.5rem;
         }
         
         .form-disclaimer {
-          color: var(--text-secondary);
+          color: #64748b;
           font-size: 0.875rem;
+          will-change: transform, opacity;
         }
       `}</style>
     </SectionContainer>
