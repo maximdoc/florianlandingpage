@@ -58,10 +58,6 @@ export default function TrustSection() {
       backgroundVariant="light"
       ref={sectionRef}
     >
-      {/* Decorative elements */}
-      <div className="position-absolute decorative-shape top-right"></div>
-      <div className="position-absolute decorative-shape bottom-left"></div>
-
       <Container
         className="position-relative trust-container"
         style={{ zIndex: 2 }}

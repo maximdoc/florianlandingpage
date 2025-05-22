@@ -37,8 +37,10 @@ export default function BenefitsSection() {
   const [hoveredBenefit, setHoveredBenefit] = useState(null);
 
   // Get benefits section data directly from content.json
-  const homePageData = content.pages.find(page => page.id === 'home');
-  const benefitsSection = homePageData.sections.find(section => section.id === 'benefits');
+  const homePageData = content.pages.find((page) => page.id === "home");
+  const benefitsSection = homePageData.sections.find(
+    (section) => section.id === "benefits"
+  );
 
   // Refs for animation tracking
   const sectionRef = useRef(null);
@@ -82,7 +84,7 @@ export default function BenefitsSection() {
           zIndex: -4,
         }}
       ></div>
-      
+
       <div
         className="position-absolute dots-grid dots-grid-bottom-left"
         style={{
@@ -93,7 +95,7 @@ export default function BenefitsSection() {
           zIndex: -4,
         }}
       ></div>
-      
+
       <div
         className="position-absolute dots-grid dots-grid-center-right"
         style={{
@@ -110,13 +112,17 @@ export default function BenefitsSection() {
           <Col lg={8} className="mx-auto">
             <h2
               className={`display-5 mb-3 transition-all duration-1000 ${
-                isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                isTitleVisible
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-10"
               }`}
               dangerouslySetInnerHTML={{ __html: benefitsSection.title }}
             />
-            <p 
+            <p
               className={`lead transition-all duration-1000 delay-100 ${
-                isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                isTitleVisible
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-10"
               }`}
             >
               {benefitsSection.subtitle}
@@ -127,16 +133,14 @@ export default function BenefitsSection() {
         <Row className="g-4 benefits-cards" ref={benefitsGridRef}>
           {benefitsSection.tiles &&
             benefitsSection.tiles.map((benefit, index) => (
-              <Col
-                lg={6}
-                className="benefit-col"
-                key={benefit.id}
-              >
+              <Col lg={6} className="benefit-col" key={benefit.id}>
                 <div
                   className={`benefit-card ${
                     hoveredBenefit === benefit.id ? "active" : ""
                   } transition-all duration-1000 ${
-                    areBenefitsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                    areBenefitsVisible
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-10"
                   }`}
                   style={{ transitionDelay: `${150 + index * 100}ms` }}
                   onMouseEnter={() => setHoveredBenefit(benefit.id)}
@@ -174,53 +178,88 @@ export default function BenefitsSection() {
         {/* Additional Copy Options */}
         <Row className="mt-5 additional-copy" ref={quotesRef}>
           <Col lg={10} className="mx-auto">
-            <div 
+            <div
               className={`quote-container transition-all duration-1000 ${
-                areQuotesVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                areQuotesVisible
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-10"
               }`}
             >
               <div className="quote-grid">
                 {/* First quote item */}
-                <div 
+                <div
                   className="quote-item"
-                  style={{ 
-                    transitionDelay: '150ms',
+                  style={{
+                    transitionDelay: "150ms",
                     opacity: areQuotesVisible ? 1 : 0,
-                    transform: areQuotesVisible ? 'translateY(0)' : 'translateY(40px)',
-                    transition: 'all 1000ms cubic-bezier(0.2, 0.8, 0.2, 1)'
+                    transform: areQuotesVisible
+                      ? "translateY(0)"
+                      : "translateY(40px)",
+                    transition: "all 1000ms cubic-bezier(0.2, 0.8, 0.2, 1)",
                   }}
                 >
                   <div className="quote-icon-wrapper">
                     <div className="quote-icon">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9.59 4.59A2 2 0 1 1 11 8H8a6 6 0 0 0 6 6v2a8 8 0 0 1-8-8V4.59z" fill="currentColor"/>
-                        <path d="M15.59 4.59A2 2 0 1 1 17 8h-3a6 6 0 0 0 6 6v2a8 8 0 0 1-8-8V4.59z" fill="currentColor"/>
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M9.59 4.59A2 2 0 1 1 11 8H8a6 6 0 0 0 6 6v2a8 8 0 0 1-8-8V4.59z"
+                          fill="currentColor"
+                        />
+                        <path
+                          d="M15.59 4.59A2 2 0 1 1 17 8h-3a6 6 0 0 0 6 6v2a8 8 0 0 1-8-8V4.59z"
+                          fill="currentColor"
+                        />
                       </svg>
                     </div>
                   </div>
-                  <p className="quote-text">No training required. Plug into a proven government sales engine.</p>
+                  <p className="quote-text">
+                    No training required. Plug into a proven government sales
+                    engine.
+                  </p>
                   <div className="quote-dot-pattern pattern-right"></div>
                 </div>
-                
+
                 {/* Second quote item */}
-                <div 
+                <div
                   className="quote-item"
-                  style={{ 
-                    transitionDelay: '250ms',
+                  style={{
+                    transitionDelay: "250ms",
                     opacity: areQuotesVisible ? 1 : 0,
-                    transform: areQuotesVisible ? 'translateY(0)' : 'translateY(40px)',
-                    transition: 'all 1000ms cubic-bezier(0.2, 0.8, 0.2, 1)'
+                    transform: areQuotesVisible
+                      ? "translateY(0)"
+                      : "translateY(40px)",
+                    transition: "all 1000ms cubic-bezier(0.2, 0.8, 0.2, 1)",
                   }}
                 >
                   <div className="quote-icon-wrapper">
                     <div className="quote-icon">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9.59 4.59A2 2 0 1 1 11 8H8a6 6 0 0 0 6 6v2a8 8 0 0 1-8-8V4.59z" fill="currentColor"/>
-                        <path d="M15.59 4.59A2 2 0 1 1 17 8h-3a6 6 0 0 0 6 6v2a8 8 0 0 1-8-8V4.59z" fill="currentColor"/>
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M9.59 4.59A2 2 0 1 1 11 8H8a6 6 0 0 0 6 6v2a8 8 0 0 1-8-8V4.59z"
+                          fill="currentColor"
+                        />
+                        <path
+                          d="M15.59 4.59A2 2 0 1 1 17 8h-3a6 6 0 0 0 6 6v2a8 8 0 0 1-8-8V4.59z"
+                          fill="currentColor"
+                        />
                       </svg>
                     </div>
                   </div>
-                  <p className="quote-text">Leave the regs and registrations to us—focus on execution.</p>
+                  <p className="quote-text">
+                    Leave the regs and registrations to us—focus on execution.
+                  </p>
                   <div className="quote-dot-pattern pattern-left"></div>
                 </div>
               </div>
@@ -231,9 +270,11 @@ export default function BenefitsSection() {
         <Row ref={ctaRef}>
           <Col className="text-center">
             {benefitsSection.ctaButton && (
-              <div 
+              <div
                 className={`cta-wrapper mt-5 pt-3 transition-all duration-1000 ${
-                  isCtaVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                  isCtaVisible
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-10"
                 }`}
               >
                 <Button
@@ -428,7 +469,7 @@ export default function BenefitsSection() {
           right: auto;
           background-image: radial-gradient(
             var(--feature-dot-color) 1px,
-            transparent 0
+            transparent 
           );
           background-size: 12px 12px;
         }
@@ -709,15 +750,22 @@ export default function BenefitsSection() {
           }
 
           .benefit-icon-wrapper {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
+            width: 42px;
+            height: 42px;
+            border-radius: 16px;
             margin-right: 12px;
           }
 
+          .benefit-icon-wrapper::after {
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 95%;
+            height: 45%;
+          }
+
           .benefit-icon-wrapper svg {
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
           }
 
           .benefit-title {
@@ -743,38 +791,41 @@ export default function BenefitsSection() {
 
         /* Dots grid styles */
         .dots-grid {
-          background-image: radial-gradient(var(--primary) 2.5px, transparent 2.5px);
+          background-image: radial-gradient(
+            var(--primary) 2.5px,
+            transparent 2.5px
+          );
           background-size: 18px 18px;
           opacity: 0.8;
           filter: brightness(0.3);
         }
-        
+
         .dots-grid-top-right {
           transform: rotate(10deg);
         }
-        
+
         .dots-grid-bottom-left {
           transform: rotate(-5deg);
         }
-        
+
         .dots-grid-center-right {
           transform: translateY(-50%) rotate(10deg);
           background-size: 15px 15px;
         }
-        
+
         /* Hide decorative dots on mobile devices */
         @media (max-width: 992px) {
           .dots-grid {
             display: none;
           }
         }
-        
+
         /* Display only some dots on medium devices */
         @media (min-width: 993px) and (max-width: 1200px) {
           .dots-grid-center-right {
             display: none;
           }
-          
+
           .dots-grid-top-right,
           .dots-grid-bottom-left {
             width: 120px;
@@ -793,7 +844,7 @@ export default function BenefitsSection() {
           border: none;
           box-shadow: none;
         }
-        
+
         .quote-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -801,7 +852,7 @@ export default function BenefitsSection() {
           position: relative;
           z-index: 1;
         }
-        
+
         .quote-item {
           position: relative;
           display: flex;
@@ -812,14 +863,15 @@ export default function BenefitsSection() {
           border-radius: 18px;
           border: 1px solid var(--card-border);
           overflow: hidden;
-          transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s ease;
+          transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+            box-shadow 0.5s ease;
           box-shadow: var(--card-shadow),
             0 0 20px rgba(var(--primary-rgb), 0.03);
           backdrop-filter: blur(10px);
           will-change: transform, opacity;
           height: 100%;
         }
-        
+
         .quote-item::before {
           content: "";
           position: absolute;
@@ -835,7 +887,7 @@ export default function BenefitsSection() {
           opacity: 0;
           transition: opacity 0.4s ease;
         }
-        
+
         .quote-item::after {
           content: "";
           position: absolute;
@@ -852,21 +904,21 @@ export default function BenefitsSection() {
           transition: opacity 0.5s ease;
           z-index: 0;
         }
-        
+
         .quote-item:hover {
           transform: translateY(-8px) scale(1.01);
           box-shadow: var(--card-hover-shadow),
             0 15px 35px rgba(var(--primary-rgb), 0.08);
         }
-        
+
         .quote-item:hover::before {
           opacity: 1;
         }
-        
+
         .quote-item:hover::after {
           opacity: 1;
         }
-        
+
         /* Quote dot pattern styling */
         .quote-dot-pattern {
           position: absolute;
@@ -877,7 +929,7 @@ export default function BenefitsSection() {
           z-index: 0;
           opacity: 0.3;
         }
-        
+
         .quote-icon-wrapper {
           display: flex;
           align-items: center;
@@ -885,7 +937,7 @@ export default function BenefitsSection() {
           position: relative;
           z-index: 2;
         }
-        
+
         .quote-icon {
           display: flex;
           align-items: center;
@@ -903,7 +955,7 @@ export default function BenefitsSection() {
             inset 0 -2px 5px rgba(0, 0, 0, 0.2),
             inset 0 2px 5px rgba(255, 255, 255, 0.3);
         }
-        
+
         /* Glow effect */
         .quote-icon::before {
           content: "";
@@ -920,7 +972,7 @@ export default function BenefitsSection() {
           opacity: 0.8;
           transition: opacity 0.3s ease;
         }
-        
+
         .quote-icon::after {
           content: "";
           position: absolute;
@@ -936,7 +988,7 @@ export default function BenefitsSection() {
           border-radius: 16px 16px 0 0;
           opacity: 0.7;
         }
-        
+
         .quote-icon svg {
           color: white;
           position: relative;
@@ -945,7 +997,7 @@ export default function BenefitsSection() {
           fill: currentColor;
           will-change: transform;
         }
-        
+
         .quote-item:hover .quote-icon {
           transform: translateY(-2px);
           box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5),
@@ -953,12 +1005,12 @@ export default function BenefitsSection() {
             inset 0 -2px 5px rgba(0, 0, 0, 0.2),
             inset 0 2px 5px rgba(255, 255, 255, 0.4);
         }
-        
+
         .quote-item:hover .quote-icon::before {
           opacity: 1;
           filter: blur(10px);
         }
-        
+
         .quote-text {
           font-size: 1.1rem;
           line-height: 1.6;
@@ -968,37 +1020,37 @@ export default function BenefitsSection() {
           position: relative;
           z-index: 1;
         }
-        
+
         @media (max-width: 991.98px) {
           .quote-item {
             padding: 22px;
           }
-          
+
           .quote-icon {
             width: 36px;
             height: 36px;
           }
-          
+
           .quote-text {
             font-size: 1rem;
           }
         }
-        
+
         @media (max-width: 768px) {
           .quote-grid {
             grid-template-columns: 1fr;
             gap: 1.5rem;
           }
-          
+
           .quote-item {
             padding: 18px;
           }
-          
+
           .quote-icon {
-            width: 32px;
-            height: 32px;
+            width: 42px;
+            height: 42px;
           }
-          
+
           .quote-text {
             font-size: 0.95rem;
           }
