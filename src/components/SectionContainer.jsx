@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 /**
  * SectionContainer - A wrapper component for all page sections
@@ -22,34 +22,11 @@ export default function SectionContainer({
   ...rest 
 }) {
   const sectionRef = useRef(null);
-  const [theme, setTheme] = useState('dark');
   
   useEffect(() => {
-    // Get initial theme
-    const htmlElement = document.documentElement;
-    setTheme(htmlElement.getAttribute('data-bs-theme') || 'dark');
-
-    // Listen for theme changes
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (
-          mutation.type === 'attributes' &&
-          mutation.attributeName === 'data-bs-theme'
-        ) {
-          setTheme(htmlElement.getAttribute('data-bs-theme') || 'dark');
-        }
-      });
-    });
-
-    // Start observing
-    observer.observe(htmlElement, { attributes: true });
-    
     // Apply background variant if specified
     applyBackgroundVariant();
-    
-    // Cleanup
-    return () => observer.disconnect();
-  }, [backgroundVariant, theme]);
+  }, [backgroundVariant]);
   
   const applyBackgroundVariant = () => {
     if (sectionRef.current) {

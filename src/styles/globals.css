@@ -1165,44 +1165,6 @@ p {
   opacity: 0.1;
 }
 
-.theme-toggle {
-  background: transparent;
-  border: none;
-  color: var(--text-primary);
-  cursor: pointer;
-  padding: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color var(--transition-speed) ease,
-    transform var(--transition-speed) var(--transition-bounce);
-}
-
-.theme-toggle:hover {
-  color: var(--primary);
-  transform: rotate(10deg);
-}
-
-/* Styles for button during theme change */
-.theme-toggle.changing {
-  animation: pulse 1.5s infinite;
-}
-
-/* Animation for theme change indication */
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(1.1);
-  }
-
-  100% {
-    transform: scale(1);
-  }
-}
-
 /* Section styling */
 .section-title {
   font-weight: 700;

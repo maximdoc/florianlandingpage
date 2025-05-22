@@ -108,23 +108,6 @@ export default function ProblemSolutionSection() {
         /* Core variables for theme compatibility */
         :root {
           --solution-section-bg: var(--section-bg-light);
-          --card-bg: rgba(255, 255, 255, 0.03);
-          --card-border: rgba(255, 255, 255, 0.1);
-          --card-hover-bg: rgba(255, 255, 255, 0.05);
-          --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-          --card-hover-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-          --text-primary: #fff;
-          --text-secondary: rgba(255, 255, 255, 0.7);
-          --step-card-bg: rgba(30, 41, 59, 0.6);
-          --step-card-border: rgba(255, 255, 255, 0.08);
-          --step-icon-color: #6366f1;
-          --result-card-bg: #6366f1;
-          --result-text-color: #ffffff;
-          --primary-rgb: 99, 102, 241;
-        }
-        
-        [data-bs-theme="light"] {
-          --solution-section-bg: var(--section-bg-light);
           --card-bg: #ffffff;
           --card-border: rgba(0, 0, 0, 0.06);
           --card-hover-bg: #ffffff;
@@ -137,6 +120,7 @@ export default function ProblemSolutionSection() {
           --step-icon-color: #6366f1;
           --result-card-bg: #6366f1;
           --result-text-color: #ffffff;
+          --primary-rgb: 99, 102, 241;
         }
         
         /* Section styling */

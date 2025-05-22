@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 /**
- * Component for displaying SVG icons with theme awareness
+ * Component for displaying SVG icons
  * @param {Object} props - Component properties
  * @param {string} props.name - Icon name
  * @param {number} [props.width=24] - Icon width
@@ -12,36 +12,6 @@ import React, { useEffect, useState } from 'react';
  * @returns {JSX.Element} SVG icon
  */
 export default function Icon({ name, width = 24, height = 24, className = '' }) {
-  const [currentTheme, setCurrentTheme] = useState('dark');
-  
-  // Detect theme changes
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    
-    // Get initial theme
-    const htmlElement = document.documentElement;
-    setCurrentTheme(htmlElement.getAttribute('data-bs-theme') || 'dark');
-    
-    // Create observer to watch for theme attribute changes
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (
-          mutation.type === 'attributes' &&
-          mutation.attributeName === 'data-bs-theme'
-        ) {
-          const newTheme = htmlElement.getAttribute('data-bs-theme') || 'dark';
-          setCurrentTheme(newTheme);
-        }
-      });
-    });
-    
-    // Start observing
-    observer.observe(htmlElement, { attributes: true });
-    
-    // Cleanup
-    return () => observer.disconnect();
-  }, []);
-  
   // Get SVG code for the icon
   const iconSvg = getIconSvg(name);
 
@@ -55,7 +25,6 @@ export default function Icon({ name, width = 24, height = 24, className = '' }) 
       className={className}
       dangerouslySetInnerHTML={{ __html: iconSvg }}
       data-icon-name={name}
-      data-theme={currentTheme}
       style={{
         willChange: 'fill, color',
         isolation: 'isolate',
