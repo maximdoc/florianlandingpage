@@ -560,6 +560,18 @@ export default function HeroSection() {
             margin-top: 2rem !important;
             padding-top: 2rem !important;
           }
+          
+          /* Reduce top padding for hero section on mobile */
+          .hero-section {
+            padding-top: 3rem !important;
+          }
+        }
+        
+        /* Additional adjustment for even smaller screens */
+        @media (max-width: 576px) {
+          .hero-section {
+            padding-top: 2rem !important;
+          }
         }
       `}</style>
 
