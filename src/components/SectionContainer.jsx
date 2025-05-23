@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 /**
  * SectionContainer - A wrapper component for all page sections
@@ -22,23 +22,12 @@ export default function SectionContainer({
   ...rest 
 }) {
   const sectionRef = useRef(null);
+  const [isMounted, setIsMounted] = useState(false);
   
   useEffect(() => {
-    // Apply background variant if specified
-    applyBackgroundVariant();
-  }, [backgroundVariant]);
+    setIsMounted(true);
+  }, []);
   
-  const applyBackgroundVariant = () => {
-    if (sectionRef.current) {
-      // Set background color based on variant
-      if (backgroundVariant === 'light') {
-        sectionRef.current.style.backgroundColor = 'var(--section-bg-light)';
-      } else if (backgroundVariant === 'dark') {
-        sectionRef.current.style.backgroundColor = 'var(--section-bg-dark)';
-      }
-    }
-  };
-
   // Define base styles to prevent layout shifts
   const baseStyles = {
     position: 'relative',
@@ -49,7 +38,10 @@ export default function SectionContainer({
     paddingTop: style.padding ? style.padding : (style.paddingTop || '5rem'),
     paddingBottom: style.padding ? style.padding : (style.paddingBottom || '5rem'),
     boxSizing: 'border-box', // Ensure padding is included in width calculation
-    ...style
+    ...style,
+    // Apply background color directly in the style object
+    ...(backgroundVariant === 'light' ? { backgroundColor: 'var(--section-bg-light)' } : {}),
+    ...(backgroundVariant === 'dark' ? { backgroundColor: 'var(--section-bg-dark)' } : {})
   };
   
   return (

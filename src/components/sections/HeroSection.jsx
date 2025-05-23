@@ -476,7 +476,7 @@ export default function HeroSection() {
         }
         
         /* Responsive adjustments */
-        @media (max-width: 992px) {
+        @media (max-width: 1200px) {
           .dots-grid {
             display: none;
           }

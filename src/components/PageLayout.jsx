@@ -1,9 +1,16 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 
 export default function PageLayout({ children }) {
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <>
       <Navbar />
@@ -18,7 +25,9 @@ export default function PageLayout({ children }) {
           overflowX: 'hidden'
         }}
       >
-        {children}
+        <div style={{ visibility: mounted ? 'visible' : 'hidden' }}>
+          {children}
+        </div>
       </main>
       <Footer />
     </>

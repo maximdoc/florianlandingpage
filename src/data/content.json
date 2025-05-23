@@ -462,19 +462,19 @@
               {
                 "id": 1,
                 "name": "Service-Disabled Veteran-Owned",
-                "image": "/images/people-three.png",
+                "image": "/images/people-fourth-light.png",
                 "description": "Service-Disabled Veteran-Owned Small Business"
               },
               {
                 "id": 2,
                 "name": "Woman-Owned",
-                "image": "/images/people-three.png",
+                "image": "/images/people-fourth-light.png",
                 "description": "Woman-Owned Small Business"
               },
               {
                 "id": 3,
                 "name": "8(a) Eligible",
-                "image": "/images/people-three.png",
+                "image": "/images/people-fourth-light.png",
                 "description": "SBA 8(a) Business Development Program"
               }
             ]

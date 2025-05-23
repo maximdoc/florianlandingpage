@@ -248,6 +248,49 @@ export default function CTASection() {
         }
         
         /* Responsive adjustments for CTA section */
+        @media (min-width: 768px) and (max-width: 991px) {
+          /* Tablet-specific layout (768-991px) */
+          .cta-card-enhanced {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow-x: auto;
+          }
+
+          .cta-card-enhanced .row {
+            flex-direction: row;
+            flex-wrap: nowrap;
+            width: max-content;
+            min-width: 100%;
+          }
+
+          .cta-content-col,
+          .cta-form-col {
+            min-width: 600px;
+            width: 50%;
+            padding: 3rem 2rem;
+          }
+
+          .benefits-grid {
+            gap: 1rem;
+            grid-template-columns: 1fr;
+            max-width: 450px;
+          }
+
+          .content-wrapper {
+            max-width: 500px;
+          }
+
+          .form-wrapper {
+            max-width: 450px;
+          }
+
+          /* Adjust font sizes for better readability */
+          .display-5 {
+            font-size: calc(1.375rem + 1.5vw);
+          }
+        }
+        
         @media (max-width: 991px) {
           .cta-content-col {
             padding: 3rem 2rem;
@@ -259,14 +302,60 @@ export default function CTASection() {
           
           .benefits-grid {
             gap: 1rem;
+            grid-template-columns: 1fr;
           }
           
           .display-5 {
-            font-size: calc(1.425rem + 2.1vw);
+            font-size: calc(1.425rem + 1.8vw);
           }
           
           .form-title {
             font-size: 1.5rem;
+          }
+
+          .cta-form-col {
+            padding: 3rem 2rem;
+          }
+
+          .form-wrapper {
+            max-width: 100%;
+          }
+
+          /* Improved form spacing on tablets */
+          .form-control-enhanced {
+            padding: 0.8rem;
+            font-size: 0.95rem;
+          }
+
+          /* Better column stacking for tablet */
+          .cta-card-enhanced .row {
+            flex-direction: column;
+          }
+
+          .cta-content-col,
+          .cta-form-col {
+            width: 100%;
+            max-width: 100%;
+            flex: 0 0 100%;
+          }
+
+          /* Center content on tablets */
+          .content-wrapper {
+            max-width: 100%;
+            text-align: center;
+            margin: 0 auto;
+          }
+
+          /* Center benefits grid on tablets */
+          .benefits-grid {
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+          }
+
+          .benefit-item {
+            justify-content: flex-start;
+            text-align: left;
           }
         }
         
@@ -277,7 +366,7 @@ export default function CTASection() {
           
           .cta-content-col, 
           .cta-form-col {
-            padding: 2.5rem 1.5rem;
+            padding: 2.5rem !important;
           }
           
           .content-wrapper {

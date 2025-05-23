@@ -49,8 +49,10 @@ export default function FeaturesSection() {
   const isCtaVisible = useIsVisible(ctaRef);
 
   // Get features section data directly from content.json
-  const homePageData = content.pages.find(page => page.id === 'home');
-  const featuresSection = homePageData.sections.find(section => section.id === 'features');
+  const homePageData = content.pages.find((page) => page.id === "home");
+  const featuresSection = homePageData.sections.find(
+    (section) => section.id === "features"
+  );
 
   return (
     <SectionContainer
@@ -74,7 +76,7 @@ export default function FeaturesSection() {
           transform: "rotate(10deg)",
         }}
       ></div>
-      
+
       <div
         className="position-absolute dots-grid"
         style={{
@@ -86,7 +88,7 @@ export default function FeaturesSection() {
           transform: "rotate(-5deg)",
         }}
       ></div>
-      
+
       <div
         className="position-absolute dots-grid"
         style={{
@@ -99,7 +101,7 @@ export default function FeaturesSection() {
           backgroundSize: "16px 16px",
         }}
       ></div>
-      
+
       <div
         className="position-absolute dots-grid"
         style={{
@@ -119,13 +121,17 @@ export default function FeaturesSection() {
           <Col lg={8} className="mx-auto">
             <h2
               className={`display-5 mb-3 transition-all duration-1000 transform ${
-                isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                isTitleVisible
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-10"
               }`}
               dangerouslySetInnerHTML={{ __html: featuresSection.title }}
             />
-            <p 
+            <p
               className={`lead text-body-secondary mb-4 transition-all duration-1000 delay-100 transform ${
-                isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                isTitleVisible
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-10"
               }`}
             >
               {featuresSection.subtitle}
@@ -152,13 +158,13 @@ export default function FeaturesSection() {
                       ? "feature-card-left"
                       : "feature-card-right"
                   } transition-all duration-1000 transform ${
-                    areFeaturesVisible 
-                      ? "opacity-100 translate-y-0" 
+                    areFeaturesVisible
+                      ? "opacity-100 translate-y-0"
                       : "opacity-0 translate-y-10"
                   }`}
                   style={{
                     transitionDelay: `${150 + index * 100}ms`,
-                    ...( feature.id === 7 ? { maxWidth: "100%" } : {})
+                    ...(feature.id === 7 ? { maxWidth: "100%" } : {}),
                   }}
                   onMouseEnter={() => setHoveredFeature(feature.id)}
                   onMouseLeave={() => setHoveredFeature(null)}
@@ -214,9 +220,11 @@ export default function FeaturesSection() {
             ref={ctaRef}
           >
             {featuresSection.ctaSection && (
-              <div 
+              <div
                 className={`cta-section w-100 transition-all duration-1000 transform ${
-                  isCtaVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                  isCtaVisible
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-10"
                 }`}
               >
                 <div className="cta-content">
@@ -230,7 +238,8 @@ export default function FeaturesSection() {
                       href={featuresSection.ctaSection.ctaButton.href}
                       variant="primary"
                     >
-                      {featuresSection.ctaSection.ctaButton.text || "Find Opportunities"}
+                      {featuresSection.ctaSection.ctaButton.text ||
+                        "Find Opportunities"}
                     </Button>
                   )}
                 </div>
@@ -551,7 +560,78 @@ export default function FeaturesSection() {
           box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
 
-        /* Responsive adjustments */
+        /* Dots grid styles */
+        .dots-grid {
+          background-image: radial-gradient(
+            var(--primary) 2.5px,
+            transparent 2.5px
+          );
+          background-size: 18px 18px;
+          opacity: 0.35;
+          filter: brightness(0.8); /* Makes dots darker for better visibility */
+        }
+
+        @media (min-width: 835px) {
+          .feature-card-center {
+            max-width: 600px !important;
+            margin: 0 auto;
+          }
+        }
+
+        @media (min-width: 769px) and (max-width: 992px) {
+          .feature-card-inner {
+            flex-direction: row;
+            align-items: center;
+            text-align: left;
+          }
+
+          .feature-content {
+            text-align: left;
+            align-items: flex-start;
+          }
+
+          /* Ensure correct alignment for alternating cards */
+          .feature-card-right .feature-content {
+            text-align: left;
+          }
+
+          /* Keep icon to the right on right-aligned cards */
+          .order-md-1 {
+            order: 1;
+          }
+
+          .order-md-2 {
+            order: 2;
+          }
+        }
+
+        @media (min-width: 993px) and (max-width: 1200px) {
+          .dots-grid-center-left {
+            display: none;
+          }
+
+          .dots-grid-top-left,
+          .dots-grid-bottom-right {
+            width: 140px;
+            height: 140px;
+          }
+        }
+
+        @media (max-width: 1200px) {
+          .dots-grid {
+            display: none;
+          }
+
+          .feature-icon-container {
+            margin-right: 0;
+          }
+
+          .feature-card-inner {
+            gap: 1rem;
+            padding: 1rem;
+          }
+        }
+
         @media (max-width: 992px) {
           .feature-card-inner {
             padding: 1.5rem;
@@ -587,6 +667,50 @@ export default function FeaturesSection() {
 
           .dots-grid {
             display: none;
+          }
+        }
+
+        @media (min-width: 576px) and (max-width: 834px) {
+          .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+          }
+          
+          /* Center the last item (SOC security card) */
+          .features-grid > :last-child {
+            grid-column: 1 / -1;
+            max-width: 50%;
+            margin: 0 auto;
+          }
+
+          .features-grid .feature-card-inner {
+            flex-direction: column !important;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 1rem;
+          }
+
+          /* Make all cards have icons on top for tablet view */
+          .features-grid .feature-card .feature-icon-container {
+            order: 1 !important;
+            margin-right: 0;
+            margin-bottom: 1rem;
+          }
+          
+          .features-grid .feature-card .feature-content {
+            order: 2 !important;
+          }
+
+          .feature-card-inner {
+            padding: 0;
+          }
+        }
+
+        @media (max-width: 575px) {
+          .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
           }
         }
 
@@ -639,64 +763,6 @@ export default function FeaturesSection() {
           .cta-section h3 {
             font-size: 1.2rem;
             margin-bottom: 1rem;
-          }
-        }
-
-        /* Add a specific media query for tablets to maintain original layout */
-        @media (min-width: 769px) and (max-width: 992px) {
-          .feature-card-inner {
-            flex-direction: row;
-            align-items: center;
-            text-align: left;
-          }
-          
-          .feature-content {
-            text-align: left;
-            align-items: flex-start;
-          }
-          
-          /* Ensure correct alignment for alternating cards */
-          .feature-card-right .feature-content {
-            text-align: left;
-          }
-          
-          /* Keep icon to the right on right-aligned cards */
-          .order-md-1 {
-            order: 1;
-          }
-          
-          .order-md-2 {
-            order: 2;
-          }
-        }
-
-        @media (min-width: 835px) {
-          .feature-card-center {
-            max-width: 600px !important;
-          }
-        }
-
-        /* Dots grid styles */
-        .dots-grid {
-          background-image: radial-gradient(
-            var(--primary) 2.5px,
-            transparent 2.5px
-          );
-          background-size: 18px 18px;
-          opacity: 0.35;
-          filter: brightness(0.8); /* Makes dots darker for better visibility */
-        }
-
-        /* Display only some dots on medium devices */
-        @media (min-width: 993px) and (max-width: 1200px) {
-          .dots-grid-center-left {
-            display: none;
-          }
-
-          .dots-grid-top-left,
-          .dots-grid-bottom-right {
-            width: 140px;
-            height: 140px;
           }
         }
       `}</style>

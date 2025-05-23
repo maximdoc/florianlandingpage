@@ -12,10 +12,12 @@ export default function SolutionSection() {
   const [isVisible, setIsVisible] = useState(false);
   const [hasBeenVisible, setHasBeenVisible] = useState(false);
   const sectionRef = useRef(null);
-  
+
   // Get solution section data directly from content.json
-  const homePageData = content.pages.find(page => page.id === 'home');
-  const solutionSection = homePageData.sections.find(section => section.id === 'solution');
+  const homePageData = content.pages.find((page) => page.id === "home");
+  const solutionSection = homePageData.sections.find(
+    (section) => section.id === "solution"
+  );
 
   // Add intersection observer for scroll animations
   useEffect(() => {
@@ -23,18 +25,18 @@ export default function SolutionSection() {
       (entries) => {
         // Update visibility state based on intersection
         const isIntersecting = entries[0].isIntersecting;
-        
+
         // Set visible state based on intersection
         setIsVisible(isIntersecting);
-        
-        // Once the section has been visible, mark it 
+
+        // Once the section has been visible, mark it
         if (isIntersecting && !hasBeenVisible) {
           setHasBeenVisible(true);
         }
       },
-      { 
+      {
         threshold: 0.15,
-        rootMargin: '0px 0px -10% 0px'
+        rootMargin: "0px 0px -10% 0px",
       }
     );
 
@@ -63,53 +65,66 @@ export default function SolutionSection() {
       backgroundVariant={solutionSection.backgroundVariant || "dark"}
     >
       {/* Decorative elements */}
-      <div className={`position-absolute shape-3 ${isVisible ? 'animate-in' : 'animate-out'}`}></div>
-      <div className={`position-absolute shape-4 ${isVisible ? 'animate-in' : 'animate-out'}`}></div>
+      <div
+        className={`position-absolute shape-3 ${
+          isVisible ? "animate-in" : "animate-out"
+        }`}
+      ></div>
+      <div
+        className={`position-absolute shape-4 ${
+          isVisible ? "animate-in" : "animate-out"
+        }`}
+      ></div>
 
       <Container className="position-relative" style={{ zIndex: 2 }}>
         <Row className="justify-content-center text-center mb-5">
           <Col lg={10} xl={8}>
-            <div className={`section-title-wrapper ${isVisible ? 'animate-in' : 'animate-out'}`}>
-            <h2
-              className="display-5 mb-3 solution-title-animation"
+            <div
+              className={`section-title-wrapper ${
+                isVisible ? "animate-in" : "animate-out"
+              }`}
+            >
+              <h2
+                className="display-5 mb-3 solution-title-animation"
                 dangerouslySetInnerHTML={{ __html: solutionSection.title }}
-            />
-            <p className="lead solution-subtitle-animation">
+              />
+              <p className="lead solution-subtitle-animation">
                 {solutionSection.subtitle}
-            </p>
+              </p>
             </div>
           </Col>
         </Row>
 
         <Row className="justify-content-center mb-5">
           <Col lg={10} className="solution-steps-container">
-            {solutionSection.steps && solutionSection.steps.map((step, index) => (
-              <div
-                key={step.number}
-                className={`solution-step-card ${
-                  activeStep === index ? "active" : ""
-                } ${isVisible ? 'animate-in' : 'animate-out'}`}
-                style={{ transitionDelay: `${200 + index * 150}ms` }}
-                onMouseEnter={() => handleStepHover(index)}
-                onMouseLeave={() => handleStepHover(null)}
-              >
-                <div className="step-icon">
-                  <div className="icon-wrapper">
-                    <Icon name={step.icon || `number-${step.number}`} />
-                  </div>
-                  <span className="step-number">{step.number}</span>
-                </div>
-                <div className="step-content">
-                  <h3 className="step-title">{step.title}</h3>
-                  <p className="step-description">{step.description}</p>
-                </div>
+            {solutionSection.steps &&
+              solutionSection.steps.map((step, index) => (
                 <div
-                  className={`step-dot-pattern ${
-                    index % 2 === 0 ? "pattern-right" : "pattern-left"
-                  }`}
-                ></div>
-              </div>
-            ))}
+                  key={step.number}
+                  className={`solution-step-card ${
+                    activeStep === index ? "active" : ""
+                  } ${isVisible ? "animate-in" : "animate-out"}`}
+                  style={{ transitionDelay: `${200 + index * 150}ms` }}
+                  onMouseEnter={() => handleStepHover(index)}
+                  onMouseLeave={() => handleStepHover(null)}
+                >
+                  <div className="step-icon">
+                    <div className="icon-wrapper">
+                      <Icon name={step.icon || `number-${step.number}`} />
+                    </div>
+                    <span className="step-number">{step.number}</span>
+                  </div>
+                  <div className="step-content">
+                    <h3 className="step-title">{step.title}</h3>
+                    <p className="step-description">{step.description}</p>
+                  </div>
+                  <div
+                    className={`step-dot-pattern ${
+                      index % 2 === 0 ? "pattern-right" : "pattern-left"
+                    }`}
+                  ></div>
+                </div>
+              ))}
           </Col>
         </Row>
 
@@ -117,30 +132,45 @@ export default function SolutionSection() {
           <Col lg={10} className="text-center">
             {solutionSection.result && (
               <div
-                className={`result-card ${isVisible ? 'animate-in' : 'animate-out'}`}
-                style={{ 
-                  transitionDelay: `${solutionSection.steps?.length ? 
-                    200 + solutionSection.steps.length * 150 + 100 : 600}ms` 
+                className={`result-card ${
+                  isVisible ? "animate-in" : "animate-out"
+                }`}
+                style={{
+                  transitionDelay: `${
+                    solutionSection.steps?.length
+                      ? 200 + solutionSection.steps.length * 150 + 100
+                      : 600
+                  }ms`,
                 }}
               >
-                <div className={`glow-effect-1 ${isVisible ? 'animate-in' : 'animate-out'}`}></div>
-                <div className={`glow-effect-2 ${isVisible ? 'animate-in' : 'animate-out'}`}></div>
+                <div
+                  className={`glow-effect-1 ${
+                    isVisible ? "animate-in" : "animate-out"
+                  }`}
+                ></div>
+                <div
+                  className={`glow-effect-2 ${
+                    isVisible ? "animate-in" : "animate-out"
+                  }`}
+                ></div>
 
                 <div className="result-content">
-                  <h3 className="result-title">{solutionSection.result.title}</h3>
+                  <h3 className="result-title">
+                    {solutionSection.result.title}
+                  </h3>
                   <p className="result-description">
                     {solutionSection.result.description}
                   </p>
                   {solutionSection.result.ctaButton && (
                     <div className="cta-button-wrapper">
-                    <Button
-                      href={solutionSection.result.ctaButton.href}
-                      variant="white"
-                      size="lg"
-                      className="mt-2"
-                    >
-                      {solutionSection.result.ctaButton.text}
-                    </Button>
+                      <Button
+                        href={solutionSection.result.ctaButton.href}
+                        variant="white"
+                        size="lg"
+                        className="mt-2"
+                      >
+                        {solutionSection.result.ctaButton.text}
+                      </Button>
                     </div>
                   )}
                 </div>
@@ -177,17 +207,17 @@ export default function SolutionSection() {
           overflow: hidden;
           padding: 5rem 0;
         }
-        
+
         /* Smooth scroll behavior for anchors */
         html {
           scroll-behavior: smooth;
         }
-        
+
         @media (prefers-reduced-motion: reduce) {
           html {
             scroll-behavior: auto;
           }
-          
+
           .section-title-wrapper,
           .solution-step-card,
           .result-card,
@@ -213,13 +243,13 @@ export default function SolutionSection() {
           transform: translateX(-40px) scale(0.9);
           transition: opacity 1.2s ease-out, transform 1.2s ease-out;
         }
-        
+
         .shape-3.animate-in {
           opacity: 0.025;
           transform: translateX(0) scale(1);
           animation: floatShape 18s ease-in-out infinite alternate;
         }
-        
+
         .shape-3.animate-out {
           opacity: 0;
           transform: translateX(-40px) scale(0.9);
@@ -241,13 +271,13 @@ export default function SolutionSection() {
           transition: opacity 1.2s ease-out, transform 1.2s ease-out;
           transition-delay: 0.2s;
         }
-        
+
         .shape-4.animate-in {
           opacity: 0.02;
           transform: translateX(0) scale(1);
           animation: pulse 8s ease-in-out infinite alternate;
         }
-        
+
         .shape-4.animate-out {
           opacity: 0;
           transform: translateX(40px) scale(0.9);
@@ -280,7 +310,7 @@ export default function SolutionSection() {
           opacity: 0;
           transform: translateY(30px);
           transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-                      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .section-title-wrapper.animate-in {
@@ -302,17 +332,17 @@ export default function SolutionSection() {
           transition-delay: 0.05s;
           display: block;
         }
-        
+
         .section-title-wrapper.animate-in .solution-title-animation {
           opacity: 1;
           transform: translateY(0);
         }
-        
+
         .section-title-wrapper.animate-out .solution-title-animation {
           opacity: 0;
           transform: translateY(20px);
         }
-        
+
         .solution-subtitle-animation {
           opacity: 0;
           transform: translateY(20px);
@@ -324,7 +354,7 @@ export default function SolutionSection() {
           opacity: 1;
           transform: translateY(0);
         }
-        
+
         .section-title-wrapper.animate-out .solution-subtitle-animation {
           opacity: 0;
           transform: translateY(20px);
@@ -363,17 +393,17 @@ export default function SolutionSection() {
           opacity: 0;
           transform: translateY(30px);
           transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-                      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-                      box-shadow 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
-                      border-color 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+            box-shadow 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+            border-color 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
           will-change: transform, opacity, box-shadow;
         }
-        
+
         .solution-step-card.animate-in {
           opacity: 1;
           transform: translateY(0);
         }
-        
+
         .solution-step-card.animate-out {
           opacity: 0;
           transform: translateY(30px);
@@ -575,15 +605,14 @@ export default function SolutionSection() {
           opacity: 0;
           transform: translateY(30px);
           transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-                      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-                      box-shadow 0.4s ease;
+            transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
         }
-        
+
         .result-card.animate-in {
           opacity: 1;
           transform: translateY(0);
         }
-        
+
         .result-card.animate-out {
           opacity: 0;
           transform: translateY(30px);
@@ -607,14 +636,14 @@ export default function SolutionSection() {
           height: 60%;
           transform: scale(0.8);
         }
-        
+
         .glow-effect-1.animate-in {
           opacity: 1;
           transform: scale(1);
           animation: pulse 10s infinite alternate;
           transition-delay: 0.7s;
         }
-        
+
         .glow-effect-1.animate-out {
           opacity: 0;
           transform: scale(0.8);
@@ -628,14 +657,14 @@ export default function SolutionSection() {
           height: 40%;
           transform: scale(0.8);
         }
-        
+
         .glow-effect-2.animate-in {
           opacity: 1;
           transform: scale(1);
           animation: pulse 15s infinite alternate-reverse;
           transition-delay: 0.9s;
         }
-        
+
         .glow-effect-2.animate-out {
           opacity: 0;
           transform: scale(0.8);
@@ -657,12 +686,12 @@ export default function SolutionSection() {
           transition: opacity 0.5s ease, transform 0.5s ease;
           transition-delay: 0.2s;
         }
-        
+
         .result-card.animate-in .result-title {
           opacity: 1;
           transform: translateY(0);
         }
-        
+
         .result-card.animate-out .result-title {
           opacity: 0;
           transform: translateY(15px);
@@ -677,29 +706,29 @@ export default function SolutionSection() {
           transition: opacity 0.5s ease, transform 0.5s ease;
           transition-delay: 0.3s;
         }
-        
+
         .result-card.animate-in .result-description {
           opacity: 1;
           transform: translateY(0);
         }
-        
+
         .result-card.animate-out .result-description {
           opacity: 0;
           transform: translateY(15px);
         }
-        
+
         .cta-button-wrapper {
           opacity: 0;
           transform: translateY(10px);
           transition: opacity 0.6s ease, transform 0.6s ease;
           transition-delay: 0.4s;
         }
-        
+
         .result-card.animate-in .cta-button-wrapper {
           opacity: 1;
           transform: translateY(0);
         }
-        
+
         .result-card.animate-out .cta-button-wrapper {
           opacity: 0;
           transform: translateY(10px);
@@ -707,10 +736,6 @@ export default function SolutionSection() {
 
         /* Responsive adjustments */
         @media (max-width: 991.98px) {
-          .solution-steps-container {
-            grid-template-columns: 1fr;
-          }
-
           .solution-step-card {
             padding: 1.25rem;
           }
@@ -774,7 +799,7 @@ export default function SolutionSection() {
             font-size: 1.25rem;
             margin-bottom: 0.5rem;
           }
-          
+
           .result-description {
             font-size: 0.95rem;
           }
@@ -785,6 +810,10 @@ export default function SolutionSection() {
           .solution-step-card {
             margin-left: 0 !important;
             margin-right: 0 !important;
+          }
+
+          .solution-steps-container {
+            grid-template-columns: repeat(1, 1fr);
           }
         }
       `}</style>

@@ -469,7 +469,7 @@ export default function BenefitsSection() {
           right: auto;
           background-image: radial-gradient(
             var(--feature-dot-color) 1px,
-            transparent 
+            transparent
           );
           background-size: 12px 12px;
         }
@@ -719,18 +719,6 @@ export default function BenefitsSection() {
             padding: 22px;
           }
 
-          .benefit-icon-wrapper {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            margin-right: 14px;
-          }
-
-          .benefit-icon-wrapper svg {
-            width: 16px;
-            height: 16px;
-          }
-
           .benefit-title {
             font-size: 1.1rem;
           }
@@ -741,6 +729,21 @@ export default function BenefitsSection() {
 
           .btn-glow {
             width: 70%;
+          }
+        }
+
+        @media screen and (max-width: 834px) {
+          .benefits-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+          }
+
+          .benefit-header {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 1rem;
           }
         }
 
@@ -814,7 +817,7 @@ export default function BenefitsSection() {
         }
 
         /* Hide decorative dots on mobile devices */
-        @media (max-width: 992px) {
+        @media (max-width: 1200px) {
           .dots-grid {
             display: none;
           }
@@ -1053,6 +1056,12 @@ export default function BenefitsSection() {
 
           .quote-text {
             font-size: 0.95rem;
+          }
+        }
+
+        @media (max-width: 576px) {
+          .benefits-cards {
+            grid-template-columns: repeat(1, 1fr);
           }
         }
       `}</style>

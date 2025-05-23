@@ -4,9 +4,7 @@ import "./globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/globals.css";
 import "../styles/section-backgrounds.css";
-import ThemeProvider from "../components/ThemeProvider";
 import BootstrapClient from "../components/BootstrapClient";
-import BodyAttributeHandler from "../components/BodyAttributeHandler";
 
 // Load fonts with subsets to optimize loading
 const geistSans = Geist({
@@ -35,7 +33,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-bs-theme="light">
       <head>
         {/* Preload critical assets */}
         <link 
@@ -43,14 +41,14 @@ export default function RootLayout({
           href="https://fonts.gstatic.com" 
           crossOrigin="anonymous" 
         />
+        <meta
+          name="format-detection"
+          content="telephone=no, date=no, email=no, address=no"
+        />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
-        <ThemeProvider>
-          <BootstrapClient />
-          <BodyAttributeHandler>
-            {children}
-          </BodyAttributeHandler>
-        </ThemeProvider>
+        <BootstrapClient />
+        {children}
       </body>
     </html>
   );

@@ -510,7 +510,7 @@ export default function FAQSection() {
         }
         
         /* Hide decorative dots on mobile devices */
-        @media (max-width: 992px) {
+        @media (max-width: 1200px) {
           .dots-grid {
             display: none;
           }
