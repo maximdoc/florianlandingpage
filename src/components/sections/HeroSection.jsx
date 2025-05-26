@@ -227,11 +227,10 @@ export default function HeroSection() {
         
         /* Dot grid patterns */
         .dots-grid {
-          background-image: radial-gradient(var(--primary) 1.5px, transparent 1.5px);
+          background-image: radial-gradient(rgba(200, 200, 200, 0.5) 2.5px, transparent 2.5px);
           background-size: 18px 18px;
-          opacity: 0.35;
-          background-image: radial-gradient(var(--primary) 2.5px, transparent 2.5px);
-          filter: brightness(0.8); /* Makes dots darker for better visibility */
+          opacity: 0.5;
+          filter: none;
         }
         
         .dots-grid-top-right {
@@ -573,6 +572,36 @@ export default function HeroSection() {
             padding-top: 2rem !important;
           }
         }
+        
+        /* Hero CTA button styling */
+        .hero-primary-cta {
+          background-color: var(--primary);
+          color: white;
+          transition: all 0.3s ease;
+          font-weight: 600;
+          box-shadow: 0 4px 14px rgba(0, 82, 204, 0.25);
+        }
+        
+        .hero-primary-cta:hover {
+          background-color: var(--btn-primary-hover-bg);
+          transform: translateY(-3px);
+          box-shadow: 0 8px 20px rgba(0, 82, 204, 0.35);
+        }
+        
+        .hero-secondary-cta {
+          border: 2px solid var(--primary);
+          color: var(--primary);
+          background-color: transparent;
+          transition: all 0.3s ease;
+          font-weight: 600;
+        }
+        
+        .hero-secondary-cta:hover {
+          background-color: var(--btn-secondary-hover-bg);
+          color: var(--btn-secondary-hover-text);
+          transform: translateY(-3px);
+          box-shadow: 0 8px 20px rgba(0, 82, 204, 0.15);
+        }
       `}</style>
 
       <Container>
@@ -607,8 +636,13 @@ export default function HeroSection() {
                     variant="primary" 
                     size="lg"
                     className="hero-primary-cta"
+                    endIcon={
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path fillRule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                      </svg>
+                    }
                   >
-                    {heroSection.ctaButton.text}
+                    {heroSection.ctaButton.text || "Get Started"}
                   </Button>
                   
                   {/* Add Secondary CTA Button */}
@@ -619,7 +653,7 @@ export default function HeroSection() {
                       size="lg"
                       className="hero-secondary-cta"
                     >
-                      {heroSection.secondaryCtaButton.text}
+                      {heroSection.secondaryCtaButton.text || "See How It Works"}
                     </Button>
                   )}
                 </div>

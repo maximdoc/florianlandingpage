@@ -212,14 +212,14 @@ export default function Navbar() {
               className="d-flex align-items-center mt-3 mt-lg-0 px-3 px-lg-0"
               ref={el => navLinksRef.current[navigationItems.length] = el}
             >
-              {/* Add Get Started CTA button - solid primary blue */}
+              {/* Get Started CTA button - solid deep blue */}
               <div className="ms-lg-3 mobile-cta-wrapper">
                 <a 
                   href={ctaButton.href} 
-                  className="btn btn-primary w-100"
+                  className="btn btn-primary w-100 nav-cta-button"
                   onClick={smoothScrollToAnchor}
                 >
-                  {ctaButton.text}
+                  {ctaButton.text || "Get Started"}
                 </a>
               </div>
             </div>
@@ -229,6 +229,20 @@ export default function Navbar() {
       
       <style jsx global>{`
         /* Mobile menu CTA button styling */
+        .nav-cta-button {
+          background-color: var(--primary);
+          color: white;
+          transition: all 0.3s ease;
+          font-weight: 600;
+          border: none;
+        }
+        
+        .nav-cta-button:hover {
+          background-color: var(--btn-primary-hover-bg);
+          transform: translateY(-2px);
+          box-shadow: var(--btn-hover-box-shadow);
+        }
+        
         @media (max-width: 991.98px) {
           .mobile-cta-wrapper {
             width: 100%;

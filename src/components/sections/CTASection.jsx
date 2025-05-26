@@ -161,9 +161,9 @@ export default function CTASection() {
                         type="submit" 
                         variant="action"
                         endIcon={ctaSection.submitButton.endIcon && <Icon name={ctaSection.submitButton.endIcon} width={16} height={16} />}
-                        className="w-100"
+                        className="w-100 consultation-cta-button"
                       >
-                        {ctaSection.submitButton.text}
+                        {ctaSection.submitButton.text || "Book Your Free Consultation"}
                       </Button>
                     </div>
                   )}
@@ -224,7 +224,7 @@ export default function CTASection() {
           position: relative;
           overflow: hidden;
           padding: 5rem 0;
-          background-color: #f8fafc;
+          background-color: var(--section-bg-light);
         }
         
         .cta-card-enhanced {
@@ -578,6 +578,29 @@ export default function CTASection() {
           color: #64748b;
           font-size: 0.875rem;
           will-change: transform, opacity;
+        }
+        
+        /* Post-Mission Section CTA */
+        .consultation-cta-button {
+          background-color: var(--secondary);
+          color: white;
+          transition: all 0.3s ease;
+          font-weight: 600;
+          box-shadow: 0 4px 14px rgba(255, 111, 97, 0.25);
+          border: none;
+          padding: 0.75rem 1.5rem;
+        }
+        
+        .consultation-cta-button:hover {
+          background-color: var(--btn-action-hover-bg);
+          transform: translateY(-3px);
+          box-shadow: 0 8px 20px rgba(255, 111, 97, 0.35);
+        }
+        
+        .consultation-cta-button:active {
+          background-color: var(--btn-action-active-bg);
+          transform: translateY(-1px);
+          box-shadow: 0 4px 10px rgba(255, 111, 97, 0.25);
         }
       `}</style>
     </SectionContainer>

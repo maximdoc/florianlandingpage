@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import AdditionalCtasSection from './sections/AdditionalCtasSection';
 
 export default function PageLayout({ children }) {
   const [mounted, setMounted] = useState(false);
@@ -30,6 +31,7 @@ export default function PageLayout({ children }) {
         </div>
       </main>
       <Footer />
+      <AdditionalCtasSection />
     </>
   );
 } 

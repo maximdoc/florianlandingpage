@@ -41,14 +41,12 @@ export default function TrustSection() {
   const sectionRef = useRef(null);
   const headerRef = useRef(null);
   const featuredRef = useRef(null);
-  const partnersRef = useRef(null);
   const certificationsRef = useRef(null);
 
   // Check if elements are visible
   const isSectionVisible = useIsVisible(sectionRef);
   const isHeaderVisible = useIsVisible(headerRef);
   const isFeaturedVisible = useIsVisible(featuredRef);
-  const isPartnersVisible = useIsVisible(partnersRef);
   const isCertificationsVisible = useIsVisible(certificationsRef);
 
   return (
@@ -119,60 +117,6 @@ export default function TrustSection() {
                             alt={logo.name}
                             width={140}
                             height={50}
-                            className="logo-image"
-                            style={{ width: "auto", height: "auto" }}
-                          />
-                        )}
-                      </div>
-                    </div>
-                  </a>
-                ))}
-              </div>
-            </Col>
-          </Row>
-        )}
-
-        {/* Partners Section */}
-        {trustSection.partners && (
-          <Row
-            className="mb-md-5 mb-4 text-center partners-section"
-            ref={partnersRef}
-          >
-            <Col lg={12} className="mb-md-3 mb-2">
-              <h3 className={`h4 mb-3 transition-all duration-1000 ${
-                isPartnersVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-              }`}>
-                <span className="section-label">
-                  {trustSection.partners.title}
-                </span>
-                <div className="heading-underline"></div>
-              </h3>
-              <div className={`partners-logos-container transition-all duration-1000 delay-200 ${
-                isPartnersVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-              }`}>
-                {trustSection.partners.logos.map((logo, index) => (
-                  <a
-                    key={logo.id}
-                    href={logo.url}
-                    className="partner-logo"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={logo.name}
-                    style={{ 
-                      transitionDelay: `${150 + index * 50}ms`,
-                      transition: "all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)"
-                    }}
-                  >
-                    <div className="logo-wrapper">
-                      <div className="logo-placeholder">
-                        {!logo.image && logo.name}
-                        {/* Use actual images when available, fallback to text */}
-                        {logo.image && (
-                          <Image
-                            src={logo.image}
-                            alt={logo.name}
-                            width={120}
-                            height={60}
                             className="logo-image"
                             style={{ width: "auto", height: "auto" }}
                           />
@@ -390,32 +334,6 @@ export default function TrustSection() {
           object-fit: contain;
         }
 
-        /* Partners logos styling with improved spacing */
-        .partners-logos-container {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          align-items: center;
-          gap: 1.25rem;
-          margin-top: 1.5rem;
-          position: relative;
-          z-index: 1;
-        }
-
-        .partner-logo {
-          text-decoration: none;
-          transition: all 0.3s ease;
-        }
-
-        .partner-logo:hover {
-          transform: translateY(-5px);
-        }
-
-        .partner-logo .logo-wrapper {
-          min-height: 70px;
-          min-width: 160px;
-        }
-
         /* Certifications styling with improved responsiveness */
         .certifications-container {
           display: flex;
@@ -504,8 +422,7 @@ export default function TrustSection() {
 
         /* Responsive adjustments */
         @media (max-width: 991.98px) {
-          .featured-logos-container,
-          .partners-logos-container {
+          .featured-logos-container {
             gap: 1rem;
             margin-top: 1.25rem;
           }
@@ -528,8 +445,7 @@ export default function TrustSection() {
         }
 
         @media (max-width: 767.98px) {
-          .featured-logos-container,
-          .partners-logos-container {
+          .featured-logos-container {
             gap: 0.75rem;
             margin-top: 1rem;
           }
@@ -574,7 +490,6 @@ export default function TrustSection() {
 
         /* Section highlight backgrounds with reduced padding */
         .featured-section,
-        .partners-section,
         .certifications-section {
           position: relative;
           border-radius: 12px;
@@ -648,7 +563,6 @@ export default function TrustSection() {
 
         /* Update section background highlight for better visibility in light theme */
         .featured-section::before,
-        .partners-section::before,
         .certifications-section::before {
           content: "";
           position: absolute;

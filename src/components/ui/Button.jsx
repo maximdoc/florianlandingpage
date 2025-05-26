@@ -51,12 +51,20 @@ const Button = ({
     className,
   ].filter(Boolean).join(' ');
   
+  // Handle click with both onClick and href
+  const handleClick = (e) => {
+    if (onClick) {
+      onClick(e);
+    }
+  };
+  
   // If we have href, render Link
   if (href) {
     return (
       <Link
         href={href}
         className={classes}
+        onClick={handleClick}
         {...props}
       >
         {startIcon && <span className="btn-icon-start">{startIcon}</span>}

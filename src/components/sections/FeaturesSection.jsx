@@ -236,10 +236,11 @@ export default function FeaturesSection() {
                   {featuresSection.ctaSection.ctaButton && (
                     <Button
                       href={featuresSection.ctaSection.ctaButton.href}
-                      variant="primary"
+                      variant="white"
+                      className="features-cta-button"
                     >
                       {featuresSection.ctaSection.ctaButton.text ||
-                        "Find Opportunities"}
+                        "Find Your First Opportunity"}
                     </Button>
                   )}
                 </div>
@@ -503,12 +504,12 @@ export default function FeaturesSection() {
 
         /* CTA section styling */
         .cta-section {
-          background: var(--primary);
+          background: var(--secondary);
           border-radius: 16px;
           padding: 2.5rem;
           position: relative;
           overflow: hidden;
-          box-shadow: 0 10px 20px rgba(var(--primary-rgb), 0.25);
+          box-shadow: 0 10px 20px rgba(255, 111, 97, 0.25);
           z-index: 1;
         }
 
@@ -549,26 +550,15 @@ export default function FeaturesSection() {
           font-size: 1.5rem;
         }
 
-        .cta-section .btn {
-          background: #ffffff;
-          color: var(--primary);
-          border: none;
-        }
-
-        .cta-section .btn:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-        }
-
         /* Dots grid styles */
         .dots-grid {
           background-image: radial-gradient(
-            var(--primary) 2.5px,
+            rgba(200, 200, 200, 0.5) 2.5px,
             transparent 2.5px
           );
           background-size: 18px 18px;
-          opacity: 0.35;
-          filter: brightness(0.8); /* Makes dots darker for better visibility */
+          opacity: 0.5;
+          filter: none;
         }
 
         @media (min-width: 835px) {
@@ -764,6 +754,29 @@ export default function FeaturesSection() {
             font-size: 1.2rem;
             margin-bottom: 1rem;
           }
+        }
+
+        /* Features section CTA button */
+        .features-cta-button {
+          background-color: #ffffff;
+          color: var(--secondary);
+          border: 2px solid #ffffff;
+          transition: all 0.3s ease;
+          font-weight: 600;
+          padding: 0.75rem 1.5rem;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .features-cta-button:hover {
+          background-color: rgba(255, 255, 255, 0.9);
+          color: var(--secondary);
+          transform: translateY(-3px);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .features-cta-button:active {
+          transform: translateY(-1px);
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
       `}</style>
     </SectionContainer>

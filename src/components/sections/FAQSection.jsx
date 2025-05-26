@@ -203,8 +203,9 @@ export default function FAQSection() {
                   <Button 
                     href={faqSection.ctaSection.button.href} 
                     variant="white"
+                    className="faq-cta-button"
                   >
-                    {faqSection.ctaSection.button.text}
+                    {faqSection.ctaSection.button.text || "Explore More Success Stories"}
                   </Button>
                 )}
               </div>
@@ -386,13 +387,36 @@ export default function FAQSection() {
           position: relative;
           padding: 1.5rem;
           border-radius: 16px;
-          background: #6366f1;
+          background: var(--secondary);
           color: #ffffff;
           overflow: hidden;
-          box-shadow: 0 15px 30px rgba(99, 102, 241, 0.2);
+          box-shadow: 0 15px 30px rgba(255, 111, 97, 0.2);
           z-index: 1;
           margin-top: 1rem;
           will-change: transform, opacity;
+        }
+        
+        /* FAQ CTA button styling */
+        .faq-cta-button {
+          background-color: #ffffff;
+          color: var(--secondary);
+          border: 2px solid #ffffff;
+          transition: all 0.3s ease;
+          font-weight: 600;
+          padding: 0.75rem 1.5rem;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .faq-cta-button:hover {
+          background-color: rgba(255, 255, 255, 0.9);
+          color: var(--secondary);
+          transform: translateY(-3px);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .faq-cta-button:active {
+          transform: translateY(-1px);
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
         
         .compact-cta-card h3 {
@@ -495,10 +519,13 @@ export default function FAQSection() {
 
         /* Dots grid styles */
         .dots-grid {
-          opacity: 0.8;
-          background-image: radial-gradient(var(--primary) 2.5px, transparent 2.5px);
+          background-image: radial-gradient(
+            rgba(200, 200, 200, 0.5) 2.5px,
+            transparent 2.5px
+          );
           background-size: 18px 18px;
-          filter: brightness(0.3);
+          opacity: 0.5;
+          filter: none;
         }
         
         .dots-grid-top-right {

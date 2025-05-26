@@ -126,7 +126,7 @@ export default function Footer() {
           <Row className="justify-content-between align-items-center py-2">
             <Col md={7} lg={7}>
               <div className="banner-content">
-                <h3 className="banner-title">{footer.banner?.title || "Ready to streamline your government contracting?"}</h3>
+                <h3 className="banner-title">{footer.banner?.title || "Ready to Take Your First Government Bid?"}</h3>
                 <p className="banner-text">{footer.banner?.text || "Get personalized guidance on how to optimize your bidding strategy and win more contracts."}</p>
               </div>
             </Col>
@@ -135,9 +135,9 @@ export default function Footer() {
                 href={footer.banner?.buttonHref || "#strategy-call"} 
                 variant="action"
                 onClick={smoothScrollToAnchor}
-                className="banner-button"
+                className="banner-button pulse-animation"
               >
-                {footer.banner?.buttonText || "Book Consultation"}
+                {footer.banner?.buttonText || "Book Your Free Consultation"}
               </Button>
             </Col>
           </Row>
@@ -489,6 +489,10 @@ export default function Footer() {
           position: relative;
           z-index: 2;
           overflow: hidden;
+          background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url('/images/banner-bg.jpg');
+          background-size: cover;
+          background-position: center;
+          box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
         }
         
         .banner-background-shapes {
@@ -552,7 +556,7 @@ export default function Footer() {
         }
         
         .banner-title {
-          color: #0f172a;
+          color: #ffffff;
           font-size: 2rem;
           font-weight: 700;
           margin-bottom: 1rem;
@@ -572,7 +576,7 @@ export default function Footer() {
         }
         
         .banner-text {
-          color: #64748b;
+          color: rgba(255, 255, 255, 0.9);
           font-size: 1.15rem;
           line-height: 1.5;
           margin-bottom: 0;
@@ -586,14 +590,44 @@ export default function Footer() {
           border-radius: 8px;
           box-shadow: 0 8px 20px rgba(255, 111, 97, 0.3);
           transition: all 0.3s ease;
-          background-color: #ff6f61;
+          background-color: var(--secondary);
           color: #ffffff;
+          position: relative;
         }
         
         .banner-button:hover {
           transform: translateY(-3px);
           box-shadow: 0 12px 25px rgba(255, 111, 97, 0.4);
-          background-color: #ff5c4d;
+          background-color: var(--btn-action-hover-bg);
+        }
+        
+        /* Pulse animation for CTA button */
+        .pulse-animation::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border-radius: 8px;
+          background-color: var(--secondary);
+          z-index: -1;
+          animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+          0% {
+            transform: scale(1);
+            opacity: 0.7;
+          }
+          50% {
+            transform: scale(1.05);
+            opacity: 0.3;
+          }
+          100% {
+            transform: scale(1);
+            opacity: 0.7;
+          }
         }
         
         @media (max-width: 991px) {

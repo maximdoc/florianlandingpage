@@ -1,6 +1,7 @@
 import HeroSection from '@/components/sections/HeroSection';
 import MissionValueSection from '@/components/sections/MissionValueSection';
 import SolutionSection from '@/components/sections/SolutionSection';
+import PartnersAndClientsSection from '@/components/sections/PartnersAndClientsSection';
 import BenefitsSection from '@/components/sections/BenefitsSection';
 import ComparisonSection from '@/components/sections/ComparisonSection';
 import FeaturesSection from '@/components/sections/FeaturesSection';
@@ -69,6 +70,7 @@ export default function Home() {
       <HeroSection />
       <MissionValueSection />
       <SolutionSection />
+      <PartnersAndClientsSection />
       <BenefitsSection />
       <ComparisonSection />
       <FeaturesSection />

@@ -133,7 +133,7 @@ export default function BenefitsSection() {
         <Row className="g-4 benefits-cards" ref={benefitsGridRef}>
           {benefitsSection.tiles &&
             benefitsSection.tiles.map((benefit, index) => (
-              <Col lg={6} className="benefit-col" key={benefit.id}>
+              <Col lg={4} className="benefit-col" key={benefit.id}>
                 <div
                   className={`benefit-card ${
                     hoveredBenefit === benefit.id ? "active" : ""
@@ -186,82 +186,45 @@ export default function BenefitsSection() {
               }`}
             >
               <div className="quote-grid">
-                {/* First quote item */}
-                <div
-                  className="quote-item"
-                  style={{
-                    transitionDelay: "150ms",
-                    opacity: areQuotesVisible ? 1 : 0,
-                    transform: areQuotesVisible
-                      ? "translateY(0)"
-                      : "translateY(40px)",
-                    transition: "all 1000ms cubic-bezier(0.2, 0.8, 0.2, 1)",
-                  }}
-                >
-                  <div className="quote-icon-wrapper">
-                    <div className="quote-icon">
-                      <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M9.59 4.59A2 2 0 1 1 11 8H8a6 6 0 0 0 6 6v2a8 8 0 0 1-8-8V4.59z"
-                          fill="currentColor"
-                        />
-                        <path
-                          d="M15.59 4.59A2 2 0 1 1 17 8h-3a6 6 0 0 0 6 6v2a8 8 0 0 1-8-8V4.59z"
-                          fill="currentColor"
-                        />
-                      </svg>
+                {benefitsSection.quotes && benefitsSection.quotes.map((quote, index) => (
+                  <div
+                    key={quote.id}
+                    className="quote-item"
+                    style={{
+                      transitionDelay: `${150 + index * 100}ms`,
+                      opacity: areQuotesVisible ? 1 : 0,
+                      transform: areQuotesVisible
+                        ? "translateY(0)"
+                        : "translateY(40px)",
+                      transition: "all 1000ms cubic-bezier(0.2, 0.8, 0.2, 1)",
+                    }}
+                  >
+                    <div className="quote-icon-wrapper">
+                      <div className="quote-icon">
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M9.59 4.59A2 2 0 1 1 11 8H8a6 6 0 0 0 6 6v2a8 8 0 0 1-8-8V4.59z"
+                            fill="currentColor"
+                          />
+                          <path
+                            d="M15.59 4.59A2 2 0 1 1 17 8h-3a6 6 0 0 0 6 6v2a8 8 0 0 1-8-8V4.59z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </div>
                     </div>
+                    <p className="quote-text">
+                      {quote.text}
+                    </p>
+                    <div className={`quote-dot-pattern ${index % 2 === 0 ? 'pattern-right' : 'pattern-left'}`}></div>
                   </div>
-                  <p className="quote-text">
-                    No training required. Plug into a proven government sales
-                    engine.
-                  </p>
-                  <div className="quote-dot-pattern pattern-right"></div>
-                </div>
-
-                {/* Second quote item */}
-                <div
-                  className="quote-item"
-                  style={{
-                    transitionDelay: "250ms",
-                    opacity: areQuotesVisible ? 1 : 0,
-                    transform: areQuotesVisible
-                      ? "translateY(0)"
-                      : "translateY(40px)",
-                    transition: "all 1000ms cubic-bezier(0.2, 0.8, 0.2, 1)",
-                  }}
-                >
-                  <div className="quote-icon-wrapper">
-                    <div className="quote-icon">
-                      <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M9.59 4.59A2 2 0 1 1 11 8H8a6 6 0 0 0 6 6v2a8 8 0 0 1-8-8V4.59z"
-                          fill="currentColor"
-                        />
-                        <path
-                          d="M15.59 4.59A2 2 0 1 1 17 8h-3a6 6 0 0 0 6 6v2a8 8 0 0 1-8-8V4.59z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                  <p className="quote-text">
-                    Leave the regs and registrations to us—focus on execution.
-                  </p>
-                  <div className="quote-dot-pattern pattern-left"></div>
-                </div>
+                ))}
               </div>
             </div>
           </Col>
@@ -735,7 +698,8 @@ export default function BenefitsSection() {
         @media screen and (max-width: 834px) {
           .benefits-cards {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
           }
 
           .benefit-header {
@@ -795,12 +759,12 @@ export default function BenefitsSection() {
         /* Dots grid styles */
         .dots-grid {
           background-image: radial-gradient(
-            var(--primary) 2.5px,
+            rgba(200, 200, 200, 0.5) 2.5px,
             transparent 2.5px
           );
           background-size: 18px 18px;
-          opacity: 0.8;
-          filter: brightness(0.3);
+          opacity: 0.5;
+          filter: none;
         }
 
         .dots-grid-top-right {
@@ -850,7 +814,7 @@ export default function BenefitsSection() {
 
         .quote-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          grid-template-columns: repeat(3, 1fr);
           gap: 1.5rem;
           position: relative;
           z-index: 1;
@@ -1036,6 +1000,10 @@ export default function BenefitsSection() {
 
           .quote-text {
             font-size: 1rem;
+          }
+          
+          .quote-grid {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
           }
         }
 
