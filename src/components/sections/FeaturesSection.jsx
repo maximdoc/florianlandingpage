@@ -723,16 +723,6 @@ export default function FeaturesSection() {
             text-align: center;
           }
 
-          .feature-icon-wrapper {
-            width: 44px;
-            height: 44px;
-          }
-
-          .feature-icon-wrapper svg {
-            width: 18px;
-            height: 18px;
-          }
-
           .feature-title {
             font-size: 1rem;
           }

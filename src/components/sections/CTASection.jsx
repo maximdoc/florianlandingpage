@@ -589,6 +589,19 @@ export default function CTASection() {
           box-shadow: 0 4px 14px rgba(255, 111, 97, 0.25);
           border: none;
           padding: 0.75rem 1.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+        }
+        
+        .consultation-cta-button .button-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 20px;
+          height: 20px;
+          transition: transform 0.3s ease;
         }
         
         .consultation-cta-button:hover {
@@ -597,10 +610,8 @@ export default function CTASection() {
           box-shadow: 0 8px 20px rgba(255, 111, 97, 0.35);
         }
         
-        .consultation-cta-button:active {
-          background-color: var(--btn-action-active-bg);
-          transform: translateY(-1px);
-          box-shadow: 0 4px 10px rgba(255, 111, 97, 0.25);
+        .consultation-cta-button:hover .button-icon {
+          transform: translateX(4px);
         }
       `}</style>
     </SectionContainer>

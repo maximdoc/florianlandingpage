@@ -717,8 +717,8 @@ export default function BenefitsSection() {
           }
 
           .benefit-icon-wrapper {
-            width: 42px;
-            height: 42px;
+            width: 48px;
+            height: 48px;
             border-radius: 16px;
             margin-right: 12px;
           }
@@ -731,8 +731,8 @@ export default function BenefitsSection() {
           }
 
           .benefit-icon-wrapper svg {
-            width: 16px;
-            height: 16px;
+            width: 20px;
+            height: 20px;
           }
 
           .benefit-title {

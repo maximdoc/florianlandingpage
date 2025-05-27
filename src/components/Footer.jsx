@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useEffect, useState, useMemo } from 'react';
 import Button from './ui/Button';
 import content from '@/data/content.json';
+import Icon from './ui/Icon';
 
 export default function Footer() {
   // Extract footer data directly from content.json
@@ -126,18 +127,21 @@ export default function Footer() {
           <Row className="justify-content-between align-items-center py-2">
             <Col md={7} lg={7}>
               <div className="banner-content">
-                <h3 className="banner-title">{footer.banner?.title || "Ready to Take Your First Government Bid?"}</h3>
-                <p className="banner-text">{footer.banner?.text || "Get personalized guidance on how to optimize your bidding strategy and win more contracts."}</p>
+                <h3 className="banner-title">{footer.banner?.title}</h3>
+                <p className="banner-text">{footer.banner?.text}</p>
               </div>
             </Col>
             <Col md={5} lg={5} className="text-md-end mt-4 mt-md-0">
               <Button 
-                href={footer.banner?.buttonHref || "#strategy-call"} 
+                href={footer.banner?.buttonHref} 
                 variant="action"
                 onClick={smoothScrollToAnchor}
                 className="banner-button pulse-animation"
               >
-                {footer.banner?.buttonText || "Book Your Free Consultation"}
+                {footer.banner?.buttonText}
+                <span className="button-icon">
+                  <Icon name={footer.banner?.buttonIcon} width={20} height={20} />
+                </span>
               </Button>
             </Col>
           </Row>
@@ -593,12 +597,29 @@ export default function Footer() {
           background-color: var(--secondary);
           color: #ffffff;
           position: relative;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+        
+        .button-icon {
+          margin-left: 0.5rem;
+          transition: transform 0.3s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 20px;
+          height: 20px;
         }
         
         .banner-button:hover {
           transform: translateY(-3px);
           box-shadow: 0 12px 25px rgba(255, 111, 97, 0.4);
           background-color: var(--btn-action-hover-bg);
+        }
+        
+        .banner-button:hover .button-icon {
+          transform: translateX(4px);
         }
         
         /* Pulse animation for CTA button */
@@ -667,9 +688,10 @@ export default function Footer() {
           
           .banner-button {
             padding: 0.8rem 1.5rem;
-            font-size: 1rem;
+            font-size: 0.95rem;
             width: 100%;
-            max-width: 250px;
+            max-width: 280px;
+            white-space: nowrap;
           }
           
           .text-md-end {
@@ -679,6 +701,13 @@ export default function Footer() {
           .banner-shape.shape-1,
           .banner-shape.shape-2 {
             opacity: 0.03;
+          }
+        }
+        
+        @media (max-width: 360px) {
+          .banner-button {
+            font-size: 0.9rem;
+            padding: 0.75rem 1.2rem;
           }
         }
       `}</style>

@@ -30,6 +30,13 @@
     "footer": {
       "copyright": "© 2025 SlingRFP",
       "contactEmail": "support@slingrfp.com",
+      "banner": {
+        "title": "Ready to Take Your First Government Bid?",
+        "text": "Get personalized guidance on how to optimize your bidding strategy and win more contracts.",
+        "buttonText": "Book Your Free Consultation",
+        "buttonHref": "#strategy-call",
+        "buttonIcon": "modern-arrow-right"
+      },
       "navigationLinks": [
         {
           "text": "Features",
@@ -131,7 +138,19 @@
           "type": "mission",
           "label": "Our Mission",
           "mission": "To help growth-stage companies take their first steps into the government market—making the process transparent, simple, and success-driven.",
-          "promiseLabel": "Our Promise",
+          "valuePropLabel": "Core Value Prop",
+          "valueProp": "We empower first-time government bidders with an end-to-end proposal team and AI-driven insights, so you launch confidently without the guesswork.",
+          "ctaButton": {
+            "text": "Learn More",
+            "href": "#solution"
+          },
+          "backgroundVariant": "dark"
+        },
+        {
+          "id": "promise",
+          "type": "promise",
+          "label": "Our Promise",
+          "intro": "We deliver a fully managed, outcome-focused service—no hidden fees, just a commitment to your success:",
           "promises": [
             {
               "title": "Hassle-Free",
@@ -149,13 +168,7 @@
               "icon": "chart-up"
             }
           ],
-          "valuePropLabel": "Core Value Prop",
-          "valueProp": "We empower first-time government bidders with an end-to-end proposal team and AI-driven insights, so you launch confidently without the guesswork.",
-          "ctaButton": {
-            "text": "Learn More",
-            "href": "#solution"
-          },
-          "backgroundVariant": "dark"
+          "backgroundVariant": "light"
         },
         {
           "id": "solution",
@@ -195,6 +208,83 @@
               "text": "Book Your Free Strategy Call",
               "href": "#strategy-call"
             }
+          },
+          "backgroundVariant": "dark"
+        },
+        {
+          "id": "partnersAndClients",
+          "type": "partnersAndClients",
+          "title": "Partner & <span class=\"text-gradient\">Client</span> Logos",
+          "subtitle": "Join hundreds of businesses that rely on SlingRFP for their government contracting success",
+          "partners": {
+            "title": "Our Partners",
+            "logos": [
+              {
+                "id": 1,
+                "name": "Partner 1",
+                "image": "/images/logos/govtech-news.svg",
+                "url": "#"
+              },
+              {
+                "id": 2,
+                "name": "Partner 2",
+                "image": "/images/logos/federal-times.svg",
+                "url": "#"
+              },
+              {
+                "id": 3,
+                "name": "Partner 3",
+                "image": "/images/logos/partner3.svg",
+                "url": "#"
+              },
+              {
+                "id": 4,
+                "name": "Partner 4",
+                "image": "/images/logos/partner4.svg",
+                "url": "#"
+              },
+              {
+                "id": 5,
+                "name": "Partner 5",
+                "image": "/images/logos/partner5.svg",
+                "url": "#"
+              }
+            ]
+          },
+          "clients": {
+            "title": "Our Clients",
+            "logos": [
+              {
+                "id": 1,
+                "name": "GR0",
+                "image": "/images/logos/partner5.svg",
+                "url": "#"
+              },
+              {
+                "id": 2,
+                "name": "TechSolutions",
+                "image": "/images/logos/partner4.svg",
+                "url": "#"
+              },
+              {
+                "id": 3,
+                "name": "OptiCloud IT",
+                "image": "/images/logos/partner3.svg",
+                "url": "#"
+              },
+              {
+                "id": 4,
+                "name": "CleanEdge Services",
+                "image": "/images/logos/federal-times.svg",
+                "url": "#"
+              },
+              {
+                "id": 5,
+                "name": "Nexus Systems",
+                "image": "/images/logos/govtech-news.svg",
+                "url": "#"
+              }
+            ]
           },
           "backgroundVariant": "light"
         },
@@ -453,83 +543,6 @@
           "backgroundVariant": "dark"
         },
         {
-          "id": "partnersAndClients",
-          "type": "partnersAndClients",
-          "title": "Partner & <span class=\"text-gradient\">Client</span> Logos",
-          "subtitle": "Join hundreds of businesses that rely on SlingRFP for their government contracting success",
-          "partners": {
-            "title": "Our Partners",
-            "logos": [
-              {
-                "id": 1,
-                "name": "Partner 1",
-                "image": "/images/logos/govtech-news.svg",
-                "url": "#"
-              },
-              {
-                "id": 2,
-                "name": "Partner 2",
-                "image": "/images/logos/federal-times.svg",
-                "url": "#"
-              },
-              {
-                "id": 3,
-                "name": "Partner 3",
-                "image": "/images/logos/partner3.svg",
-                "url": "#"
-              },
-              {
-                "id": 4,
-                "name": "Partner 4",
-                "image": "/images/logos/partner4.svg",
-                "url": "#"
-              },
-              {
-                "id": 5,
-                "name": "Partner 5",
-                "image": "/images/logos/partner5.svg",
-                "url": "#"
-              }
-            ]
-          },
-          "clients": {
-            "title": "Our Clients",
-            "logos": [
-              {
-                "id": 1,
-                "name": "GR0",
-                "image": "/images/logos/partner5.svg",
-                "url": "#"
-              },
-              {
-                "id": 2,
-                "name": "TechSolutions",
-                "image": "/images/logos/partner4.svg",
-                "url": "#"
-              },
-              {
-                "id": 3,
-                "name": "OptiCloud IT",
-                "image": "/images/logos/partner3.svg",
-                "url": "#"
-              },
-              {
-                "id": 4,
-                "name": "CleanEdge Services",
-                "image": "/images/logos/federal-times.svg",
-                "url": "#"
-              },
-              {
-                "id": 5,
-                "name": "Nexus Systems",
-                "image": "/images/logos/govtech-news.svg",
-                "url": "#"
-              }
-            ]
-          },
-          "backgroundVariant": "light"
-        },
-        {
           "id": "faq",
           "type": "faq",
           "title": "<span class=\"text-gradient\">FAQs</span>",
@@ -537,43 +550,18 @@
           "items": [
             {
               "id": "1",
-              "question": "Do we need any certifications beforehand?",
-              "answer": "No. We'll identify what's missing (e.g., ISO, WOSB) and guide you through obtaining each one."
+              "question": "Who is SlingRFP for?",
+              "answer": "B2B companies taking their first steps in public-sector sales or expanding existing footprints."
             },
             {
               "id": "2",
-              "question": "What if we've never sold to government?",
-              "answer": "Perfect. 80% of our clients were brand-new to B2G. We handle education, paperwork, and positioning."
+              "question": "When can I submit my first proposal?",
+              "answer": "Receive your first bid list in 48 hours; submit within 1–2 weeks."
             },
             {
               "id": "3",
-              "question": "How is pricing structured?",
-              "answer": "$10K onboarding covers profile creation & first bid cycle, then success-based fees tied to contract value."
-            },
-            {
-              "id": "4",
-              "question": "How soon can we bid?",
-              "answer": "Most clients have a qualifying profile ready in 30 days and submit their first proposal within 45."
-            },
-            {
-              "id": "5",
-              "question": "Do we keep all data and templates?",
-              "answer": "Yes. You own every document, certificate, and proposal we create."
-            },
-            {
-              "id": "6",
-              "question": "What industries do you support?",
-              "answer": "We serve technology, professional services, manufacturing, healthcare—any B2B sector."
-            },
-            {
-              "id": "7",
-              "question": "How long until we see results?",
-              "answer": "Clients typically receive their first qualified bid list within 48 hours and submit their first proposal in 1–2 weeks."
-            },
-            {
-              "id": "8",
-              "question": "What's included in your pricing?",
-              "answer": "Registration support, proposal writing, submission, and performance analytics; fees based only on awards."
+              "question": "What makes you different?",
+              "answer": "We combine AI precision with a veteran team—focus only on bids you can win."
             }
           ],
           "ctaSection": {
@@ -617,7 +605,7 @@
           ],
           "submitButton": {
             "text": "Schedule My Call",
-            "endIcon": "arrow-right"
+            "endIcon": "modern-arrow-right"
           },
           "disclaimer": "No obligation, 15-minute consultation",
           "backgroundVariant": "dark"

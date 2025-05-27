@@ -6,6 +6,7 @@ import Image from "next/image";
 import Button from "../ui/Button";
 import SectionContainer from '../SectionContainer';
 import content from '@/data/content.json';
+import Icon from "../ui/Icon";
 
 export default function HeroSection() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -580,12 +581,28 @@ export default function HeroSection() {
           transition: all 0.3s ease;
           font-weight: 600;
           box-shadow: 0 4px 14px rgba(0, 82, 204, 0.25);
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+        
+        .hero-primary-cta .button-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 20px;
+          height: 20px;
+          transition: transform 0.3s ease;
         }
         
         .hero-primary-cta:hover {
           background-color: var(--btn-primary-hover-bg);
           transform: translateY(-3px);
           box-shadow: 0 8px 20px rgba(0, 82, 204, 0.35);
+        }
+        
+        .hero-primary-cta:hover .button-icon {
+          transform: translateX(4px);
         }
         
         .hero-secondary-cta {
@@ -636,11 +653,7 @@ export default function HeroSection() {
                     variant="primary" 
                     size="lg"
                     className="hero-primary-cta"
-                    endIcon={
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path fillRule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
-                      </svg>
-                    }
+                    endIcon={<Icon name="modern-arrow-right" width={16} height={16} />}
                   >
                     {heroSection.ctaButton.text || "Get Started"}
                   </Button>
