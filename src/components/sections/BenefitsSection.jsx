@@ -697,9 +697,23 @@ export default function BenefitsSection() {
 
         @media screen and (max-width: 834px) {
           .benefits-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 1.5rem;
+          }
+          
+          .benefit-col {
+            width: calc(50% - 0.75rem);
+            min-width: 280px;
+            flex: 0 1 auto;
+          }
+          
+          /* Ensure center alignment when there's a single card in the last row */
+          .benefit-col:last-child:nth-child(2n + 1) {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 330px;
           }
 
           .benefit-header {
@@ -708,6 +722,15 @@ export default function BenefitsSection() {
             justify-content: center;
             text-align: center;
             gap: 1rem;
+          }
+        }
+        
+        @media screen and (max-width: 600px) {
+          .benefit-col {
+            width: 100%;
+            max-width: 330px;
+            margin-left: auto;
+            margin-right: auto;
           }
         }
 
@@ -1003,7 +1026,23 @@ export default function BenefitsSection() {
           }
           
           .quote-grid {
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+          }
+          
+          .quote-item {
+            width: calc(50% - 0.75rem);
+            min-width: 280px;
+            flex: 0 1 auto;
+          }
+          
+          /* Ensure center alignment when there's a single quote in the last row */
+          .quote-item:last-child:nth-child(2n + 1) {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 330px;
           }
         }
 
@@ -1015,6 +1054,10 @@ export default function BenefitsSection() {
 
           .quote-item {
             padding: 18px;
+            width: 100%;
+            max-width: 330px;
+            margin-left: auto;
+            margin-right: auto;
           }
 
           .quote-icon {

@@ -647,7 +647,7 @@ export default function TestimonialsSection() {
           }
         }
 
-        @media screen and (max-width: 1200px) {
+        @media screen and (max-width: 1250px) {
           .nav-arrow {
             display: none !important;
           }

@@ -125,13 +125,13 @@ export default function Footer() {
         </div>
         <Container className="position-relative">
           <Row className="justify-content-between align-items-center py-2">
-            <Col md={7} lg={7}>
+            <Col lg={7} md={12}>
               <div className="banner-content">
                 <h3 className="banner-title">{footer.banner?.title}</h3>
                 <p className="banner-text">{footer.banner?.text}</p>
               </div>
             </Col>
-            <Col md={5} lg={5} className="text-md-end mt-4 mt-md-0">
+            <Col lg={5} md={12} className="text-md-end mt-4 mt-lg-0">
               <Button 
                 href={footer.banner?.buttonHref} 
                 variant="action"
@@ -665,7 +665,7 @@ export default function Footer() {
           }
         }
         
-        @media (max-width: 768px) {
+        @media (max-width: 834px) {
           .footer-banner {
             padding: 3rem 0;
             text-align: center;
@@ -682,8 +682,8 @@ export default function Footer() {
           
           .banner-text {
             font-size: 1.05rem;
-            margin: 0 auto 1rem;
-            max-width: 100%;
+            margin: 0 auto 1.5rem;
+            max-width: 90%;
           }
           
           .banner-button {
@@ -692,10 +692,15 @@ export default function Footer() {
             width: 100%;
             max-width: 280px;
             white-space: nowrap;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
           }
           
           .text-md-end {
             text-align: center !important;
+            display: flex;
+            justify-content: center;
           }
           
           .banner-shape.shape-1,
